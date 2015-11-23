@@ -53,7 +53,7 @@ To use the Rest client, simply import it and get cracking!
 Here's an example:
 
 ```javascript
-import {Rest} from 'aurelia-api';
+import {Rest} from 'spoonx/aurelia-api';
 
 @inject(Rest)
 export class MyViewModel {

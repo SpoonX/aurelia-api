@@ -2,7 +2,7 @@ Docs for {`Rest`} client
 =======
 
 ```javascript
-import {Rest} from 'aurelia-api';
+import {Rest} from 'spoonx/aurelia-api';
 ```
 
 ---------
@@ -26,7 +26,7 @@ A new `Promise` to be resolved with the data request, or rejected with an error.
 Here's an example on how to speak to a sails based API.
 
 ```javascript
-import {Rest} from 'aurelia-api';
+import {Rest} from 'spoonx/aurelia-api';
 
 @inject(Rest)
 export class MyViewModel {
@@ -69,7 +69,7 @@ A new `Promise` to be resolved with the server response, or rejected with an err
 Here's an example on how to speak to a sails based API.
 
 ```javascript
-import {Rest} from 'aurelia-api';
+import {Rest} from 'spoonx/aurelia-api';
 
 @inject(Rest)
 export class MyViewModel {
@@ -107,7 +107,7 @@ A new `Promise` to be resolved with the server response, or rejected with an err
 Here's an example on how to speak to a sails based API.
 
 ```javascript
-import {Rest} from 'aurelia-api';
+import {Rest} from 'spoonx/aurelia-api';
 
 @inject(Rest)
 export class MyViewModel {
@@ -140,7 +140,7 @@ A new `Promise` to be resolved with the data request, or rejected with an error.
 Here's an example on how to speak to a sails based API.
 
 ```javascript
-import {Rest} from 'aurelia-api';
+import {Rest} from 'spoonx/aurelia-api';
 
 @inject(Rest)
 export class MyViewModel {
