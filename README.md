@@ -32,7 +32,7 @@ Installing this module is fairly simple.
 Run `jspm install github:spoonx/aurelia-api` from your project root.
 
 ## Usage
- 
+
 ### Configuring the client
 
 Make sure your project uses a `main.js` file to initialize aurelia. In your configure function, add the following:
@@ -42,7 +42,7 @@ let yourEndpoint = 'http://localhost:1337/';
 
 aurelia.use
   /* Your other plugins and init code */
-  .plugin('service/api', builder => {
+  .plugin('spoonx/aurelia-api', builder => {
     builder.useStandardConfiguration().withBaseUrl(yourEndpoint);
   });
 ```
@@ -60,7 +60,7 @@ export class MyViewModel {
   constructor (restClient) {
     restClient.find('product', {
         category: 5,
-        name    : {contains: 'mouse'} 
+        name    : {contains: 'mouse'}
       })
       .then(console.log)
       .catch(console.error);
