@@ -1,4 +1,4 @@
-define(['exports', 'aurelia-fetch-client', 'aurelia-framework', 'querystring'], function (exports, _aureliaFetchClient, _aureliaFramework, _querystring) {
+define(['exports', 'aurelia-fetch-client', 'aurelia-framework', 'querystring', 'extend'], function (exports, _aureliaFetchClient, _aureliaFramework, _querystring, _extend) {
   'use strict';
 
   Object.defineProperty(exports, '__esModule', {
@@ -13,6 +13,8 @@ define(['exports', 'aurelia-fetch-client', 'aurelia-framework', 'querystring'], 
 
   var _qs = _interopRequireDefault(_querystring);
 
+  var _extend2 = _interopRequireDefault(_extend);
+
   var Rest = (function () {
     function Rest(httpClient) {
       _classCallCheck(this, _Rest);
@@ -22,17 +24,17 @@ define(['exports', 'aurelia-fetch-client', 'aurelia-framework', 'querystring'], 
 
     _createClass(Rest, [{
       key: 'request',
-      value: function request(method, path, body, headers) {
-        var requestOptions = {
+      value: function request(method, path, body, options) {
+        var requestOptions = (0, _extend2['default'])(true, {
           method: method,
           headers: {
             'Accept': 'application/json',
             'Content-Type': 'application/json'
           }
-        };
+        }, options || {});
 
-        if (typeof headers !== 'undefined') {
-          requestOptions.headers = headers;
+        if (typeof options !== 'undefined') {
+          (0, _extend2['default'])(true, requestOptions, options);
         }
 
         if (typeof body === 'object') {
@@ -45,45 +47,45 @@ define(['exports', 'aurelia-fetch-client', 'aurelia-framework', 'querystring'], 
       }
     }, {
       key: 'find',
-      value: function find(resource, criteria) {
+      value: function find(resource, criteria, options) {
         var requestPath = resource;
 
         if (criteria) {
           requestPath += typeof criteria !== 'object' ? '/' + criteria : '?' + _qs['default'].stringify(criteria);
         }
 
-        return this.request('get', requestPath);
+        return this.request('get', requestPath, options);
       }
     }, {
       key: 'post',
-      value: function post(resource, body) {
-        return this.request('post', resource, body);
+      value: function post(resource, body, options) {
+        return this.request('post', resource, body, options);
       }
     }, {
       key: 'update',
-      value: function update(resource, criteria, body) {
+      value: function update(resource, criteria, body, options) {
         var requestPath = resource;
 
         if (criteria) {
           requestPath += '/' + criteria;
         }
 
-        return this.request('put', requestPath, body);
+        return this.request('put', requestPath, body, options);
       }
     }, {
       key: 'destroy',
-      value: function destroy(resource, criteria) {
+      value: function destroy(resource, criteria, options) {
         var requestPath = resource;
 
         if (criteria) {
           requestPath += '/' + criteria;
         }
 
-        return this.request('delete', requestPath);
+        return this.request('delete', requestPath, options);
       }
     }, {
       key: 'create',
-      value: function create(resource, body) {
+      value: function create(resource, body, options) {
         return this.post.apply(this, arguments);
       }
     }]);
