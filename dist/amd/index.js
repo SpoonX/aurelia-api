@@ -1,4 +1,4 @@
-define(['exports', './rest'], function (exports, _rest) {
+define(['exports', 'aurelia-fetch-client', './rest'], function (exports, _aureliaFetchClient, _rest) {
   'use strict';
 
   Object.defineProperty(exports, '__esModule', {
@@ -13,6 +13,6 @@ define(['exports', './rest'], function (exports, _rest) {
   });
 
   function configure(aurelia, configCallback) {
-    aurelia.container.get(_rest.Rest).configure(configCallback);
+    aurelia.container.get(_aureliaFetchClient.HttpClient).configure(configCallback);
   }
 });

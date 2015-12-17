@@ -5,6 +5,8 @@ Object.defineProperty(exports, '__esModule', {
 });
 exports.configure = configure;
 
+var _aureliaFetchClient = require('aurelia-fetch-client');
+
 var _rest = require('./rest');
 
 Object.defineProperty(exports, 'Rest', {
@@ -15,5 +17,5 @@ Object.defineProperty(exports, 'Rest', {
 });
 
 function configure(aurelia, configCallback) {
-  aurelia.container.get(_rest.Rest).configure(configCallback);
+  aurelia.container.get(_aureliaFetchClient.HttpClient).configure(configCallback);
 }
