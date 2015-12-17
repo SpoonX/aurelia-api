@@ -2,7 +2,17 @@ import {HttpClient, json} from 'aurelia-fetch-client';
 import {inject} from 'aurelia-framework';
 import qs from 'querystring';
 
-export class Rest extends HttpClient {
+@inject(HttpClient)
+export class Rest {
+
+  /**
+   * Inject the httpClient to use for requests.
+   * @param {HttpClient} httpClient
+   */
+  constructor(httpClient) {
+    this.client = httpClient;
+  }
+
   /**
    * Make a request to the server.
    *
@@ -13,11 +23,11 @@ export class Rest extends HttpClient {
    *
    * @return {Promise}
    */
-  request (method, path, body, headers) {
+  request(method, path, body, headers) {
     let requestOptions = {
-      method : method,
+      method: method,
       headers: {
-        'Accept'      : 'application/json',
+        'Accept': 'application/json',
         'Content-Type': 'application/json'
       }
     };
@@ -30,7 +40,7 @@ export class Rest extends HttpClient {
       requestOptions.body = json(body);
     }
 
-    return this.fetch(path, requestOptions).then(response => response.json());
+    return this.client.fetch(path, requestOptions).then(response => response.json());
   }
 
   /**
@@ -41,7 +51,7 @@ export class Rest extends HttpClient {
    *
    * @return {Promise}
    */
-  find (resource, criteria) {
+  find(resource, criteria) {
     let requestPath = resource;
 
     if (criteria) {
@@ -59,7 +69,7 @@ export class Rest extends HttpClient {
    *
    * @return {Promise}
    */
-  post (resource, body) {
+  post(resource, body) {
     return this.request('post', resource, body);
   }
 
@@ -72,7 +82,7 @@ export class Rest extends HttpClient {
    *
    * @return {Promise}
    */
-  update (resource, criteria, body) {
+  update(resource, criteria, body) {
     let requestPath = resource;
 
     if (criteria) {
@@ -90,7 +100,7 @@ export class Rest extends HttpClient {
    *
    * @return {Promise}
    */
-  destroy (resource, criteria) {
+  destroy(resource, criteria) {
     let requestPath = resource;
 
     if (criteria) {
@@ -108,7 +118,7 @@ export class Rest extends HttpClient {
    *
    * @return {Promise}
    */
-  create (resource, body) {
+  create(resource, body) {
     return this.post(...arguments);
   }
 }

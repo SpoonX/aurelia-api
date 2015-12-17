@@ -1,6 +1,6 @@
 {
   "name": "aurelia-api",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "description": "A simple convenience wrapper around aurelia-fetch-client",
   "keywords": [
     "aurelia",
@@ -49,8 +49,8 @@
       "lib": "dist/amd"
     },
     "dependencies": {
-      "aurelia-fetch-client": "npm:aurelia-fetch-client@^1.0.0-beta.1",
-      "aurelia-framework": "npm:aurelia-framework@^1.0.0-beta.1.0.1",
+      "aurelia-fetch-client": "npm:aurelia-fetch-client@^1.0.0-beta.1.0.2",
+      "aurelia-framework": "npm:aurelia-framework@^1.0.0-beta.1.0.5",
       "querystring": "github:jspm/nodelibs-querystring@^0.1.0"
     },
     "devDependencies": {

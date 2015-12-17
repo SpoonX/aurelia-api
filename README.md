@@ -35,6 +35,8 @@ Run `jspm install github:spoonx/aurelia-api` from your project root.
 
 ### Configuring the client
 
+This module comes with a convenience method to configure the http-fetch-client. You can call it upon registering the plugin.
+
 Make sure your project uses a `main.js` file to initialize aurelia. In your configure function, add the following:
 
 ```javascript
