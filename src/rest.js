@@ -2,7 +2,17 @@ import {HttpClient, json} from 'aurelia-fetch-client';
 import {inject} from 'aurelia-framework';
 import qs from 'querystring';
 
-export class Rest extends HttpClient {
+@inject(HttpClient)
+export class Rest {
+
+  /**
+   * Inject the httpClient to use for requests.
+   * @param {HttpClient} httpClient
+   */
+  constructor (httpClient) {
+    this.client = httpClient;
+  }
+
   /**
    * Make a request to the server.
    *
@@ -30,7 +40,7 @@ export class Rest extends HttpClient {
       requestOptions.body = json(body);
     }
 
-    return this.fetch(path, requestOptions).then(response => response.json());
+    return this.client.fetch(path, requestOptions).then(response => response.json());
   }
 
   /**
