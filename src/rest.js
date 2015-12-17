@@ -9,7 +9,7 @@ export class Rest {
    * Inject the httpClient to use for requests.
    * @param {HttpClient} httpClient
    */
-  constructor (httpClient) {
+  constructor(httpClient) {
     this.client = httpClient;
   }
 
@@ -23,11 +23,11 @@ export class Rest {
    *
    * @return {Promise}
    */
-  request (method, path, body, headers) {
+  request(method, path, body, headers) {
     let requestOptions = {
-      method : method,
+      method: method,
       headers: {
-        'Accept'      : 'application/json',
+        'Accept': 'application/json',
         'Content-Type': 'application/json'
       }
     };
@@ -51,7 +51,7 @@ export class Rest {
    *
    * @return {Promise}
    */
-  find (resource, criteria) {
+  find(resource, criteria) {
     let requestPath = resource;
 
     if (criteria) {
@@ -69,7 +69,7 @@ export class Rest {
    *
    * @return {Promise}
    */
-  post (resource, body) {
+  post(resource, body) {
     return this.request('post', resource, body);
   }
 
@@ -82,7 +82,7 @@ export class Rest {
    *
    * @return {Promise}
    */
-  update (resource, criteria, body) {
+  update(resource, criteria, body) {
     let requestPath = resource;
 
     if (criteria) {
@@ -100,7 +100,7 @@ export class Rest {
    *
    * @return {Promise}
    */
-  destroy (resource, criteria) {
+  destroy(resource, criteria) {
     let requestPath = resource;
 
     if (criteria) {
@@ -118,7 +118,7 @@ export class Rest {
    *
    * @return {Promise}
    */
-  create (resource, body) {
+  create(resource, body) {
     return this.post(...arguments);
   }
 }
