@@ -9,6 +9,7 @@ System.config({
   map: {
     "aurelia-fetch-client": "npm:aurelia-fetch-client@1.0.0-beta.1.0.2",
     "aurelia-framework": "npm:aurelia-framework@1.0.0-beta.1.0.5",
+    "extend": "npm:extend@3.0.0",
     "querystring": "github:jspm/nodelibs-querystring@0.1.0",
     "traceur": "github:jmcriffey/bower-traceur@0.0.91",
     "traceur-runtime": "github:jmcriffey/bower-traceur-runtime@0.0.91",
