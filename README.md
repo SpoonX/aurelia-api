@@ -38,12 +38,13 @@ Run `jspm install github:spoonx/aurelia-api` from your project root.
 Make sure your project uses a `main.js` file to initialize aurelia. In your configure function, add the following:
 
 ```javascript
+import {HttpClient} from 'aurelia-fetch-client';
 let yourEndpoint = 'http://localhost:1337/';
 
-aurelia.use
-  /* Your other plugins and init code */
-  .plugin('spoonx/aurelia-api', builder => {
-    builder.useStandardConfiguration().withBaseUrl(yourEndpoint);
+aurelia.start().then(a => {
+    a.container.get(HttpClient).configure(builder => {
+      builder.useStandardConfiguration().withBaseUrl(yourEndpoint);
+    });
   });
 ```
 
