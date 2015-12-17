@@ -7,7 +7,45 @@ import {Rest} from 'spoonx/aurelia-api';
 
 ---------
 
-.find(resource, criteria)
+.request(method, path[, body][, options])
+------
+
+Perform a request to the server.
+
+### Parameters
+
+| Parameter | Type   | Description                                    |
+| --------- | ------ | ---------------------------------------------- |
+| method    | string | Request method. POST, GET, DELETE, PUT etc.    |
+| path      | string | Path to make the request to.                   |
+| body      | object | The body (when permitted by method).           |
+| options   | object | Additional options for the fetch               |
+
+### Returns
+A new `Promise` to be resolved with the request, or rejected with an error.
+
+### Examples
+Here's an example of a basic login call.
+
+```javascript
+import {Rest} from 'spoonx/aurelia-api';
+
+@inject(Rest)
+export class MyViewModel {
+  constructor (restClient) {
+    restClient.request('post', 'auth/login', {
+        username: 'bob',
+        password: 'Super secret'
+      })
+      .then(console.log)
+      .catch(console.error);
+  }
+}
+```
+
+---------
+
+.find(resource, criteria[, options])
 ------
 
 Find one or multiple resources.
@@ -18,6 +56,7 @@ Find one or multiple resources.
 | --------- | -------------- | ---------------------------------------------- |
 | resource  | string         | The name of the resource you want.             |
 | criteria  | object/integer | A specific ID, or object of supported filters. |
+| options   | object         | Additional options for the fetch               |
 
 ### Returns
 A new `Promise` to be resolved with the data request, or rejected with an error.
@@ -43,14 +82,14 @@ export class MyViewModel {
 
 ------
 
-.create(resource, body)
+.create(resource, body[, options])
 ------
 
 A convenience method (naming) that does exactly the same as `.post()`. 
 
 ------
 
-.post(resource, body)
+.post(resource, body[, options])
 ------
 
 Send a post request to supplied `resource`.
@@ -61,6 +100,7 @@ Send a post request to supplied `resource`.
 | --------- | ------ | ---------------------------------------------- |
 | resource  | string | The name of the resource you wish to post to.  |
 | body      | object | The body to post.                              |
+| options   | object | Additional options for the fetch               |
 
 ### Returns
 A new `Promise` to be resolved with the server response, or rejected with an error.
@@ -87,7 +127,7 @@ export class MyViewModel {
 
 ------
 
-.update(resource, criteria, body)
+.update(resource, criteria, body[, options])
 ------
 
 Send a post request to supplied `resource`.
@@ -99,6 +139,7 @@ Send a post request to supplied `resource`.
 | resource  | string         | The name of the resource you wish to update.   |
 | criteria  | object/integer | A specific ID, or object of supported filters. |
 | body      | object         | The new values for the records.                |
+| options   | object         | Additional options for the fetch               |
 
 ### Returns
 A new `Promise` to be resolved with the server response, or rejected with an error.
@@ -121,7 +162,7 @@ export class MyViewModel {
 
 ---------
 
-.destroy(resource, criteria)
+.destroy(resource, criteria[, options])
 ------
 
 Delete one or multiple resources.
@@ -132,6 +173,7 @@ Delete one or multiple resources.
 | --------- | -------------- | ---------------------------------------------- |
 | resource  | string         | The name of the resource you wish to use.      |
 | criteria  | object/integer | A specific ID, or object of supported filters. |
+| options   | object         | Additional options for the fetch               |
 
 ### Returns
 A new `Promise` to be resolved with the data request, or rejected with an error.

@@ -1,3 +1,11 @@
+## 1.1.0 (2015-12-17)
+
+
+#### Features
+
+* **rest:** Added support for options ([5df99d0d](https://github.com/SpoonX/aurelia-api/commit/5df99d0d433686bc16b046703029cf3634eebcce))
+
+
 ## 1.0.0 (2015-12-17)
 
 

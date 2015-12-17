@@ -1,6 +1,7 @@
 import {HttpClient, json} from 'aurelia-fetch-client';
 import {inject} from 'aurelia-framework';
 import qs from 'querystring';
+import extend from 'extend';
 
 @inject(HttpClient)
 export class Rest {
@@ -19,21 +20,21 @@ export class Rest {
    * @param {string} method
    * @param {string} path
    * @param {{}}     [body]
-   * @param {{}}     [headers]
+   * @param {{}}     [options]
    *
    * @return {Promise}
    */
-  request(method, path, body, headers) {
-    let requestOptions = {
+  request(method, path, body, options) {
+    let requestOptions = extend(true, {
       method: method,
       headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json'
       }
-    };
+    }, options || {});
 
-    if (typeof headers !== 'undefined') {
-      requestOptions.headers = headers;
+    if (typeof options !== 'undefined') {
+      extend(true, requestOptions, options);
     }
 
     if (typeof body === 'object') {
@@ -48,17 +49,18 @@ export class Rest {
    *
    * @param {string}           resource Resource to find in
    * @param {{}|string|Number} criteria Object for where clause, string / number for id.
+   * @param {{}}               [options] Extra fetch options.
    *
    * @return {Promise}
    */
-  find(resource, criteria) {
+  find(resource, criteria, options) {
     let requestPath = resource;
 
     if (criteria) {
       requestPath += typeof criteria !== 'object' ? `/${criteria}` : '?' + qs.stringify(criteria);
     }
 
-    return this.request('get', requestPath);
+    return this.request('get', requestPath, options);
   }
 
   /**
@@ -66,11 +68,12 @@ export class Rest {
    *
    * @param {string} resource
    * @param {{}}     body
+   * @param {{}}     [options]
    *
    * @return {Promise}
    */
-  post(resource, body) {
-    return this.request('post', resource, body);
+  post(resource, body, options) {
+    return this.request('post', resource, body, options);
   }
 
   /**
@@ -79,17 +82,18 @@ export class Rest {
    * @param {string}        resource  Resource to update
    * @param {string|Number} criteria  String / number of the id to update.
    * @param {object}        body      New data for provided criteria.
+   * @param {{}}            [options]
    *
    * @return {Promise}
    */
-  update(resource, criteria, body) {
+  update(resource, criteria, body, options) {
     let requestPath = resource;
 
     if (criteria) {
       requestPath += `/${criteria}`;
     }
 
-    return this.request('put', requestPath, body);
+    return this.request('put', requestPath, body, options);
   }
 
   /**
@@ -97,17 +101,18 @@ export class Rest {
    *
    * @param {string}        resource  The resource to delete in
    * @param {string|Number} criteria  String / number of the id to delete.
+   * @param {{}}            [options]
    *
    * @return {Promise}
    */
-  destroy(resource, criteria) {
+  destroy(resource, criteria, options) {
     let requestPath = resource;
 
     if (criteria) {
       requestPath += `/${criteria}`;
     }
 
-    return this.request('delete', requestPath);
+    return this.request('delete', requestPath, options);
   }
 
   /**
@@ -115,10 +120,11 @@ export class Rest {
    *
    * @param {string} resource
    * @param {{}}     body
+   * @param {{}}     [options]
    *
    * @return {Promise}
    */
-  create(resource, body) {
+  create(resource, body, options) {
     return this.post(...arguments);
   }
 }

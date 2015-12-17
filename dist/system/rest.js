@@ -1,7 +1,7 @@
-System.register(['aurelia-fetch-client', 'aurelia-framework', 'querystring'], function (_export) {
+System.register(['aurelia-fetch-client', 'aurelia-framework', 'querystring', 'extend'], function (_export) {
   'use strict';
 
-  var HttpClient, json, inject, qs, Rest;
+  var HttpClient, json, inject, qs, extend, Rest;
 
   var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
 
@@ -15,6 +15,8 @@ System.register(['aurelia-fetch-client', 'aurelia-framework', 'querystring'], fu
       inject = _aureliaFramework.inject;
     }, function (_querystring) {
       qs = _querystring['default'];
+    }, function (_extend) {
+      extend = _extend['default'];
     }],
     execute: function () {
       Rest = (function () {
@@ -26,17 +28,17 @@ System.register(['aurelia-fetch-client', 'aurelia-framework', 'querystring'], fu
 
         _createClass(Rest, [{
           key: 'request',
-          value: function request(method, path, body, headers) {
-            var requestOptions = {
+          value: function request(method, path, body, options) {
+            var requestOptions = extend(true, {
               method: method,
               headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json'
               }
-            };
+            }, options || {});
 
-            if (typeof headers !== 'undefined') {
-              requestOptions.headers = headers;
+            if (typeof options !== 'undefined') {
+              extend(true, requestOptions, options);
             }
 
             if (typeof body === 'object') {
@@ -49,45 +51,45 @@ System.register(['aurelia-fetch-client', 'aurelia-framework', 'querystring'], fu
           }
         }, {
           key: 'find',
-          value: function find(resource, criteria) {
+          value: function find(resource, criteria, options) {
             var requestPath = resource;
 
             if (criteria) {
               requestPath += typeof criteria !== 'object' ? '/' + criteria : '?' + qs.stringify(criteria);
             }
 
-            return this.request('get', requestPath);
+            return this.request('get', requestPath, options);
           }
         }, {
           key: 'post',
-          value: function post(resource, body) {
-            return this.request('post', resource, body);
+          value: function post(resource, body, options) {
+            return this.request('post', resource, body, options);
           }
         }, {
           key: 'update',
-          value: function update(resource, criteria, body) {
+          value: function update(resource, criteria, body, options) {
             var requestPath = resource;
 
             if (criteria) {
               requestPath += '/' + criteria;
             }
 
-            return this.request('put', requestPath, body);
+            return this.request('put', requestPath, body, options);
           }
         }, {
           key: 'destroy',
-          value: function destroy(resource, criteria) {
+          value: function destroy(resource, criteria, options) {
             var requestPath = resource;
 
             if (criteria) {
               requestPath += '/' + criteria;
             }
 
-            return this.request('delete', requestPath);
+            return this.request('delete', requestPath, options);
           }
         }, {
           key: 'create',
-          value: function create(resource, body) {
+          value: function create(resource, body, options) {
             return this.post.apply(this, arguments);
           }
         }]);
