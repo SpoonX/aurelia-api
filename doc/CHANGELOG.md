@@ -1,3 +1,11 @@
+### 1.1.1 (2015-12-22)
+
+
+#### Bug Fixes
+
+* **rest:** Return null for failed json parsin ([12679c49](https://github.com/SpoonX/aurelia-api/commit/12679c49118a04c7c48c2d75d30f46d29de823dc))
+
+
 ## 1.1.0 (2015-12-17)
 
 

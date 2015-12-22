@@ -42,7 +42,9 @@ define(['exports', 'aurelia-fetch-client', 'aurelia-framework', 'querystring', '
         }
 
         return this.client.fetch(path, requestOptions).then(function (response) {
-          return response.json();
+          return response.json()['catch'](function (error) {
+            return null;
+          });
         });
       }
     }, {
