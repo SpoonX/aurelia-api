@@ -41,7 +41,9 @@ export class Rest {
       requestOptions.body = json(body);
     }
 
-    return this.client.fetch(path, requestOptions).then(response => response.json());
+    return this.client.fetch(path, requestOptions).then(response => {
+      return response.json().catch(error => null);
+    });
   }
 
   /**
