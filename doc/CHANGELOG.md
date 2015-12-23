@@ -1,3 +1,11 @@
+### 1.1.2 (2015-12-23)
+
+
+#### Bug Fixes
+
+* **rest:** Reject on wrong statuscode ([7adaa65b](https://github.com/SpoonX/aurelia-api/commit/7adaa65b08a4dc7eeda1b7fd794057270c81c3fe))
+
+
 ### 1.1.1 (2015-12-22)
 
 
