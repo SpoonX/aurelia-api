@@ -42,7 +42,11 @@ export class Rest {
     }
 
     return this.client.fetch(path, requestOptions).then(response => {
-      return response.json().catch(error => null);
+      if (response.status >= 200 && response.status < 300) {
+        return response.json().catch(error => null);
+      }
+
+      throw response;
     });
   }
 
