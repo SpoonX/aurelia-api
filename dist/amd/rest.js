@@ -60,7 +60,7 @@ define(['exports', 'aurelia-fetch-client', 'aurelia-framework', 'querystring', '
           requestPath += typeof criteria !== 'object' ? '/' + criteria : '?' + _qs['default'].stringify(criteria);
         }
 
-        return this.request('get', requestPath, options);
+        return this.request('get', requestPath, null, options);
       }
     }, {
       key: 'post',
@@ -87,7 +87,7 @@ define(['exports', 'aurelia-fetch-client', 'aurelia-framework', 'querystring', '
           requestPath += '/' + criteria;
         }
 
-        return this.request('delete', requestPath, options);
+        return this.request('delete', requestPath, null, options);
       }
     }, {
       key: 'create',
