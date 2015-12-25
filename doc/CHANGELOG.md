@@ -1,3 +1,11 @@
+### 1.2.1 (2015-12-25)
+
+
+#### Bug Fixes
+
+* **rest:** Pass along undefiend for empty body; null is object. ([b10cd529](https://github.com/SpoonX/aurelia-api/commit/b10cd529c013bcda7159feee3e7b6eb95c848937))
+
+
 ## 1.2.0 (2015-12-24)
 
 
