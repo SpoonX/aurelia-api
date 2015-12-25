@@ -67,7 +67,7 @@ var Rest = (function () {
         requestPath += typeof criteria !== 'object' ? '/' + criteria : '?' + _querystring2['default'].stringify(criteria);
       }
 
-      return this.request('get', requestPath, null, options);
+      return this.request('get', requestPath, undefined, options);
     }
   }, {
     key: 'post',
@@ -94,7 +94,7 @@ var Rest = (function () {
         requestPath += '/' + criteria;
       }
 
-      return this.request('delete', requestPath, null, options);
+      return this.request('delete', requestPath, undefined, options);
     }
   }, {
     key: 'create',
