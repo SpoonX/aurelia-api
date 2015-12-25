@@ -64,7 +64,7 @@ System.register(['aurelia-fetch-client', 'aurelia-framework', 'querystring', 'ex
               requestPath += typeof criteria !== 'object' ? '/' + criteria : '?' + qs.stringify(criteria);
             }
 
-            return this.request('get', requestPath, null, options);
+            return this.request('get', requestPath, undefined, options);
           }
         }, {
           key: 'post',
@@ -91,7 +91,7 @@ System.register(['aurelia-fetch-client', 'aurelia-framework', 'querystring', 'ex
               requestPath += '/' + criteria;
             }
 
-            return this.request('delete', requestPath, null, options);
+            return this.request('delete', requestPath, undefined, options);
           }
         }, {
           key: 'create',
