@@ -1,3 +1,11 @@
+### 1.2.2 (2016-01-02)
+
+
+#### Bug Fixes
+
+* **project:** Use system module format ([24bf4821](https://github.com/SpoonX/aurelia-api/commit/24bf4821171548315ccb6258494656e31b9b730f))
+
+
 ### 1.2.1 (2015-12-25)
 
 
