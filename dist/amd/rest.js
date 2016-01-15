@@ -1,4 +1,4 @@
-define(['exports', 'aurelia-fetch-client', 'aurelia-framework', 'querystring', 'extend'], function (exports, _aureliaFetchClient, _aureliaFramework, _querystring, _extend) {
+define(['exports', 'aurelia-fetch-client', 'querystring', 'extend'], function (exports, _aureliaFetchClient, _querystring, _extend) {
   'use strict';
 
   Object.defineProperty(exports, '__esModule', {
@@ -17,7 +17,7 @@ define(['exports', 'aurelia-fetch-client', 'aurelia-framework', 'querystring', '
 
   var Rest = (function () {
     function Rest(httpClient) {
-      _classCallCheck(this, _Rest);
+      _classCallCheck(this, Rest);
 
       this.client = httpClient;
     }
@@ -96,8 +96,6 @@ define(['exports', 'aurelia-fetch-client', 'aurelia-framework', 'querystring', '
       }
     }]);
 
-    var _Rest = Rest;
-    Rest = (0, _aureliaFramework.inject)(_aureliaFetchClient.HttpClient)(Rest) || Rest;
     return Rest;
   })();
 

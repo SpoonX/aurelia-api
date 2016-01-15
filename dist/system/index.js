@@ -1,19 +1,23 @@
-System.register(['aurelia-fetch-client', './rest'], function (_export) {
+System.register(['./config', './endpoint'], function (_export) {
   'use strict';
 
-  var HttpClient;
+  var Config;
 
   _export('configure', configure);
 
   function configure(aurelia, configCallback) {
-    aurelia.container.get(HttpClient).configure(configCallback);
+    var config = aurelia.container.get(Config);
+
+    configCallback(config);
   }
 
   return {
-    setters: [function (_aureliaFetchClient) {
-      HttpClient = _aureliaFetchClient.HttpClient;
-    }, function (_rest) {
-      _export('Rest', _rest.Rest);
+    setters: [function (_config) {
+      Config = _config.Config;
+
+      _export('Config', _config.Config);
+    }, function (_endpoint) {
+      _export('Endpoint', _endpoint.Endpoint);
     }],
     execute: function () {}
   };

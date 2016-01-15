@@ -1,13 +1,12 @@
-import {HttpClient, json} from 'aurelia-fetch-client';
-import {inject} from 'aurelia-framework';
+import {json} from 'aurelia-fetch-client';
 import qs from 'querystring';
 import extend from 'extend';
 
-@inject(HttpClient)
 export class Rest {
 
   /**
    * Inject the httpClient to use for requests.
+   *
    * @param {HttpClient} httpClient
    */
   constructor(httpClient) {

@@ -5,17 +5,26 @@ Object.defineProperty(exports, '__esModule', {
 });
 exports.configure = configure;
 
-var _aureliaFetchClient = require('aurelia-fetch-client');
+var _config = require('./config');
 
-var _rest = require('./rest');
-
-Object.defineProperty(exports, 'Rest', {
+Object.defineProperty(exports, 'Config', {
   enumerable: true,
   get: function get() {
-    return _rest.Rest;
+    return _config.Config;
+  }
+});
+
+var _endpoint = require('./endpoint');
+
+Object.defineProperty(exports, 'Endpoint', {
+  enumerable: true,
+  get: function get() {
+    return _endpoint.Endpoint;
   }
 });
 
 function configure(aurelia, configCallback) {
-  aurelia.container.get(_aureliaFetchClient.HttpClient).configure(configCallback);
+  var config = aurelia.container.get(_config.Config);
+
+  configCallback(config);
 }
