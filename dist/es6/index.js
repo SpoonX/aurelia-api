@@ -1,4 +1,5 @@
 import {Config} from './config';
+export {Rest} from './rest';
 export {Config} from './config';
 export {Endpoint} from './endpoint';
 

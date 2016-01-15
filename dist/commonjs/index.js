@@ -7,6 +7,14 @@ exports.configure = configure;
 
 var _config = require('./config');
 
+var _rest = require('./rest');
+
+Object.defineProperty(exports, 'Rest', {
+  enumerable: true,
+  get: function get() {
+    return _rest.Rest;
+  }
+});
 Object.defineProperty(exports, 'Config', {
   enumerable: true,
   get: function get() {

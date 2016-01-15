@@ -1,3 +1,14 @@
+### 2.0.1 (2016-01-15)
+
+
+#### Features
+
+* **project:**
+  * Added travis ([33707db4](https://github.com/SpoonX/aurelia-api/commit/33707db45c285ed9073514a7ab655b73eee7322d))
+  * Added snyk ([421e14e8](https://github.com/SpoonX/aurelia-api/commit/421e14e8db9141b86d48965fc7e9a9b3ddf401f0))
+* **test:** Added tests for plugin ([08beea51](https://github.com/SpoonX/aurelia-api/commit/08beea51a8ea6ddbcfb496a0a75693928b1c8f07))
+
+
 ## 2.0.0 (2016-01-15)
 
 
