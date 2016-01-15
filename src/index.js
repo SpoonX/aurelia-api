@@ -1,6 +1,10 @@
-import {HttpClient} from 'aurelia-fetch-client';
+import {Config} from './config';
 export {Rest} from './rest';
+export {Config} from './config';
+export {Endpoint} from './endpoint';
 
 export function configure(aurelia, configCallback) {
-  aurelia.container.get(HttpClient).configure(configCallback);
+  let config = aurelia.container.get(Config);
+
+  configCallback(config);
 }

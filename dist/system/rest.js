@@ -1,7 +1,7 @@
-System.register(['aurelia-fetch-client', 'aurelia-framework', 'querystring', 'extend'], function (_export) {
+System.register(['aurelia-fetch-client', 'querystring', 'extend'], function (_export) {
   'use strict';
 
-  var HttpClient, json, inject, qs, extend, Rest;
+  var json, qs, extend, Rest;
 
   var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
 
@@ -9,10 +9,7 @@ System.register(['aurelia-fetch-client', 'aurelia-framework', 'querystring', 'ex
 
   return {
     setters: [function (_aureliaFetchClient) {
-      HttpClient = _aureliaFetchClient.HttpClient;
       json = _aureliaFetchClient.json;
-    }, function (_aureliaFramework) {
-      inject = _aureliaFramework.inject;
     }, function (_querystring) {
       qs = _querystring['default'];
     }, function (_extend) {
@@ -21,7 +18,7 @@ System.register(['aurelia-fetch-client', 'aurelia-framework', 'querystring', 'ex
     execute: function () {
       Rest = (function () {
         function Rest(httpClient) {
-          _classCallCheck(this, _Rest);
+          _classCallCheck(this, Rest);
 
           this.client = httpClient;
         }
@@ -100,8 +97,6 @@ System.register(['aurelia-fetch-client', 'aurelia-framework', 'querystring', 'ex
           }
         }]);
 
-        var _Rest = Rest;
-        Rest = inject(HttpClient)(Rest) || Rest;
         return Rest;
       })();
 

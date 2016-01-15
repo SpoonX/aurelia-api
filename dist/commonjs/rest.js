@@ -12,8 +12,6 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
 var _aureliaFetchClient = require('aurelia-fetch-client');
 
-var _aureliaFramework = require('aurelia-framework');
-
 var _querystring = require('querystring');
 
 var _querystring2 = _interopRequireDefault(_querystring);
@@ -24,7 +22,7 @@ var _extend2 = _interopRequireDefault(_extend);
 
 var Rest = (function () {
   function Rest(httpClient) {
-    _classCallCheck(this, _Rest);
+    _classCallCheck(this, Rest);
 
     this.client = httpClient;
   }
@@ -103,8 +101,6 @@ var Rest = (function () {
     }
   }]);
 
-  var _Rest = Rest;
-  Rest = (0, _aureliaFramework.inject)(_aureliaFetchClient.HttpClient)(Rest) || Rest;
   return Rest;
 })();
 
