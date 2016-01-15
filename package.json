@@ -1,6 +1,6 @@
 {
   "name": "aurelia-api",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "description": "A simple convenience wrapper around aurelia-fetch-client",
   "keywords": [
     "aurelia",
