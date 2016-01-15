@@ -1,4 +1,4 @@
-System.register(['./config', './endpoint'], function (_export) {
+System.register(['./config', './rest', './endpoint'], function (_export) {
   'use strict';
 
   var Config;
@@ -16,6 +16,8 @@ System.register(['./config', './endpoint'], function (_export) {
       Config = _config.Config;
 
       _export('Config', _config.Config);
+    }, function (_rest) {
+      _export('Rest', _rest.Rest);
     }, function (_endpoint) {
       _export('Endpoint', _endpoint.Endpoint);
     }],
