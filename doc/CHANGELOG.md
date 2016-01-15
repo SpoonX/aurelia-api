@@ -1,3 +1,13 @@
+## 2.0.0 (2016-01-15)
+
+
+#### Features
+
+* **config:** Added plugin configuration class ([d225ecc6](https://github.com/SpoonX/aurelia-api/commit/d225ecc6fd8543932941230db7875644339ec5c0))
+* **endpoint:** Added an Endpoint resolver ([65419d45](https://github.com/SpoonX/aurelia-api/commit/65419d45181017654cac57bbf03aeaa59d74a56e))
+* **plugin:** Expose Config and Resolver ([90d3de04](https://github.com/SpoonX/aurelia-api/commit/90d3de04ce4b0a4ee7a21c80dc906e0dc2cecaec))
+
+
 ### 1.2.2 (2016-01-02)
 
 
