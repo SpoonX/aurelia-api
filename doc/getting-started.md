@@ -1,5 +1,5 @@
 # Getting started
-This is a small guide that shows you how to use this module. 
+This is a small guide that shows you how to use this module.
 In this document, we'll be modifying the skeleton to use aurelia-api.
 
 ## Prerequisites
@@ -36,9 +36,9 @@ export function configure(aurelia) {
   aurelia.use
     .standardConfiguration()
     .developmentLogging()
-    
+
     // Add this:
-    .plugin('spoonx/aurelia-api', configure => {
+    .plugin('spoonx/aurelia-api', config => {
       config.registerEndpoint('github', 'https://api.github.com/');
     });
 
@@ -46,7 +46,7 @@ export function configure(aurelia) {
 }
 ```
 
-Aaaawesome. That wasn't really complicated, right? 
+Aaaawesome. That wasn't really complicated, right?
 All we did, was tell aurelia to use the `spoonx/aurelia-api` plugin and register an endpoint. Now, let's use it!
 
 ### Using the plugin
@@ -115,7 +115,7 @@ You can now use these by supplying the correct name in `@inject(Endpoint.of(name
 ### Default endpoint
 Just using a single endpoint? Or mainly using a specific endpoint? That's fine.
 You can register an endpoint as the default, which will be returned whenever you don't specify an endpoint name.
-  
+
 
 ```js
 import 'bootstrap';
