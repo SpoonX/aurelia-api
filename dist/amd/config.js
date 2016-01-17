@@ -46,7 +46,7 @@ define(['exports', 'aurelia-fetch-client', './rest'], function (exports, _aureli
     }, {
       key: 'getEndpoint',
       value: function getEndpoint(name) {
-        if (typeof name === 'undefined') {
+        if (!name) {
           return this.defaultEndpoint || null;
         }
 

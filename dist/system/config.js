@@ -51,7 +51,7 @@ System.register(['aurelia-fetch-client', './rest'], function (_export) {
         }, {
           key: 'getEndpoint',
           value: function getEndpoint(name) {
-            if (typeof name === 'undefined') {
+            if (!name) {
               return this.defaultEndpoint || null;
             }
 

@@ -49,7 +49,7 @@ var Config = (function () {
   }, {
     key: 'getEndpoint',
     value: function getEndpoint(name) {
-      if (typeof name === 'undefined') {
+      if (!name) {
         return this.defaultEndpoint || null;
       }
 
