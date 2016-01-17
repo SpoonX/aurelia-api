@@ -1,3 +1,11 @@
+### 2.0.2 (2016-01-17)
+
+
+#### Bug Fixes
+
+* **config:** Be more permissive when looking for the default endpoint ([5b0d0f53](https://github.com/SpoonX/aurelia-api/commit/5b0d0f53261fc2c6958d06a8a994ca1a2a470e58))
+
+
 ### 2.0.1 (2016-01-15)
 
 
