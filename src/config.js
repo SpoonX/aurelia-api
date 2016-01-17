@@ -52,7 +52,7 @@ export class Config {
    * @return {Rest|null}
    */
   getEndpoint(name) {
-    if (typeof name === 'undefined') {
+    if (!name) {
       return this.defaultEndpoint || null;
     }
 
