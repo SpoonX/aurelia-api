@@ -95,7 +95,7 @@ export class Rest {
     let requestPath = resource;
 
     if (criteria) {
-      requestPath += `/${criteria}`;
+      requestPath += typeof criteria !== 'object' ? `/${criteria}` : '?' + qs.stringify(criteria);
     }
 
     return this.request('put', requestPath, body, options);
@@ -114,7 +114,7 @@ export class Rest {
     let requestPath = resource;
 
     if (criteria) {
-      requestPath += `/${criteria}`;
+      requestPath += typeof criteria !== 'object' ? `/${criteria}` : '?' + qs.stringify(criteria);
     }
 
     return this.request('delete', requestPath, undefined, options);
