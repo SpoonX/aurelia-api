@@ -73,7 +73,7 @@ define(['exports', 'aurelia-fetch-client', 'querystring', 'extend'], function (e
         var requestPath = resource;
 
         if (criteria) {
-          requestPath += '/' + criteria;
+          requestPath += typeof criteria !== 'object' ? '/' + criteria : '?' + _qs['default'].stringify(criteria);
         }
 
         return this.request('put', requestPath, body, options);
@@ -84,7 +84,7 @@ define(['exports', 'aurelia-fetch-client', 'querystring', 'extend'], function (e
         var requestPath = resource;
 
         if (criteria) {
-          requestPath += '/' + criteria;
+          requestPath += typeof criteria !== 'object' ? '/' + criteria : '?' + _qs['default'].stringify(criteria);
         }
 
         return this.request('delete', requestPath, undefined, options);
