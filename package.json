@@ -1,6 +1,6 @@
 {
   "name": "aurelia-api",
-  "version": "2.0.3",
+  "version": "2.0.4",
   "description": "A simple convenience wrapper around aurelia-fetch-client",
   "keywords": [
     "aurelia",
@@ -23,13 +23,13 @@
     "url": "https://github.com/SpoonX/aurelia-api"
   },
   "devDependencies": {
-    "snyk": "^1.8.3",
     "aurelia-tools": "^0.1.3",
     "babel-eslint": "^4.1.3",
     "body-parser": "^1.14.2",
     "conventional-changelog": "0.0.11",
     "cors": "^2.7.1",
     "del": "^1.1.0",
+    "escope": "3.3.0",
     "express": "^4.13.3",
     "gulp": "^3.8.10",
     "gulp-babel": "^5.1.0",
@@ -47,6 +47,7 @@
     "object.assign": "^1.0.3",
     "require-dir": "^0.1.0",
     "run-sequence": "^1.0.2",
+    "snyk": "^1.8.3",
     "vinyl-paths": "^1.0.0",
     "yargs": "^2.1.1"
   },

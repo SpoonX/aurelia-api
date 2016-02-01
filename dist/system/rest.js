@@ -74,7 +74,7 @@ System.register(['aurelia-fetch-client', 'querystring', 'extend'], function (_ex
             var requestPath = resource;
 
             if (criteria) {
-              requestPath += '/' + criteria;
+              requestPath += typeof criteria !== 'object' ? '/' + criteria : '?' + qs.stringify(criteria);
             }
 
             return this.request('put', requestPath, body, options);
@@ -85,7 +85,7 @@ System.register(['aurelia-fetch-client', 'querystring', 'extend'], function (_ex
             var requestPath = resource;
 
             if (criteria) {
-              requestPath += '/' + criteria;
+              requestPath += typeof criteria !== 'object' ? '/' + criteria : '?' + qs.stringify(criteria);
             }
 
             return this.request('delete', requestPath, undefined, options);

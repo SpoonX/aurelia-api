@@ -11,7 +11,9 @@ app.all('*', function(req, res) {
     path: req.path,
     query: req.query,
     body: req.body,
-    method: req.method
+    method: req.method,
+    contentType: req.header('content-type'),
+    Authorization: req.header('Authorization')
   });
 });
 

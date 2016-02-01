@@ -78,7 +78,7 @@ var Rest = (function () {
       var requestPath = resource;
 
       if (criteria) {
-        requestPath += '/' + criteria;
+        requestPath += typeof criteria !== 'object' ? '/' + criteria : '?' + _querystring2['default'].stringify(criteria);
       }
 
       return this.request('put', requestPath, body, options);
@@ -89,7 +89,7 @@ var Rest = (function () {
       var requestPath = resource;
 
       if (criteria) {
-        requestPath += '/' + criteria;
+        requestPath += typeof criteria !== 'object' ? '/' + criteria : '?' + _querystring2['default'].stringify(criteria);
       }
 
       return this.request('delete', requestPath, undefined, options);

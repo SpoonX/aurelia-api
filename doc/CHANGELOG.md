@@ -1,3 +1,12 @@
+<a name"2.0.4"></a>
+### 2.0.4 (2016-02-01)
+
+
+#### Features
+
+* **rest:** allow criteria as object for update and destroy ([2738f8ca](https://github.com/SpoonX/aurelia-api/commit/2738f8ca))
+
+
 ### 2.0.3 (2016-01-24)
 
 
