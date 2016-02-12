@@ -39,6 +39,9 @@ export class Rest {
 	// Force method to be upper-case for pre-flight Accept-Methods matching
 	requestOptions.method = requestOptions.toUpperCase();
 
+    // Force method to be upper-case for pre-flight Accept-Methods matching
+    requestOptions.method = requestOptions.toUpperCase();
+
     if (typeof body === 'object') {
       requestOptions.body = json(body);
     }
