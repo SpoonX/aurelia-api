@@ -35,7 +35,8 @@ export class Rest {
   request(method, path, body, options = {}) {
     let requestOptions = extend(true, {}, this.defaults, options);
 
-    requestOptions.method = method;
+    // Force method to be upper-case for pre-flight Accept-Methods matching
+    requestOptions.method = method.toUpperCase();
 
     if (typeof body === 'object') {
       requestOptions.body = json(body);
