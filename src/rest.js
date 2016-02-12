@@ -85,10 +85,10 @@ export class Rest {
   /**
    * Update a resource.
    *
-   * @param {string}        resource  Resource to update
-   * @param {string|Number} criteria  String / number of the id to update.
-   * @param {object}        body      New data for provided criteria.
-   * @param {{}}            [options]
+   * @param {string}           resource  Resource to update
+   * @param {{}|string|Number} criteria  Object for where clause, string / number for id.
+   * @param {object}           body      New data for provided criteria.
+   * @param {{}}               [options]
    *
    * @return {Promise}
    */
@@ -103,11 +103,31 @@ export class Rest {
   }
 
   /**
+   * Patch a resource.
+   *
+   * @param {string}           resource  Resource to patch
+   * @param {{}|string|Number} criteria  Object for where clause, string / number for id.
+   * @param {object}           body      Data to patch for provided criteria.
+   * @param {{}}               [options]
+   *
+   * @return {Promise}
+   */
+  patch(resource, criteria, body, options) {
+    let requestPath = resource;
+
+    if (criteria) {
+      requestPath += typeof criteria !== 'object' ? `/${criteria}` : '?' + qs.stringify(criteria);
+    }
+
+    return this.request('patch', requestPath, body, options);
+  }
+
+  /**
    * Delete a resource.
    *
-   * @param {string}        resource  The resource to delete in
-   * @param {string|Number} criteria  String / number of the id to delete.
-   * @param {{}}            [options]
+   * @param {string}           resource  The resource to delete in
+   * @param {{}|string|Number} criteria  Object for where clause, string / number for id.
+   * @param {{}}               [options]
    *
    * @return {Promise}
    */
