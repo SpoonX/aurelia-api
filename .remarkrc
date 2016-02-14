@@ -1,0 +1,23 @@
+{
+  "output": true,
+  "plugins": {
+    "lint": {
+      "no-multiple-toplevel-headings": false,
+      "list-item-indent": false,
+      "maximum-line-length": false,
+      "no-missing-blank-lines": false,
+      "table-pipes": false,
+      "no-duplicate-headings": false,
+      "no-undefined-references": false,
+      "no-shortcut-reference-link": false,
+      "no-heading-content-indent": false,
+      "no-heading-indent": true,
+      "no-heading-punctuation": ".,;:!",
+      "rule-style": false
+    }
+  },
+  "settings": {
+    "gfm": true,
+    "bullet": "*"
+  }
+}
