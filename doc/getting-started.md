@@ -99,7 +99,7 @@ export function configure(aurelia) {
     .standardConfiguration()
     .developmentLogging()
 
-    .plugin('spoonx/aurelia-api', configure => {
+    .plugin('spoonx/aurelia-api', config => {
       config
         .registerEndpoint('github', 'https://api.github.com/')
         .registerEndpoint('auth', 'https://auth.example.io/')
@@ -125,7 +125,7 @@ export function configure(aurelia) {
     .standardConfiguration()
     .developmentLogging()
 
-    .plugin('spoonx/aurelia-api', configure => {
+    .plugin('spoonx/aurelia-api', config => {
       config
         .registerEndpoint('github', 'https://api.github.com/')
         .registerEndpoint('auth', 'https://auth.example.io/')
