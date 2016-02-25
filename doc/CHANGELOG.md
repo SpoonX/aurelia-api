@@ -1,3 +1,11 @@
+### 2.0.7 (2016-02-25)
+
+
+#### Bug Fixes
+
+* **rest:** Nested querystrings ([56932391](https://github.com/SpoonX/aurelia-api/commit/569323912cc64bcf1b5f71cccb9ca0621e125095))
+
+
 <a name"2.0.6"></a>
 ### 2.0.6 (2016-02-09)
 
