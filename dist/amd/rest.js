@@ -1,4 +1,4 @@
-define(['exports', 'aurelia-fetch-client', 'querystring', 'extend'], function (exports, _aureliaFetchClient, _querystring, _extend) {
+define(['exports', 'aurelia-fetch-client', 'qs', 'extend'], function (exports, _aureliaFetchClient, _qs, _extend) {
   'use strict';
 
   Object.defineProperty(exports, '__esModule', {
@@ -11,7 +11,7 @@ define(['exports', 'aurelia-fetch-client', 'querystring', 'extend'], function (e
 
   function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
 
-  var _qs = _interopRequireDefault(_querystring);
+  var _qs2 = _interopRequireDefault(_qs);
 
   var _extend2 = _interopRequireDefault(_extend);
 
@@ -57,7 +57,7 @@ define(['exports', 'aurelia-fetch-client', 'querystring', 'extend'], function (e
         var requestPath = resource;
 
         if (criteria) {
-          requestPath += typeof criteria !== 'object' ? '/' + criteria : '?' + _qs['default'].stringify(criteria);
+          requestPath += typeof criteria !== 'object' ? '/' + criteria : '?' + _qs2['default'].stringify(criteria);
         }
 
         return this.request('get', requestPath, undefined, options);
@@ -73,7 +73,7 @@ define(['exports', 'aurelia-fetch-client', 'querystring', 'extend'], function (e
         var requestPath = resource;
 
         if (criteria) {
-          requestPath += typeof criteria !== 'object' ? '/' + criteria : '?' + _qs['default'].stringify(criteria);
+          requestPath += typeof criteria !== 'object' ? '/' + criteria : '?' + _qs2['default'].stringify(criteria);
         }
 
         return this.request('put', requestPath, body, options);
@@ -84,7 +84,7 @@ define(['exports', 'aurelia-fetch-client', 'querystring', 'extend'], function (e
         var requestPath = resource;
 
         if (criteria) {
-          requestPath += typeof criteria !== 'object' ? '/' + criteria : '?' + _qs['default'].stringify(criteria);
+          requestPath += typeof criteria !== 'object' ? '/' + criteria : '?' + _qs2['default'].stringify(criteria);
         }
 
         return this.request('delete', requestPath, undefined, options);

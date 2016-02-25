@@ -12,9 +12,9 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
 var _aureliaFetchClient = require('aurelia-fetch-client');
 
-var _querystring = require('querystring');
+var _qs = require('qs');
 
-var _querystring2 = _interopRequireDefault(_querystring);
+var _qs2 = _interopRequireDefault(_qs);
 
 var _extend = require('extend');
 
@@ -62,7 +62,7 @@ var Rest = (function () {
       var requestPath = resource;
 
       if (criteria) {
-        requestPath += typeof criteria !== 'object' ? '/' + criteria : '?' + _querystring2['default'].stringify(criteria);
+        requestPath += typeof criteria !== 'object' ? '/' + criteria : '?' + _qs2['default'].stringify(criteria);
       }
 
       return this.request('get', requestPath, undefined, options);
@@ -78,7 +78,7 @@ var Rest = (function () {
       var requestPath = resource;
 
       if (criteria) {
-        requestPath += typeof criteria !== 'object' ? '/' + criteria : '?' + _querystring2['default'].stringify(criteria);
+        requestPath += typeof criteria !== 'object' ? '/' + criteria : '?' + _qs2['default'].stringify(criteria);
       }
 
       return this.request('put', requestPath, body, options);
@@ -89,7 +89,7 @@ var Rest = (function () {
       var requestPath = resource;
 
       if (criteria) {
-        requestPath += typeof criteria !== 'object' ? '/' + criteria : '?' + _querystring2['default'].stringify(criteria);
+        requestPath += typeof criteria !== 'object' ? '/' + criteria : '?' + _qs2['default'].stringify(criteria);
       }
 
       return this.request('delete', requestPath, undefined, options);

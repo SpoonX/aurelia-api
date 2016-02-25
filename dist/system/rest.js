@@ -1,4 +1,4 @@
-System.register(['aurelia-fetch-client', 'querystring', 'extend'], function (_export) {
+System.register(['aurelia-fetch-client', 'qs', 'extend'], function (_export) {
   'use strict';
 
   var json, qs, extend, Rest;
@@ -10,8 +10,8 @@ System.register(['aurelia-fetch-client', 'querystring', 'extend'], function (_ex
   return {
     setters: [function (_aureliaFetchClient) {
       json = _aureliaFetchClient.json;
-    }, function (_querystring) {
-      qs = _querystring['default'];
+    }, function (_qs) {
+      qs = _qs['default'];
     }, function (_extend) {
       extend = _extend['default'];
     }],
