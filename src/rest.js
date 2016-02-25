@@ -1,5 +1,5 @@
 import {json} from 'aurelia-fetch-client';
-import qs from 'querystring';
+import qs from 'qs';
 import extend from 'extend';
 
 export class Rest {
