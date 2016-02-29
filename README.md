@@ -27,7 +27,7 @@ In your configure function, you might do something like this:
 ```javascript
 aurelia.use
   /* Your other plugins and init code */
-  .plugin('spoonx/aurelia-api', configure => {
+  .plugin('spoonx/aurelia-api', config => {
   
     // Current host
     config.registerEndpoint('api');
