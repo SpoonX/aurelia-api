@@ -75,15 +75,15 @@ export class Users {
 
 Here's what we've changed. We've:
 
-1. Swapped out `HttpClient` with `Endpoint`.
-2. Altered the `@inject()` decorator to use the `Endpoint` resolver.
-3. Completely removed the config calls in the constructor. (We added that in `src/main.js` earlier).
-4. Assigned the endpoint to the viewModel.
-5. Changed `this.http.fetch('users')` to `this.githubEndpoint.find('users')`. Notice that we removed the `.json()` step, too.
+1 Swapped out `HttpClient` with `Endpoint`.
+2 Altered the `@inject()` decorator to use the `Endpoint` resolver.
+3 Completely removed the config calls in the constructor. (We added that in `src/main.js` earlier).
+4 Assigned the endpoint to the viewModel.
+5 Changed `this.http.fetch('users')` to `this.githubEndpoint.find('users')`. Notice that we removed the `.json()` step, too.
 
 And done! We've now successfully swapped auth `aurelia-fetch-client` with `aurelia-api`.
 
-Head back to your terminal, run `gulp watch` and open the project in your browser. Now, when you navigate to http://localhost:9000/#/users, you'll notice that absolutely nothing has changed; which was the point of this getting started.
+Head back to your terminal, run `gulp watch` and open the project in your browser. Now, when you navigate to `http://localhost:9000/#/users`, you'll notice that absolutely nothing has changed; which was the point of this getting started.
 
 ## What's next?
 There are some additional things you can do with the plugin.
@@ -115,7 +115,6 @@ You can now use these by supplying the correct name in `@inject(Endpoint.of(name
 ### Default endpoint
 Just using a single endpoint? Or mainly using a specific endpoint? That's fine.
 You can register an endpoint as the default, which will be returned whenever you don't specify an endpoint name.
-
 
 ```js
 import 'bootstrap';
