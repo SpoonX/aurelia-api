@@ -1,6 +1,5 @@
 {
   "name": "aurelia-api",
-  "version": "2.0.8",
   "description": "A simple convenience wrapper around aurelia-fetch-client",
   "keywords": [
     "aurelia",
@@ -13,7 +12,8 @@
     "url": "https://github.com/SpoonX/aurelia-api/issues"
   },
   "scripts": {
-    "test": "./node_modules/.bin/gulp test"
+    "test": "./node_modules/.bin/gulp test",
+    "semantic-release": "semantic-release pre && npm publish && semantic-release post"
   },
   "license": "MIT",
   "author": "RWOverdijk <wesley@spoonx.nl> (http://spoonx.nl/)",
@@ -49,7 +49,8 @@
     "run-sequence": "^1.0.2",
     "snyk": "^1.8.4",
     "vinyl-paths": "^2.1.0",
-    "yargs": "^2.1.1"
+    "yargs": "^2.1.1",
+    "semantic-release": "^4.3.5"
   },
   "jspm": {
     "main": "index",
