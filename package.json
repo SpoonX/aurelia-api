@@ -1,6 +1,6 @@
 {
   "name": "aurelia-api",
-  "version": "2.0.8",
+  "version": "2.0.9",
   "description": "A simple convenience wrapper around aurelia-fetch-client",
   "keywords": [
     "aurelia",
@@ -71,5 +71,8 @@
       "core-js": "npm:core-js@^1.1.4",
       "fetch": "github:github/fetch@^0.11.0"
     }
+  },
+  "dependencies": {
+    "yargs": "^4.3.2"
   }
 }
