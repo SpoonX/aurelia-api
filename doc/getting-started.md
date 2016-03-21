@@ -1,21 +1,26 @@
 # Getting started
+
 This is a small guide that shows you how to use this module.
 In this document, we'll be modifying the skeleton to use aurelia-api.
 
 ## Prerequisites
+
 For this guide, we assume you have the [aurelia skeleton](https://github.com/aurelia/skeleton-navigation) set up.
 We'll also assume you have [node](https://nodejs.org/en/) and [npm](https://www.npmjs.com/) installed, and that you're familiar with [installing modules](https://docs.npmjs.com/).
 
-Finally, we'll assume that you have [jspm](jspm.io) installed. If you don't, run `npm i -g jspm`.
+Finally, we'll assume that you have [jspm](http://jspm.io) installed. If you don't, run `npm i -g jspm`.
 
 ## Enough chat
+
 Now it's time to start doing something
 
 ### Installation and configuration
+
 First, head on over to your favorite terminal and run `jspm install github:spoonx/aurelia-api` from your project root.
 This will install the module of which you're reading the getting-started right now. Woah!
 
 ### Reflect
+
 Cool, the module has been installed... But now we want it to _do_ something, right?
 Head on over to your favorite editor, open up the project and open file `src/users.js`.
 
@@ -23,6 +28,7 @@ As you can see, it's using `aurelia-fetch-client` to do the API calls to `https:
 We're going to change that, and make use of `aurelia-api`.
 
 ### Adding an endpoint
+
 In order for us to actually make calls to github, we'll have to configure an endpoint.
 
 _**Info:** An endpoint is the url for a specific API. It can be the github API, your SSO server, API etc._
@@ -50,6 +56,7 @@ Aaaawesome. That wasn't really complicated, right?
 All we did, was tell aurelia to use the `spoonx/aurelia-api` plugin and register an endpoint. Now, let's use it!
 
 ### Using the plugin
+
 Now head back to `src/users.js`. Change the file to look like this:
 
 ```javascript
@@ -83,12 +90,14 @@ Here's what we've changed. We've:
 
 And done! We've now successfully swapped auth `aurelia-fetch-client` with `aurelia-api`.
 
-Head back to your terminal, run `gulp watch` and open the project in your browser. Now, when you navigate to http://localhost:9000/#/users, you'll notice that absolutely nothing has changed; which was the point of this getting started.
+Head back to your terminal, run `gulp watch` and open the project in your browser. Now, when you navigate to <http://localhost:9000/#/users>, you'll notice that absolutely nothing has changed; which was the point of this getting started.
 
 ## What's next?
+
 There are some additional things you can do with the plugin.
 
 ### Multiple endpoints
+
 You're allowed to register as many endpoints as you like:
 
 ```js
@@ -113,9 +122,9 @@ export function configure(aurelia) {
 You can now use these by supplying the correct name in `@inject(Endpoint.of(name))` (replace `name` with `'github'`, `'auth'` or `'api'`).
 
 ### Default endpoint
+
 Just using a single endpoint? Or mainly using a specific endpoint? That's fine.
 You can register an endpoint as the default, which will be returned whenever you don't specify an endpoint name.
-
 
 ```js
 import 'bootstrap';

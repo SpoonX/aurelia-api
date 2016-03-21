@@ -1,8 +1,7 @@
-import {configure} from '../src/index';
-import {Config} from '../src/index';
+import {configure, Config} from '../src/aurelia-api';
 import {Container} from 'aurelia-dependency-injection';
 
-describe('index', function() {
+describe('aurelia-api', function() {
   describe('configure()', function() {
     it('Should call callback with a config function', function(done) {
       configure(aurelia(), function(config) {

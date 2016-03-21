@@ -1,30 +1,30 @@
-Docs for {`Rest`} client
-=======
+# Docs for {`Rest`} client
 
 ```javascript
 import {Rest} from 'spoonx/aurelia-api';
 ```
 
----------
+----------
 
-.request(method, path[, body][, options])
-------
+## .request(method, path[, body][, options])
 
 Perform a request to the server.
 
 ### Parameters
 
-| Parameter | Type   | Description                                    |
-| --------- | ------ | ---------------------------------------------- |
-| method    | string | Request method. POST, GET, DELETE, PUT etc.    |
-| path      | string | Path to make the request to.                   |
-| body      | object | The body (when permitted by method).           |
-| options   | object | Additional options for the fetch               |
+| Parameter | Type   | Description                                 |
+| --------- | ------ | ------------------------------------------- |
+| method    | string | Request method. POST, GET, DELETE, PUT etc. |
+| path      | string | Path to make the request to.                |
+| body      | object | The body (when permitted by method).        |
+| options   | object | Additional options for the fetch            |
 
 ### Returns
+
 A new `Promise` to be resolved with the request, or rejected with an error.
 
 ### Examples
+
 Here's an example of a basic login call.
 
 ```javascript
@@ -43,10 +43,9 @@ export class MyViewModel {
 }
 ```
 
----------
+----------
 
-.find(resource, criteria[, options])
-------
+## .find(resource, criteria[, options])
 
 Find one or multiple resources.
 
@@ -59,9 +58,11 @@ Find one or multiple resources.
 | options   | object         | Additional options for the fetch               |
 
 ### Returns
+
 A new `Promise` to be resolved with the data request, or rejected with an error.
 
 ### Examples
+
 Here's an example on how to speak to a sails based API.
 
 ```javascript
@@ -80,32 +81,32 @@ export class MyViewModel {
 }
 ```
 
-------
+----------
 
-.create(resource, body[, options])
-------
+## .create(resource, body[, options])
 
 A convenience method (naming) that does exactly the same as `.post()`. 
 
-------
+----------
 
-.post(resource, body[, options])
-------
+## .post(resource, body[, options])
 
 Send a post request to supplied `resource`.
 
 ### Parameters
 
-| Parameter | Type   | Description                                    |
-| --------- | ------ | ---------------------------------------------- |
-| resource  | string | The name of the resource you wish to post to.  |
-| body      | object | The body to post.                              |
-| options   | object | Additional options for the fetch               |
+| Parameter | Type   | Description                                   |
+| --------- | ------ | --------------------------------------------- |
+| resource  | string | The name of the resource you wish to post to. |
+| body      | object | The body to post.                             |
+| options   | object | Additional options for the fetch              |
 
 ### Returns
+
 A new `Promise` to be resolved with the server response, or rejected with an error.
 
 ### Examples
+
 Here's an example on how to speak to a sails based API.
 
 ```javascript
@@ -125,10 +126,9 @@ export class MyViewModel {
 }
 ```
 
-------
+----------
 
-.update(resource, criteria, body[, options])
-------
+## .update(resource, criteria, body[, options])
 
 Send a post request to supplied `resource`.
 
@@ -142,9 +142,11 @@ Send a post request to supplied `resource`.
 | options   | object         | Additional options for the fetch               |
 
 ### Returns
+
 A new `Promise` to be resolved with the server response, or rejected with an error.
 
 ### Examples
+
 Here's an example on how to speak to a sails based API.
 
 ```javascript
@@ -160,10 +162,9 @@ export class MyViewModel {
 }
 ```
 
----------
+----------
 
-.destroy(resource, criteria[, options])
-------
+## .destroy(resource, criteria[, options])
 
 Delete one or multiple resources.
 
@@ -176,9 +177,11 @@ Delete one or multiple resources.
 | options   | object         | Additional options for the fetch               |
 
 ### Returns
+
 A new `Promise` to be resolved with the data request, or rejected with an error.
 
 ### Examples
+
 Here's an example on how to speak to a sails based API.
 
 ```javascript
