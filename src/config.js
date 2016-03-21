@@ -1,5 +1,6 @@
 import {HttpClient} from 'aurelia-fetch-client';
 import {Rest} from './rest';
+import extend from 'extend';
 
 export class Config {
   endpoints       = {};
@@ -15,7 +16,7 @@ export class Config {
    * @see http://aurelia.io/docs.html#/aurelia/fetch-client/latest/doc/api/class/HttpClientConfiguration
    * @return {Config}
    */
-  registerEndpoint(name, configureMethod, defaults) {
+  registerEndpoint(name, configureMethod, defaults = {}) {
     let newClient        = new HttpClient();
     this.endpoints[name] = new Rest(newClient);
 
@@ -35,10 +36,15 @@ export class Config {
     newClient.configure(configure => {
       configure.withBaseUrl(configureMethod);
 
-      // Set optional defaults.
-      if (typeof defaults === 'object') {
-        configure.withDefaults(defaults);
-      }
+      let requestOptions = extend(true, {
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+        }
+      }, defaults);
+
+      // Set defaults.
+      configure.withDefaults(requestOptions);
     });
 
     return this;
