@@ -1,5 +1,5 @@
 import {HttpClient} from 'aurelia-fetch-client';
-import {Config, Rest} from '../src/index';
+import {Config, Rest} from '../src/aurelia-api';
 import {Container} from 'aurelia-dependency-injection';
 
 describe('Config', function() {

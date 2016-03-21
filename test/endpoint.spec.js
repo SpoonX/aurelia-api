@@ -1,5 +1,5 @@
 import {HttpClient} from 'aurelia-fetch-client';
-import {Config, Rest, Endpoint} from '../src/index';
+import {Config, Rest, Endpoint} from '../src/aurelia-api';
 import {Container} from 'aurelia-dependency-injection';
 import {InjectTest} from './resource/inject-test';
 
@@ -30,5 +30,4 @@ describe('Endpoint', function() {
     });
   });
 });
-
 
