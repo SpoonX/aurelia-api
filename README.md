@@ -10,6 +10,7 @@ This library plays nice with the [Sails.js framework](http://sailsjs.org).
 > To keep up to date on [Aurelia](http://www.aurelia.io/), please visit and subscribe to [the official blog](http://blog.durandal.io/). If you have questions, we invite you to [join us on Gitter](https://gitter.im/aurelia/discuss). If you would like to have deeper insight into our development process, please install the [ZenHub](https://zenhub.io) Chrome Extension and visit any of our repository's boards. You can get an overview of all Aurelia work by visiting [the framework board](https://github.com/aurelia/framework#boards).
 
 ## Installation
+
 Installing this module is fairly simple.
 
 Run `jspm install github:spoonx/aurelia-api` from your project root.
@@ -47,6 +48,7 @@ aurelia.use
 ```
 
 ### Rest client
+
 To use the Rest client, use the Endpoint resolver to inject it.
 
 Here's an example:
