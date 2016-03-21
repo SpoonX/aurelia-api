@@ -28,5 +28,5 @@ function aurelia(container) {
         return val;
       }
     }
-  }
+  };
 }
