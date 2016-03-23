@@ -4,6 +4,13 @@ import extend from 'extend';
 
 export class Rest {
 
+  defaults = {
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json'
+    }
+  }
+
   /**
    * Inject the httpClient to use for requests.
    *
@@ -23,18 +30,10 @@ export class Rest {
    *
    * @return {Promise}
    */
-  request(method, path, body, options) {
-    let requestOptions = extend(true, {
-      method: method,
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json'
-      }
-    }, options || {});
+  request(method, path, body, options = {}) {
+    let requestOptions = extend(true, {}, this.defaults, options);
 
-    if (typeof options !== 'undefined') {
-      extend(true, requestOptions, options);
-    }
+    requestOptions.method = method;
 
     if (typeof body === 'object') {
       requestOptions.body = json(body);
