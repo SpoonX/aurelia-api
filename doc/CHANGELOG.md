@@ -1,7 +1,14 @@
+<a name"2.1.0"></a>
+## 2.1.0 (2016-03-23)
+
+#### Features
+
+* **project:** Added typescript support ([0581966](https://github.com/SpoonX/aurelia-api/commit/058196623407dc303e224fb19976ba6f5bf0a2fb))
+
+
 <a name"2.0.9"></a>
 ### 2.0.9 (2016-03-20)
 
-* Updated dependencies
 
 <a name"2.0.8"></a>
 ### 2.0.8 (2016-03-02)
@@ -130,5 +137,3 @@
 
 * **index:** Added configure convenience method ([6506ac25](https://github.com/SpoonX/aurelia-api/commit/6506ac25a749971e1165f69a28617f6865e07667))
 * **rest:** Use HttpClient from DI, so config gets applied ([14adca60](https://github.com/SpoonX/aurelia-api/commit/14adca60cebbd923230801702312bab80da2778c))
-
-
