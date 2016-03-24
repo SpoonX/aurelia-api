@@ -9,6 +9,7 @@ declare module 'aurelia-api' {
     resolver
   } from 'aurelia-dependency-injection';
   export class Rest {
+    defaults: any;
     
     /**
        * Inject the httpClient to use for requests.
@@ -27,7 +28,7 @@ declare module 'aurelia-api' {
        *
        * @return {Promise}
        */
-    request(method: any, path: any, body: any, options: any): any;
+    request(method: any, path: any, body: any, options?: any): any;
     
     /**
        * Find a resource.
@@ -99,7 +100,7 @@ declare module 'aurelia-api' {
        * @see http://aurelia.io/docs.html#/aurelia/fetch-client/latest/doc/api/class/HttpClientConfiguration
        * @return {Config}
        */
-    registerEndpoint(name: any, configureMethod: any, defaults: any): any;
+    registerEndpoint(name: any, configureMethod: any, defaults?: any): any;
     
     /**
        * Get a previously registered endpoint. Returns null when not found.

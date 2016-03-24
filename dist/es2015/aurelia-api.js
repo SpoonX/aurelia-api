@@ -1,4 +1,4 @@
-var _dec, _class2;
+var _dec, _class3;
 
 import qs from 'qs';
 import extend from 'extend';
@@ -7,21 +7,20 @@ import { resolver } from 'aurelia-dependency-injection';
 
 export let Rest = class Rest {
   constructor(httpClient) {
-    this.client = httpClient;
-  }
-
-  request(method, path, body, options) {
-    let requestOptions = extend(true, {
-      method: method,
+    this.defaults = {
       headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json'
       }
-    }, options || {});
+    };
 
-    if (typeof options !== 'undefined') {
-      extend(true, requestOptions, options);
-    }
+    this.client = httpClient;
+  }
+
+  request(method, path, body, options = {}) {
+    let requestOptions = extend(true, {}, this.defaults, options);
+
+    requestOptions.method = method;
 
     if (typeof body === 'object') {
       requestOptions.body = json(body);
@@ -81,9 +80,11 @@ export let Config = class Config {
     this.defaultEndpoint = null;
   }
 
-  registerEndpoint(name, configureMethod, defaults) {
+  registerEndpoint(name, configureMethod, defaults = {}) {
     let newClient = new HttpClient();
     this.endpoints[name] = new Rest(newClient);
+
+    extend(true, this.endpoints[name].defaults, defaults);
 
     if (typeof configureMethod === 'function') {
       newClient.configure(configureMethod);
@@ -97,10 +98,6 @@ export let Config = class Config {
 
     newClient.configure(configure => {
       configure.withBaseUrl(configureMethod);
-
-      if (typeof defaults === 'object') {
-        configure.withDefaults(defaults);
-      }
     });
 
     return this;
@@ -125,7 +122,7 @@ export let Config = class Config {
   }
 };
 
-export let Endpoint = (_dec = resolver(), _dec(_class2 = class Endpoint {
+export let Endpoint = (_dec = resolver(), _dec(_class3 = class Endpoint {
   constructor(key) {
     this._key = key;
   }
@@ -137,7 +134,7 @@ export let Endpoint = (_dec = resolver(), _dec(_class2 = class Endpoint {
   static of(key) {
     return new Endpoint(key);
   }
-}) || _class2);
+}) || _class3);
 
 function configure(aurelia, configCallback) {
   let config = aurelia.container.get(Config);
