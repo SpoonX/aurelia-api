@@ -1,3 +1,12 @@
+<a name"2.1.1"></a>
+### 2.1.1 (2016-03-24)
+
+
+#### Bug Fixes
+
+* **config:** apply user endpoint defaults ([8b9344d7](https://github.com/SpoonX/aurelia-api/commit/8b9344d7))
+
+
 <a name"2.1.0"></a>
 ## 2.1.0 (2016-03-23)
 
