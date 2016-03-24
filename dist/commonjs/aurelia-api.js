@@ -5,7 +5,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.configure = exports.Endpoint = exports.Config = exports.Rest = undefined;
 
-var _dec, _class2;
+var _dec, _class3;
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
 
@@ -29,21 +29,22 @@ var Rest = exports.Rest = function () {
   function Rest(httpClient) {
     _classCallCheck(this, Rest);
 
-    this.client = httpClient;
-  }
-
-  Rest.prototype.request = function request(method, path, body, options) {
-    var requestOptions = (0, _extend2.default)(true, {
-      method: method,
+    this.defaults = {
       headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json'
       }
-    }, options || {});
+    };
 
-    if (typeof options !== 'undefined') {
-      (0, _extend2.default)(true, requestOptions, options);
-    }
+    this.client = httpClient;
+  }
+
+  Rest.prototype.request = function request(method, path, body) {
+    var options = arguments.length <= 3 || arguments[3] === undefined ? {} : arguments[3];
+
+    var requestOptions = (0, _extend2.default)(true, {}, this.defaults, options);
+
+    requestOptions.method = method;
 
     if ((typeof body === 'undefined' ? 'undefined' : _typeof(body)) === 'object') {
       requestOptions.body = (0, _aureliaFetchClient.json)(body);
@@ -109,9 +110,13 @@ var Config = exports.Config = function () {
     this.defaultEndpoint = null;
   }
 
-  Config.prototype.registerEndpoint = function registerEndpoint(name, configureMethod, defaults) {
+  Config.prototype.registerEndpoint = function registerEndpoint(name, configureMethod) {
+    var defaults = arguments.length <= 2 || arguments[2] === undefined ? {} : arguments[2];
+
     var newClient = new _aureliaFetchClient.HttpClient();
     this.endpoints[name] = new Rest(newClient);
+
+    (0, _extend2.default)(true, this.endpoints[name].defaults, defaults);
 
     if (typeof configureMethod === 'function') {
       newClient.configure(configureMethod);
@@ -125,10 +130,6 @@ var Config = exports.Config = function () {
 
     newClient.configure(function (configure) {
       configure.withBaseUrl(configureMethod);
-
-      if ((typeof defaults === 'undefined' ? 'undefined' : _typeof(defaults)) === 'object') {
-        configure.withDefaults(defaults);
-      }
     });
 
     return this;
@@ -155,7 +156,7 @@ var Config = exports.Config = function () {
   return Config;
 }();
 
-var Endpoint = exports.Endpoint = (_dec = (0, _aureliaDependencyInjection.resolver)(), _dec(_class2 = function () {
+var Endpoint = exports.Endpoint = (_dec = (0, _aureliaDependencyInjection.resolver)(), _dec(_class3 = function () {
   function Endpoint(key) {
     _classCallCheck(this, Endpoint);
 
@@ -171,7 +172,7 @@ var Endpoint = exports.Endpoint = (_dec = (0, _aureliaDependencyInjection.resolv
   };
 
   return Endpoint;
-}()) || _class2);
+}()) || _class3);
 
 
 function configure(aurelia, configCallback) {

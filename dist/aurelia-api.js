@@ -5,6 +5,13 @@ import {resolver} from 'aurelia-dependency-injection';
 
 export class Rest {
 
+  defaults = {
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json'
+    }
+  }
+
   /**
    * Inject the httpClient to use for requests.
    *
@@ -24,18 +31,10 @@ export class Rest {
    *
    * @return {Promise}
    */
-  request(method, path, body, options) {
-    let requestOptions = extend(true, {
-      method: method,
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json'
-      }
-    }, options || {});
+  request(method, path, body, options = {}) {
+    let requestOptions = extend(true, {}, this.defaults, options);
 
-    if (typeof options !== 'undefined') {
-      extend(true, requestOptions, options);
-    }
+    requestOptions.method = method;
 
     if (typeof body === 'object') {
       requestOptions.body = json(body);
@@ -149,9 +148,12 @@ export class Config {
    * @see http://aurelia.io/docs.html#/aurelia/fetch-client/latest/doc/api/class/HttpClientConfiguration
    * @return {Config}
    */
-  registerEndpoint(name, configureMethod, defaults) {
+  registerEndpoint(name, configureMethod, defaults = {}) {
     let newClient        = new HttpClient();
     this.endpoints[name] = new Rest(newClient);
+
+    // add custom defaults to Rest
+    extend(true, this.endpoints[name].defaults, defaults);
 
     // Manual configure of client.
     if (typeof configureMethod === 'function') {
@@ -168,11 +170,6 @@ export class Config {
     // Base url is string. Configure.
     newClient.configure(configure => {
       configure.withBaseUrl(configureMethod);
-
-      // Set optional defaults.
-      if (typeof defaults === 'object') {
-        configure.withDefaults(defaults);
-      }
     });
 
     return this;

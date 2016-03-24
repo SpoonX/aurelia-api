@@ -25,18 +25,18 @@ You can then pass these clients to other libs when needed.
 Make sure your project uses a `main.js` file to initialize aurelia.
 In your configure function, you might do something like this:
 
-```javascript
+```js
 aurelia.use
   /* Your other plugins and init code */
   .plugin('spoonx/aurelia-api', config => {
-  
+
     // Current host
     config.registerEndpoint('api');
 
     // Different host
     config.registerEndpoint('api', 'https://myapi.org/');
 
-    // With defaults
+    // With endpoint defaults
     config.registerEndpoint('api', 'https://myapi.org/', {headers: {x:'foo'}});
 
     // Own configuration
@@ -47,13 +47,25 @@ aurelia.use
   });
 ```
 
+Mind!, the endpoint defaults are seperate from fetchClient defaults. The former
+overrule the latter. Following reasonable endpoint options are applied per
+default. You can overwrite them with registerEndpoint options or with
+the api request options.
+
+```js
+headers: {
+  'Accept': 'application/json',
+  'Content-Type': 'application/json'
+}
+```
+
 ### Rest client
 
 To use the Rest client, use the Endpoint resolver to inject it.
 
 Here's an example:
 
-```javascript
+```js
 import {inject} from 'aurelia-framework';
 import {Endpoint} from 'spoonx/aurelia-api';
 
@@ -63,7 +75,7 @@ export class MyClass {
     this.apiEndpoint  = apiEndpoint;
     this.authEndpoint = authEndpoint;
   }
-  
+
   attached() {
     this.apiEndpoint.find('product', {
       category: 5,
@@ -77,7 +89,7 @@ export class MyClass {
 
 Alternatively, you could also request your endpoint at the config. Example:
 
-```javascript
+```js
 import {inject} from 'aurelia-framework';
 import {Config} from 'spoonx/aurelia-api';
 

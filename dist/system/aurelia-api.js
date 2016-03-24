@@ -1,7 +1,7 @@
 'use strict';
 
 System.register(['qs', 'extend', 'aurelia-fetch-client', 'aurelia-dependency-injection'], function (_export, _context) {
-  var qs, extend, json, HttpClient, resolver, _dec, _class2, _typeof, Rest, Config, Endpoint;
+  var qs, extend, json, HttpClient, resolver, _dec, _class3, _typeof, Rest, Config, Endpoint;
 
   function _classCallCheck(instance, Constructor) {
     if (!(instance instanceof Constructor)) {
@@ -37,21 +37,22 @@ System.register(['qs', 'extend', 'aurelia-fetch-client', 'aurelia-dependency-inj
         function Rest(httpClient) {
           _classCallCheck(this, Rest);
 
-          this.client = httpClient;
-        }
-
-        Rest.prototype.request = function request(method, path, body, options) {
-          var requestOptions = extend(true, {
-            method: method,
+          this.defaults = {
             headers: {
               'Accept': 'application/json',
               'Content-Type': 'application/json'
             }
-          }, options || {});
+          };
 
-          if (typeof options !== 'undefined') {
-            extend(true, requestOptions, options);
-          }
+          this.client = httpClient;
+        }
+
+        Rest.prototype.request = function request(method, path, body) {
+          var options = arguments.length <= 3 || arguments[3] === undefined ? {} : arguments[3];
+
+          var requestOptions = extend(true, {}, this.defaults, options);
+
+          requestOptions.method = method;
 
           if ((typeof body === 'undefined' ? 'undefined' : _typeof(body)) === 'object') {
             requestOptions.body = json(body);
@@ -119,9 +120,13 @@ System.register(['qs', 'extend', 'aurelia-fetch-client', 'aurelia-dependency-inj
           this.defaultEndpoint = null;
         }
 
-        Config.prototype.registerEndpoint = function registerEndpoint(name, configureMethod, defaults) {
+        Config.prototype.registerEndpoint = function registerEndpoint(name, configureMethod) {
+          var defaults = arguments.length <= 2 || arguments[2] === undefined ? {} : arguments[2];
+
           var newClient = new HttpClient();
           this.endpoints[name] = new Rest(newClient);
+
+          extend(true, this.endpoints[name].defaults, defaults);
 
           if (typeof configureMethod === 'function') {
             newClient.configure(configureMethod);
@@ -135,10 +140,6 @@ System.register(['qs', 'extend', 'aurelia-fetch-client', 'aurelia-dependency-inj
 
           newClient.configure(function (configure) {
             configure.withBaseUrl(configureMethod);
-
-            if ((typeof defaults === 'undefined' ? 'undefined' : _typeof(defaults)) === 'object') {
-              configure.withDefaults(defaults);
-            }
           });
 
           return this;
@@ -167,7 +168,7 @@ System.register(['qs', 'extend', 'aurelia-fetch-client', 'aurelia-dependency-inj
 
       _export('Config', Config);
 
-      _export('Endpoint', _export('Endpoint', Endpoint = (_dec = resolver(), _dec(_class2 = function () {
+      _export('Endpoint', _export('Endpoint', Endpoint = (_dec = resolver(), _dec(_class3 = function () {
         function Endpoint(key) {
           _classCallCheck(this, Endpoint);
 
@@ -183,7 +184,7 @@ System.register(['qs', 'extend', 'aurelia-fetch-client', 'aurelia-dependency-inj
         };
 
         return Endpoint;
-      }()) || _class2)));
+      }()) || _class3)));
 
       _export('Endpoint', Endpoint);
 
