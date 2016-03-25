@@ -16,17 +16,18 @@ exports.base = function() {
     plugins: [
       'syntax-flow',
       'transform-decorators-legacy',
-      ['babel-dts-generator', {
-          packageName: paths.packageName,
-          typings: '',
-          suppressModulePath: true,
-          suppressComments: false,
-          memberOutputFilter: /^_.*/
-      }],
       'transform-flow-strip-types'
     ]
   };
 }
+
+exports['plugin-dts'] = ['babel-dts-generator', {
+  packageName: paths.packageName,
+  typings: '',
+  suppressModulePath: true,
+  suppressComments: false,
+  memberOutputFilter: /^_.*/
+}];
 
 exports.commonjs = function() {
   var options = exports.base();
@@ -49,5 +50,11 @@ exports.system = function() {
 exports.es2015 = function() {
   var options = exports.base();
   options.presets = ['stage-1']
+  return options;
+};
+
+exports.dts = function() {
+  var options = exports.base();
+  options.plugins.push(exports['plugin-dts']);
   return options;
 };

@@ -79,7 +79,6 @@
     "gulp-bump": "^2.0.1",
     "gulp-concat": "^2.6.0",
     "gulp-eslint": "^1.1.1",
-    "gulp-ignore": "^2.0.1",
     "gulp-remark": "^1.1.5",
     "gulp-insert": "^0.5.0",
     "gulp-rename": "^1.2.2",
