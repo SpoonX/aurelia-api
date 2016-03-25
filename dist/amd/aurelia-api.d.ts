@@ -156,10 +156,4 @@ declare module 'aurelia-api' {
        */
     static of(key: any): any;
   }
-  export {
-    configure,
-    Config,
-    Rest,
-    Endpoint
-  };
 }
