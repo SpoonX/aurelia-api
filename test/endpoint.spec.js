@@ -1,6 +1,6 @@
 import {Config, Rest, Endpoint} from '../src/aurelia-api';
 import {Container} from 'aurelia-dependency-injection';
-import {InjectTest} from './resource/inject-test';
+import {InjectTest} from './resources/inject-test';
 
 let container = new Container();
 let config    = container.get(Config);
