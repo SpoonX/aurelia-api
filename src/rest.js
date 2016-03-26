@@ -1,6 +1,5 @@
 import {json} from 'aurelia-fetch-client';
 import qs from 'qs';
-import extend from 'extend';
 
 export class Rest {
 
@@ -31,7 +30,8 @@ export class Rest {
    * @return {Promise}
    */
   request(method, path, body, options = {}) {
-    let requestOptions = extend(true, {}, this.defaults, options);
+    let requestOptions = Object.assign({}, this.defaults, options);
+    requestOptions.headers = Object.assign({}, this.defaults.headers, options.headers);
 
     requestOptions.method = method;
 
