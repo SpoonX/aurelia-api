@@ -1,6 +1,5 @@
 import {HttpClient} from 'aurelia-fetch-client';
 import {Rest} from './rest';
-import extend from 'extend';
 
 export class Config {
   endpoints       = {};
@@ -21,7 +20,9 @@ export class Config {
     this.endpoints[name] = new Rest(newClient);
 
     // add custom defaults to Rest
-    extend(true, this.endpoints[name].defaults, defaults);
+    let defaultOptions = Object.assign({}, this.endpoints[name].defaults, defaults);
+    defaultOptions.headers = Object.assign({}, this.endpoints[name].defaults.headers, defaults.headers);
+    this.endpoints[name].defaults = defaultOptions;
 
     // Manual configure of client.
     if (typeof configureMethod === 'function') {
