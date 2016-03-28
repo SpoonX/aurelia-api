@@ -27,9 +27,6 @@ gulp.task('build-dts', function() {
       return callback();
     }))
     .pipe(concat(jsName)) // concat all selected files to jsName (now without their imports)
-    .pipe(insert.transform(function(contents) { // re-add extracted imports on top
-      return tools.createImportBlock(importsToAdd) + contents;
-    }))
     .pipe(to5(assign({}, compilerOptions.dts()))); // compile to d.ts from file jsName. d.ts file is in folder paths.packageName
 });
 
