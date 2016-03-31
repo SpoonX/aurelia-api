@@ -16,7 +16,7 @@ Now it's time to start doing something
 
 ### Installation and configuration
 
-First, head on over to your favorite terminal and run `jspm install github:spoonx/aurelia-api` from your project root.
+First, head on over to your favorite terminal and run `jspm install aurelia-api` from your project root.
 This will install the module of which you're reading the getting-started right now. Woah!
 
 ### Reflect
@@ -44,7 +44,7 @@ export function configure(aurelia) {
     .developmentLogging()
 
     // Add this:
-    .plugin('spoonx/aurelia-api', config => {
+    .plugin('aurelia-api', config => {
       config.registerEndpoint('github', 'https://api.github.com/');
     });
 
@@ -53,7 +53,7 @@ export function configure(aurelia) {
 ```
 
 Aaaawesome. That wasn't really complicated, right?
-All we did, was tell aurelia to use the `spoonx/aurelia-api` plugin and register an endpoint. Now, let's use it!
+All we did, was tell aurelia to use the `aurelia-api` plugin and register an endpoint. Now, let's use it!
 
 ### Using the plugin
 
@@ -61,7 +61,7 @@ Now head back to `src/users.js`. Change the file to look like this:
 
 ```javascript
 import {inject} from 'aurelia-framework';
-import {Endpoint} from 'spoonx/aurelia-api';
+import {Endpoint} from 'aurelia-api';
 import 'fetch';
 
 @inject(Endpoint.of('github'))
@@ -108,7 +108,7 @@ export function configure(aurelia) {
     .standardConfiguration()
     .developmentLogging()
 
-    .plugin('spoonx/aurelia-api', config => {
+    .plugin('aurelia-api', config => {
       config
         .registerEndpoint('github', 'https://api.github.com/')
         .registerEndpoint('auth', 'https://auth.example.io/')
@@ -134,7 +134,7 @@ export function configure(aurelia) {
     .standardConfiguration()
     .developmentLogging()
 
-    .plugin('spoonx/aurelia-api', config => {
+    .plugin('aurelia-api', config => {
       config
         .registerEndpoint('github', 'https://api.github.com/')
         .registerEndpoint('auth', 'https://auth.example.io/')
@@ -150,7 +150,7 @@ And when using it:
 
 ```javascript
 import {inject} from 'aurelia-framework';
-import {Endpoint} from 'spoonx/aurelia-api';
+import {Endpoint} from 'aurelia-api';
 import 'fetch';
 
 @inject(Endpoint.of(), Endpoint.of('github'))

@@ -1,7 +1,7 @@
 # Docs for {`Rest`} client
 
 ```javascript
-import {Rest} from 'spoonx/aurelia-api';
+import {Rest} from 'aurelia-api';
 ```
 
 ----------
@@ -44,7 +44,7 @@ A new `Promise` to be resolved with the request, or rejected with an error.
 Here's an example of a basic login call.
 
 ```javascript
-import {Rest} from 'spoonx/aurelia-api';
+import {Rest} from 'aurelia-api';
 
 @inject(Rest)
 export class MyViewModel {
@@ -82,7 +82,7 @@ A new `Promise` to be resolved with the data request, or rejected with an error.
 Here's an example on how to speak to a sails based API.
 
 ```javascript
-import {Rest} from 'spoonx/aurelia-api';
+import {Rest} from 'aurelia-api';
 
 @inject(Rest)
 export class MyViewModel {
@@ -126,7 +126,7 @@ A new `Promise` to be resolved with the server response, or rejected with an err
 Here's an example on how to speak to a sails based API.
 
 ```javascript
-import {Rest} from 'spoonx/aurelia-api';
+import {Rest} from 'aurelia-api';
 
 @inject(Rest)
 export class MyViewModel {
@@ -166,7 +166,7 @@ A new `Promise` to be resolved with the server response, or rejected with an err
 Here's an example on how to speak to a sails based API.
 
 ```javascript
-import {Rest} from 'spoonx/aurelia-api';
+import {Rest} from 'aurelia-api';
 
 @inject(Rest)
 export class MyViewModel {
@@ -201,7 +201,7 @@ A new `Promise` to be resolved with the data request, or rejected with an error.
 Here's an example on how to speak to a sails based API.
 
 ```javascript
-import {Rest} from 'spoonx/aurelia-api';
+import {Rest} from 'aurelia-api';
 
 @inject(Rest)
 export class MyViewModel {
