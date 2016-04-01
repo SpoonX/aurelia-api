@@ -15,9 +15,11 @@ export class Rest {
    * Inject the httpClient to use for requests.
    *
    * @param {HttpClient} httpClient
+   * @param {string}     [endpoint]
    */
-  constructor(httpClient) {
-    this.client = httpClient;
+  constructor(httpClient, endpoint) {
+    this.client   = httpClient;
+    this.endpoint = endpoint;
   }
 
   /**
