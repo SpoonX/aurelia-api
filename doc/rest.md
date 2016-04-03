@@ -6,11 +6,27 @@ import {Rest} from 'spoonx/aurelia-api';
 
 ----------
 
-## .request(method, path[, body][, options])
+## Properties
+
+### .client
+
+| Type       | Description                           |
+| ---------- | ------------------------------------- |
+| HttpClient | The HttpClient instance  for requests |
+
+### .endpoint
+
+| Type   | Description                                          |
+| ------ | ---------------------------------------------------- |
+| string | The endpoint for which the Rest client is registered |
+
+## Methods
+
+### .request(method, path[, body][, options])
 
 Perform a request to the server.
 
-### Parameters
+#### Parameters
 
 | Parameter | Type   | Description                                 |
 | --------- | ------ | ------------------------------------------- |
@@ -19,11 +35,11 @@ Perform a request to the server.
 | body      | object | The body (when permitted by method).        |
 | options   | object | Additional options for the fetch            |
 
-### Returns
+#### Returns
 
 A new `Promise` to be resolved with the request, or rejected with an error.
 
-### Examples
+#### Examples
 
 Here's an example of a basic login call.
 
@@ -45,11 +61,11 @@ export class MyViewModel {
 
 ----------
 
-## .find(resource, criteria[, options])
+### .find(resource, criteria[, options])
 
 Find one or multiple resources.
 
-### Parameters
+#### Parameters
 
 | Parameter | Type           | Description                                    |
 | --------- | -------------- | ---------------------------------------------- |
@@ -57,11 +73,11 @@ Find one or multiple resources.
 | criteria  | object/integer | A specific ID, or object of supported filters. |
 | options   | object         | Additional options for the fetch               |
 
-### Returns
+#### Returns
 
 A new `Promise` to be resolved with the data request, or rejected with an error.
 
-### Examples
+#### Examples
 
 Here's an example on how to speak to a sails based API.
 
@@ -73,7 +89,7 @@ export class MyViewModel {
   constructor (restClient) {
     restClient.find('product', {
         category: 5,
-        name    : {contains: 'mouse'} 
+        name    : {contains: 'mouse'}
       })
       .then(console.log)
       .catch(console.error);
@@ -83,17 +99,17 @@ export class MyViewModel {
 
 ----------
 
-## .create(resource, body[, options])
+### .create(resource, body[, options])
 
-A convenience method (naming) that does exactly the same as `.post()`. 
+A convenience method (naming) that does exactly the same as `.post()`.
 
 ----------
 
-## .post(resource, body[, options])
+### .post(resource, body[, options])
 
 Send a post request to supplied `resource`.
 
-### Parameters
+#### Parameters
 
 | Parameter | Type   | Description                                   |
 | --------- | ------ | --------------------------------------------- |
@@ -101,11 +117,11 @@ Send a post request to supplied `resource`.
 | body      | object | The body to post.                             |
 | options   | object | Additional options for the fetch              |
 
-### Returns
+#### Returns
 
 A new `Promise` to be resolved with the server response, or rejected with an error.
 
-### Examples
+#### Examples
 
 Here's an example on how to speak to a sails based API.
 
@@ -128,11 +144,11 @@ export class MyViewModel {
 
 ----------
 
-## .update(resource, criteria, body[, options])
+### .update(resource, criteria, body[, options])
 
 Send a post request to supplied `resource`.
 
-### Parameters
+#### Parameters
 
 | Parameter | Type           | Description                                    |
 | --------- | -------------- | ---------------------------------------------- |
@@ -141,11 +157,11 @@ Send a post request to supplied `resource`.
 | body      | object         | The new values for the records.                |
 | options   | object         | Additional options for the fetch               |
 
-### Returns
+#### Returns
 
 A new `Promise` to be resolved with the server response, or rejected with an error.
 
-### Examples
+#### Examples
 
 Here's an example on how to speak to a sails based API.
 
@@ -164,11 +180,11 @@ export class MyViewModel {
 
 ----------
 
-## .destroy(resource, criteria[, options])
+### .destroy(resource, criteria[, options])
 
 Delete one or multiple resources.
 
-### Parameters
+#### Parameters
 
 | Parameter | Type           | Description                                    |
 | --------- | -------------- | ---------------------------------------------- |
@@ -176,11 +192,11 @@ Delete one or multiple resources.
 | criteria  | object/integer | A specific ID, or object of supported filters. |
 | options   | object         | Additional options for the fetch               |
 
-### Returns
+#### Returns
 
 A new `Promise` to be resolved with the data request, or rejected with an error.
 
-### Examples
+#### Examples
 
 Here's an example on how to speak to a sails based API.
 
