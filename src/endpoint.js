@@ -9,7 +9,7 @@ export class Endpoint {
    *
    * @param {string} key
    */
-  constructor(key) {
+  constructor(key: string) {
     this._key = key;
   }
 
@@ -20,7 +20,7 @@ export class Endpoint {
    *
    * @return {*}
    */
-  get(container) {
+  get(container: Container): Endpoint {
     return container.get(Config).getEndpoint(this._key);
   }
 
@@ -31,7 +31,7 @@ export class Endpoint {
    *
    * @return {Endpoint}
    */
-  static of(key) {
+  static of(key: string): Endpoint {
     return new Endpoint(key);
   }
 }

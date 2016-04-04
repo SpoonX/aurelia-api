@@ -4,7 +4,7 @@ import extend from 'extend';
 
 export class Rest {
 
-  defaults = {
+  defaults : Object = {
     headers: {
       'Accept': 'application/json',
       'Content-Type': 'application/json'
@@ -17,7 +17,7 @@ export class Rest {
    * @param {HttpClient} httpClient
    * @param {string}     [endpoint]
    */
-  constructor(httpClient, endpoint) {
+  constructor(httpClient: HttpClient, endpoint?: string) {
     this.client   = httpClient;
     this.endpoint = endpoint;
   }
@@ -32,7 +32,7 @@ export class Rest {
    *
    * @return {Promise}
    */
-  request(method, path, body, options = {}) {
+  request(method: string, path: string, body?: any, options?: Object = {}): Promise<any> {
     let requestOptions = extend(true, {}, this.defaults, options);
 
     requestOptions.method = method;
@@ -59,7 +59,7 @@ export class Rest {
    *
    * @return {Promise}
    */
-  find(resource, criteria, options) {
+  find(resource: string, criteria: Object|string|number, options?: Object): Promise<any> {
     let requestPath = resource;
 
     if (criteria) {
@@ -78,7 +78,7 @@ export class Rest {
    *
    * @return {Promise}
    */
-  post(resource, body, options) {
+  post(resource: string, body: any, options?: Object): Promise<any> {
     return this.request('post', resource, body, options);
   }
 
@@ -92,7 +92,7 @@ export class Rest {
    *
    * @return {Promise}
    */
-  update(resource, criteria, body, options) {
+  update(resource: string, criteria: string|number, body: any, options?: Object): Promise<any> {
     let requestPath = resource;
 
     if (criteria) {
@@ -111,7 +111,7 @@ export class Rest {
    *
    * @return {Promise}
    */
-  destroy(resource, criteria, options) {
+  destroy(resource: string, criteria: string|number, options?: Object): Promise<any> {
     let requestPath = resource;
 
     if (criteria) {
@@ -130,7 +130,7 @@ export class Rest {
    *
    * @return {Promise}
    */
-  create(resource, body, options) {
+  create(resource: string, body: any, options?: Object): Promise<any> {
     return this.post(...arguments);
   }
 }
