@@ -10,7 +10,7 @@ export let Config = class Config {
 
   registerEndpoint(name, configureMethod, defaults = {}) {
     let newClient = new HttpClient();
-    this.endpoints[name] = new Rest(newClient);
+    this.endpoints[name] = new Rest(newClient, name);
 
     extend(true, this.endpoints[name].defaults, defaults);
 

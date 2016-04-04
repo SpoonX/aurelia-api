@@ -32,7 +32,7 @@ define(['exports', 'aurelia-fetch-client', './rest', 'extend'], function (export
       var defaults = arguments.length <= 2 || arguments[2] === undefined ? {} : arguments[2];
 
       var newClient = new _aureliaFetchClient.HttpClient();
-      this.endpoints[name] = new _rest.Rest(newClient);
+      this.endpoints[name] = new _rest.Rest(newClient, name);
 
       (0, _extend2.default)(true, this.endpoints[name].defaults, defaults);
 

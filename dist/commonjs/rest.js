@@ -22,7 +22,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 var Rest = exports.Rest = function () {
-  function Rest(httpClient) {
+  function Rest(httpClient, endpoint) {
     _classCallCheck(this, Rest);
 
     this.defaults = {
@@ -33,6 +33,7 @@ var Rest = exports.Rest = function () {
     };
 
     this.client = httpClient;
+    this.endpoint = endpoint;
   }
 
   Rest.prototype.request = function request(method, path, body) {

@@ -30,7 +30,7 @@ System.register(['aurelia-fetch-client', './rest', 'extend'], function (_export,
           var defaults = arguments.length <= 2 || arguments[2] === undefined ? {} : arguments[2];
 
           var newClient = new HttpClient();
-          this.endpoints[name] = new Rest(newClient);
+          this.endpoints[name] = new Rest(newClient, name);
 
           extend(true, this.endpoints[name].defaults, defaults);
 

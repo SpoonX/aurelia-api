@@ -29,7 +29,7 @@ define(['exports', 'aurelia-fetch-client', 'qs', 'extend'], function (exports, _
   }
 
   var Rest = exports.Rest = function () {
-    function Rest(httpClient) {
+    function Rest(httpClient, endpoint) {
       _classCallCheck(this, Rest);
 
       this.defaults = {
@@ -40,6 +40,7 @@ define(['exports', 'aurelia-fetch-client', 'qs', 'extend'], function (exports, _
       };
 
       this.client = httpClient;
+      this.endpoint = endpoint;
     }
 
     Rest.prototype.request = function request(method, path, body) {
