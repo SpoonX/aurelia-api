@@ -25,7 +25,7 @@ System.register(['aurelia-fetch-client', 'qs', 'extend'], function (_export, _co
       };
 
       _export('Rest', Rest = function () {
-        function Rest(httpClient) {
+        function Rest(httpClient, endpoint) {
           _classCallCheck(this, Rest);
 
           this.defaults = {
@@ -36,6 +36,7 @@ System.register(['aurelia-fetch-client', 'qs', 'extend'], function (_export, _co
           };
 
           this.client = httpClient;
+          this.endpoint = endpoint;
         }
 
         Rest.prototype.request = function request(method, path, body) {

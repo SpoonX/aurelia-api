@@ -1,13 +1,4 @@
 declare module 'aurelia-api' {
-  import qs from 'qs';
-  import extend from 'extend';
-  import {
-    json,
-    HttpClient
-  } from 'aurelia-fetch-client';
-  import {
-    resolver
-  } from 'aurelia-dependency-injection';
   export class Rest {
     defaults: any;
     
@@ -15,8 +6,9 @@ declare module 'aurelia-api' {
        * Inject the httpClient to use for requests.
        *
        * @param {HttpClient} httpClient
+       * @param {string}     [endpoint]
        */
-    constructor(httpClient: any);
+    constructor(httpClient: any, endpoint: any);
     
     /**
        * Make a request to the server.

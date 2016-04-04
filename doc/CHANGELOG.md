@@ -1,3 +1,17 @@
+<a name"2.2.0"></a>
+## 2.2.0 (2016-04-04)
+
+
+#### Bug Fixes
+
+* **d.ts:** exclude unnecessary imports. ([da3d23a8](https://github.com/SpoonX/aurelia-api/commit/da3d23a8))
+
+
+#### Features
+
+* **Rest:** add property 'endpoint' ([6b926212](https://github.com/SpoonX/aurelia-api/commit/6b926212))
+
+
 <a name"2.1.2"></a>
 ### 2.1.2 (2016-03-25)
 

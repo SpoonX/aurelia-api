@@ -3,7 +3,7 @@ import qs from 'qs';
 import extend from 'extend';
 
 export let Rest = class Rest {
-  constructor(httpClient) {
+  constructor(httpClient, endpoint) {
     this.defaults = {
       headers: {
         'Accept': 'application/json',
@@ -12,6 +12,7 @@ export let Rest = class Rest {
     };
 
     this.client = httpClient;
+    this.endpoint = endpoint;
   }
 
   request(method, path, body, options = {}) {
