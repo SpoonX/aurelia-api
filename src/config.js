@@ -3,8 +3,8 @@ import {Rest} from './rest';
 import extend from 'extend';
 
 export class Config {
-  endpoints       = {};
-  defaultEndpoint = null;
+  endpoints: Object     = {};
+  defaultEndpoint: Rest = null;
 
   /**
    * Register a new endpoint.
@@ -16,7 +16,7 @@ export class Config {
    * @see http://aurelia.io/docs.html#/aurelia/fetch-client/latest/doc/api/class/HttpClientConfiguration
    * @return {Config}
    */
-  registerEndpoint(name, configureMethod, defaults = {}) {
+  registerEndpoint(name: string, configureMethod: string|Function, defaults?: Object = {}): Config {
     let newClient        = new HttpClient();
     this.endpoints[name] = new Rest(newClient, name);
 
@@ -50,7 +50,7 @@ export class Config {
    *
    * @return {Rest|null}
    */
-  getEndpoint(name) {
+  getEndpoint(name?: string): Rest {
     if (!name) {
       return this.defaultEndpoint || null;
     }
@@ -65,7 +65,7 @@ export class Config {
    *
    * @return {boolean}
    */
-  endpointExists(name) {
+  endpointExists(name: string): boolean {
     return !!this.endpoints[name];
   }
 
@@ -76,7 +76,7 @@ export class Config {
    *
    * @return {Config}
    */
-  setDefaultEndpoint(name) {
+  setDefaultEndpoint(name: string): Config {
     this.defaultEndpoint = this.getEndpoint(name);
 
     return this;
