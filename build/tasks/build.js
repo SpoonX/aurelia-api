@@ -29,10 +29,13 @@ gulp.task('build-dts', function() {
     }))
     .pipe(concat(jsName))
     .pipe(insert.transform(function(contents) {
-      importsToAdd = importsToAdd.filter(str =>
-          !dtsOptions.excludedImports
-            .map(ex => new RegExp("\'" + ex + "\'"))
-            .some(reg => reg.test(str)));
+      importsToAdd = importsToAdd
+                      .filter(function(str) {
+                        return !( dtsOptions.excludedImports
+                                  .map(function(ex) { return new RegExp("\'" + ex + "\'"); })
+                                  .some(function(reg) { return reg.test(str); })
+                                );
+                      });
       return tools.createImportBlock(importsToAdd) + contents;
     }))
     .pipe(to5(assign({}, compilerOptions.dts())));
