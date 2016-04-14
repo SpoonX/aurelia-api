@@ -11,6 +11,7 @@ var insert = require('gulp-insert');
 var tools = require('aurelia-tools');
 var del = require('del');
 var vinylPaths = require('vinyl-paths');
+var dtsOptions = require('../dts-builder-options.js');
 
 // merged output file name. a folder of paths.packageName is temporarly created in build-dts
 var jsName = paths.packageName + '.js';
@@ -27,6 +28,13 @@ gulp.task('build-dts', function() {
       return callback();
     }))
     .pipe(concat(jsName))
+    .pipe(insert.transform(function(contents) {
+      importsToAdd = importsToAdd.filter(str =>
+          !dtsOptions.excludedImports
+            .map(ex => new RegExp("\'" + ex + "\'"))
+            .some(reg => reg.test(str)));
+      return tools.createImportBlock(importsToAdd) + contents;
+    }))
     .pipe(to5(assign({}, compilerOptions.dts())));
 });
 
