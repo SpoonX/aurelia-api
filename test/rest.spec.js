@@ -80,6 +80,22 @@ describe('Rest', function() {
     });
   });
 
+  describe('.patch()', function() {
+    it('Should patch with body (as json), criteria and options.', function(done) {
+      let injectTest = container.get(InjectTest);
+
+      injectTest.apiEndpoint.patch('post', criteria, body, options)
+        .then(y => {
+          expect(y.method).toBe('PATCH');
+          expect(y.path).toBe('/post');
+          expect(JSON.stringify(y.query)).toBe(JSON.stringify(criteria));
+          expect(y.contentType).toBe('application/json');
+          expect(y.Authorization).toBe(options.headers['Authorization']);
+          done();
+        });
+    });
+  });
+
   describe('.destroy()', function() {
     it('Should destroy with id and options.', function(done) {
       let injectTest = container.get(InjectTest);
