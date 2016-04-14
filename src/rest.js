@@ -66,7 +66,7 @@ export class Rest {
       requestPath += typeof criteria !== 'object' ? `/${criteria}` : '?' + qs.stringify(criteria);
     }
 
-    return this.request('get', requestPath, undefined, options);
+    return this.request('GET', requestPath, undefined, options);
   }
 
   /**
@@ -79,7 +79,7 @@ export class Rest {
    * @return {Promise}
    */
   post(resource, body, options) {
-    return this.request('post', resource, body, options);
+    return this.request('POST', resource, body, options);
   }
 
   /**
@@ -99,7 +99,7 @@ export class Rest {
       requestPath += typeof criteria !== 'object' ? `/${criteria}` : '?' + qs.stringify(criteria);
     }
 
-    return this.request('put', requestPath, body, options);
+    return this.request('PUT', requestPath, body, options);
   }
 
   /**
@@ -119,7 +119,7 @@ export class Rest {
       requestPath += typeof criteria !== 'object' ? `/${criteria}` : '?' + qs.stringify(criteria);
     }
 
-    return this.request('patch', requestPath, body, options);
+    return this.request('PATCH', requestPath, body, options);
   }
 
   /**
@@ -138,7 +138,7 @@ export class Rest {
       requestPath += typeof criteria !== 'object' ? `/${criteria}` : '?' + qs.stringify(criteria);
     }
 
-    return this.request('delete', requestPath, undefined, options);
+    return this.request('DELETE', requestPath, undefined, options);
   }
 
   /**
