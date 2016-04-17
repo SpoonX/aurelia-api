@@ -72,3 +72,18 @@ export class MyClass {
   }
 }
 ```
+
+## Quick Rest api overview
+
+````js
+endpoint
+  .client                                     // the httpClient instance
+  .endpoint                                   // name of the endpoint
+  .find(resource, criteria, options)          // GET
+  .post(resource, body, options) {            // POST
+  .update(resource, criteria, body, options)  // PUT
+  .patch(resource, criteria, body, options)   // PATCH
+  .destroy(resource, criteria, options)       // DELETE
+  .create(resource, body, options)            // POST
+  .request(method, path, body, options)       // method
+```

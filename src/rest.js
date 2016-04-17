@@ -66,7 +66,7 @@ export class Rest {
       requestPath += typeof criteria !== 'object' ? `/${criteria}` : '?' + qs.stringify(criteria);
     }
 
-    return this.request('get', requestPath, undefined, options);
+    return this.request('GET', requestPath, undefined, options);
   }
 
   /**
@@ -79,16 +79,16 @@ export class Rest {
    * @return {Promise}
    */
   post(resource, body, options) {
-    return this.request('post', resource, body, options);
+    return this.request('POST', resource, body, options);
   }
 
   /**
    * Update a resource.
    *
-   * @param {string}        resource  Resource to update
-   * @param {string|Number} criteria  String / number of the id to update.
-   * @param {object}        body      New data for provided criteria.
-   * @param {{}}            [options]
+   * @param {string}           resource  Resource to update
+   * @param {{}|string|Number} criteria  Object for where clause, string / number for id.
+   * @param {object}           body      New data for provided criteria.
+   * @param {{}}               [options]
    *
    * @return {Promise}
    */
@@ -99,15 +99,35 @@ export class Rest {
       requestPath += typeof criteria !== 'object' ? `/${criteria}` : '?' + qs.stringify(criteria);
     }
 
-    return this.request('put', requestPath, body, options);
+    return this.request('PUT', requestPath, body, options);
+  }
+
+  /**
+   * Patch a resource.
+   *
+   * @param {string}           resource  Resource to patch
+   * @param {{}|string|Number} criteria  Object for where clause, string / number for id.
+   * @param {object}           body      Data to patch for provided criteria.
+   * @param {{}}               [options]
+   *
+   * @return {Promise}
+   */
+  patch(resource, criteria, body, options) {
+    let requestPath = resource;
+
+    if (criteria) {
+      requestPath += typeof criteria !== 'object' ? `/${criteria}` : '?' + qs.stringify(criteria);
+    }
+
+    return this.request('PATCH', requestPath, body, options);
   }
 
   /**
    * Delete a resource.
    *
-   * @param {string}        resource  The resource to delete in
-   * @param {string|Number} criteria  String / number of the id to delete.
-   * @param {{}}            [options]
+   * @param {string}           resource  The resource to delete in
+   * @param {{}|string|Number} criteria  Object for where clause, string / number for id.
+   * @param {{}}               [options]
    *
    * @return {Promise}
    */
@@ -118,7 +138,7 @@ export class Rest {
       requestPath += typeof criteria !== 'object' ? `/${criteria}` : '?' + qs.stringify(criteria);
     }
 
-    return this.request('delete', requestPath, undefined, options);
+    return this.request('DELETE', requestPath, undefined, options);
   }
 
   /**
