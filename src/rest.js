@@ -121,6 +121,26 @@ export class Rest {
 
     return this.request('PATCH', requestPath, body, options);
   }
+  
+  /**
+   * Patch a resource.
+   *
+   * @param {string}           resource  Resource to patch
+   * @param {{}|string|Number} criteria  Object for where clause, string / number for id.
+   * @param {object}           body      Data to patch for provided criteria.
+   * @param {{}}               [options]
+   *
+   * @return {Promise}
+   */
+  patch(resource, criteria, body, options) {
+    let requestPath = resource;
+
+    if (criteria) {
+      requestPath += typeof criteria !== 'object' ? `/${criteria}` : '?' + qs.stringify(criteria);
+    }
+
+    return this.request('patch', requestPath, body, options);
+  }
 
   /**
    * Delete a resource.
