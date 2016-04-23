@@ -1,5 +1,6 @@
-import {resolver} from 'aurelia-dependency-injection';
+import {resolver, Container} from 'aurelia-dependency-injection';
 import {Config} from './config';
+import {Rest} from './rest';
 
 @resolver()
 export class Endpoint {
@@ -9,7 +10,7 @@ export class Endpoint {
    *
    * @param {string} key
    */
-  constructor(key) {
+  constructor(key?: string) {
     this._key = key;
   }
 
@@ -20,7 +21,7 @@ export class Endpoint {
    *
    * @return {*}
    */
-  get(container) {
+  get(container: Container): Rest {
     return container.get(Config).getEndpoint(this._key);
   }
 
@@ -31,7 +32,7 @@ export class Endpoint {
    *
    * @return {Endpoint}
    */
-  static of(key) {
+  static of(key?: string): Endpoint {
     return new Endpoint(key);
   }
 }
