@@ -43,11 +43,11 @@ export let Rest = class Rest {
       requestPath += typeof criteria !== 'object' ? `/${ criteria }` : '?' + qs.stringify(criteria);
     }
 
-    return this.request('get', requestPath, undefined, options);
+    return this.request('GET', requestPath, undefined, options);
   }
 
   post(resource, body, options) {
-    return this.request('post', resource, body, options);
+    return this.request('POST', resource, body, options);
   }
 
   update(resource, criteria, body, options) {
@@ -57,7 +57,17 @@ export let Rest = class Rest {
       requestPath += typeof criteria !== 'object' ? `/${ criteria }` : '?' + qs.stringify(criteria);
     }
 
-    return this.request('put', requestPath, body, options);
+    return this.request('PUT', requestPath, body, options);
+  }
+
+  patch(resource, criteria, body, options) {
+    let requestPath = resource;
+
+    if (criteria) {
+      requestPath += typeof criteria !== 'object' ? `/${ criteria }` : '?' + qs.stringify(criteria);
+    }
+
+    return this.request('PATCH', requestPath, body, options);
   }
 
   destroy(resource, criteria, options) {
@@ -67,7 +77,7 @@ export let Rest = class Rest {
       requestPath += typeof criteria !== 'object' ? `/${ criteria }` : '?' + qs.stringify(criteria);
     }
 
-    return this.request('delete', requestPath, undefined, options);
+    return this.request('DELETE', requestPath, undefined, options);
   }
 
   create(resource, body, options) {
