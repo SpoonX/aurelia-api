@@ -47,21 +47,33 @@ declare module 'aurelia-api' {
     /**
        * Update a resource.
        *
-       * @param {string}        resource  Resource to update
-       * @param {string|Number} criteria  String / number of the id to update.
-       * @param {object}        body      New data for provided criteria.
-       * @param {{}}            [options]
+       * @param {string}           resource  Resource to update
+       * @param {{}|string|Number} criteria  Object for where clause, string / number for id.
+       * @param {object}           body      New data for provided criteria.
+       * @param {{}}               [options]
        *
        * @return {Promise}
        */
     update(resource: any, criteria: any, body: any, options: any): any;
     
     /**
+       * Patch a resource.
+       *
+       * @param {string}           resource  Resource to patch
+       * @param {{}|string|Number} criteria  Object for where clause, string / number for id.
+       * @param {object}           body      Data to patch for provided criteria.
+       * @param {{}}               [options]
+       *
+       * @return {Promise}
+       */
+    patch(resource: any, criteria: any, body: any, options: any): any;
+    
+    /**
        * Delete a resource.
        *
-       * @param {string}        resource  The resource to delete in
-       * @param {string|Number} criteria  String / number of the id to delete.
-       * @param {{}}            [options]
+       * @param {string}           resource  The resource to delete in
+       * @param {{}|string|Number} criteria  Object for where clause, string / number for id.
+       * @param {{}}               [options]
        *
        * @return {Promise}
        */

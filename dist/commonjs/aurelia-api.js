@@ -69,11 +69,11 @@ var Rest = exports.Rest = function () {
       requestPath += (typeof criteria === 'undefined' ? 'undefined' : _typeof(criteria)) !== 'object' ? '/' + criteria : '?' + _qs2.default.stringify(criteria);
     }
 
-    return this.request('get', requestPath, undefined, options);
+    return this.request('GET', requestPath, undefined, options);
   };
 
   Rest.prototype.post = function post(resource, body, options) {
-    return this.request('post', resource, body, options);
+    return this.request('POST', resource, body, options);
   };
 
   Rest.prototype.update = function update(resource, criteria, body, options) {
@@ -83,7 +83,17 @@ var Rest = exports.Rest = function () {
       requestPath += (typeof criteria === 'undefined' ? 'undefined' : _typeof(criteria)) !== 'object' ? '/' + criteria : '?' + _qs2.default.stringify(criteria);
     }
 
-    return this.request('put', requestPath, body, options);
+    return this.request('PUT', requestPath, body, options);
+  };
+
+  Rest.prototype.patch = function patch(resource, criteria, body, options) {
+    var requestPath = resource;
+
+    if (criteria) {
+      requestPath += (typeof criteria === 'undefined' ? 'undefined' : _typeof(criteria)) !== 'object' ? '/' + criteria : '?' + _qs2.default.stringify(criteria);
+    }
+
+    return this.request('PATCH', requestPath, body, options);
   };
 
   Rest.prototype.destroy = function destroy(resource, criteria, options) {
@@ -93,7 +103,7 @@ var Rest = exports.Rest = function () {
       requestPath += (typeof criteria === 'undefined' ? 'undefined' : _typeof(criteria)) !== 'object' ? '/' + criteria : '?' + _qs2.default.stringify(criteria);
     }
 
-    return this.request('delete', requestPath, undefined, options);
+    return this.request('DELETE', requestPath, undefined, options);
   };
 
   Rest.prototype.create = function create(resource, body, options) {
