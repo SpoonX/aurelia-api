@@ -1,3 +1,27 @@
+<a name"3.0.0-rc1"></a>
+## 3.0.0-rc1 (2016-04-28)
+
+
+#### Bug Fixes
+
+* **Rest:** uppercase default methods ([a008536f](https://github.com/SpoonX/aurelia-api/commit/a008536f))
+
+
+#### Features
+
+* **Rest:** Add patch method, update docs for criteria implementation ([a0328aad](https://github.com/SpoonX/aurelia-api/commit/a0328aad))
+* **project:**
+  * bundle into single file ([b471d570](https://github.com/SpoonX/aurelia-api/commit/b471d570))
+  * Rename project to remove spoonx prefix ([5ab4d3e1](https://github.com/SpoonX/aurelia-api/commit/5ab4d3e1))
+
+
+#### Breaking Changes
+
+* all imports need to use 'aurelia-api'
+
+ ([b471d570](https://github.com/SpoonX/aurelia-api/commit/b471d570))
+
+
 <a name"2.2.0"></a>
 ## 2.2.0 (2016-04-04)
 
