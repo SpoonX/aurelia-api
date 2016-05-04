@@ -1,3 +1,12 @@
+<a name"3.0.0-rc2"></a>
+### 3.0.0-rc2 (2016-05-04)
+
+
+#### Bug Fixes
+
+* **typings:** mark optional parameters ([18e86fc6](https://github.com/SpoonX/aurelia-api/commit/18e86fc6))
+
+
 <a name"3.0.0-rc1"></a>
 ## 3.0.0-rc1 (2016-04-28)
 
