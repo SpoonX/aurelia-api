@@ -8,7 +8,7 @@ declare module 'aurelia-api' {
        * @param {HttpClient} httpClient
        * @param {string}     [endpoint]
        */
-    constructor(httpClient: any, endpoint: any);
+    constructor(httpClient?: any, endpoint?: any);
     
     /**
        * Make a request to the server.
@@ -20,7 +20,7 @@ declare module 'aurelia-api' {
        *
        * @return {Promise}
        */
-    request(method: any, path: any, body: any, options?: any): any;
+    request(method?: any, path?: any, body?: any, options?: any): any;
     
     /**
        * Find a resource.
@@ -31,7 +31,7 @@ declare module 'aurelia-api' {
        *
        * @return {Promise}
        */
-    find(resource: any, criteria: any, options: any): any;
+    find(resource?: any, criteria?: any, options?: any): any;
     
     /**
        * Create a new instance for resource.
@@ -42,7 +42,7 @@ declare module 'aurelia-api' {
        *
        * @return {Promise}
        */
-    post(resource: any, body: any, options: any): any;
+    post(resource?: any, body?: any, options?: any): any;
     
     /**
        * Update a resource.
@@ -54,7 +54,7 @@ declare module 'aurelia-api' {
        *
        * @return {Promise}
        */
-    update(resource: any, criteria: any, body: any, options: any): any;
+    update(resource?: any, criteria?: any, body?: any, options?: any): any;
     
     /**
        * Patch a resource.
@@ -66,7 +66,7 @@ declare module 'aurelia-api' {
        *
        * @return {Promise}
        */
-    patch(resource: any, criteria: any, body: any, options: any): any;
+    patch(resource?: any, criteria?: any, body?: any, options?: any): any;
     
     /**
        * Delete a resource.
@@ -77,7 +77,7 @@ declare module 'aurelia-api' {
        *
        * @return {Promise}
        */
-    destroy(resource: any, criteria: any, options: any): any;
+    destroy(resource?: any, criteria?: any, options?: any): any;
     
     /**
        * Create a new instance for resource.
@@ -88,7 +88,7 @@ declare module 'aurelia-api' {
        *
        * @return {Promise}
        */
-    create(resource: any, body: any, options: any): any;
+    create(resource?: any, body?: any, options?: any): any;
   }
   export class Config {
     endpoints: any;
@@ -104,7 +104,7 @@ declare module 'aurelia-api' {
        * @see http://aurelia.io/docs.html#/aurelia/fetch-client/latest/doc/api/class/HttpClientConfiguration
        * @return {Config}
        */
-    registerEndpoint(name: any, configureMethod: any, defaults?: any): any;
+    registerEndpoint(name?: any, configureMethod?: any, defaults?: any): any;
     
     /**
        * Get a previously registered endpoint. Returns null when not found.
@@ -113,7 +113,7 @@ declare module 'aurelia-api' {
        *
        * @return {Rest|null}
        */
-    getEndpoint(name: any): any;
+    getEndpoint(name?: any): any;
     
     /**
        * Check if an endpoint has been registered.
@@ -122,7 +122,7 @@ declare module 'aurelia-api' {
        *
        * @return {boolean}
        */
-    endpointExists(name: any): any;
+    endpointExists(name?: any): any;
     
     /**
        * Set a previously registered endpoint as the default.
@@ -131,7 +131,7 @@ declare module 'aurelia-api' {
        *
        * @return {Config}
        */
-    setDefaultEndpoint(name: any): any;
+    setDefaultEndpoint(name?: any): any;
   }
   export class Endpoint {
     
@@ -140,7 +140,7 @@ declare module 'aurelia-api' {
        *
        * @param {string} key
        */
-    constructor(key: any);
+    constructor(key?: any);
     
     /**
        * Resolve for key.
@@ -149,7 +149,7 @@ declare module 'aurelia-api' {
        *
        * @return {*}
        */
-    get(container: any): any;
+    get(container?: any): any;
     
     /**
        * Get a new resolver for `key`.
@@ -158,6 +158,6 @@ declare module 'aurelia-api' {
        *
        * @return {Endpoint}
        */
-    static of(key: any): any;
+    static of(key?: any): any;
   }
 }
