@@ -93,7 +93,6 @@ describe('Config', function() {
   describe('.setDefaultEndpoint()', function() {
     it('Should set the default endpoint.', function() {
       let config = container.get(Config);
-      console.log(config.getEndpoint());
 
       config.registerEndpoint('api', baseUrls.api);
       expect(config.getEndpoint()).toBe(null);
