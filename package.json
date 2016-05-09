@@ -51,7 +51,7 @@
     "aurelia-dependency-injection": "^1.0.0-beta.1.2.0",
     "aurelia-fetch-client": "^1.0.0-beta.1.2.0",
     "extend": "^3.0.0",
-    "qs": "^6.1.0"
+    "qs": "^6.2.0"
   },
   "devDependencies": {
     "aurelia-tools": "^0.1.20",
