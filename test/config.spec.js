@@ -1,11 +1,16 @@
 import {HttpClient} from 'aurelia-fetch-client';
 import {Config, Rest} from '../src/aurelia-api';
 import extend from 'extend';
+import {Container} from 'aurelia-dependency-injection';
 
 describe('Config', function() {
+  let container = new Container();
+  //Register transient because we want to get a new instance of Config in each test
+  container.registerTransient(Config, Config);
+
   describe('.registerEndpoint()', function() {
     it('Should properly register an endpoint when providing a config callback.', function() {
-      let config   = new Config;
+      let config   = container.get(Config);
       let returned = config.registerEndpoint('github', function(configure) {
         configure.withBaseUrl(baseUrls.github);
         configure.withDefaults(userOptions);
@@ -17,7 +22,8 @@ describe('Config', function() {
     });
 
     it('Should properly register an endpoint when providing an endpoint string.', function() {
-      let config   = new Config;
+      let config   = container.get(Config);
+
       let returned = config.registerEndpoint('api', baseUrls.api);
 
       expect(config.endpoints.api.defaults).toEqual(defaultOptions);
@@ -26,7 +32,8 @@ describe('Config', function() {
     });
 
     it('Should properly register an endpoint with no arguments.', function() {
-      let config   = new Config;
+      let config   = container.get(Config);
+
       let returned = config.registerEndpoint('boring');
 
       expect(config.endpoints.boring.defaults).toEqual(defaultOptions);
@@ -35,7 +42,8 @@ describe('Config', function() {
     });
 
     it('Should properly register an endpoint when providing an endpoint string and defaults.', function() {
-      let config   = new Config;
+      let config = container.get(Config);
+
       let returned = config.registerEndpoint('api', baseUrls.api, userOptions);
 
       expect(config.endpoints.api.defaults).toEqual(extend(true, {}, defaultOptions, userOptions));
@@ -46,7 +54,7 @@ describe('Config', function() {
 
   describe('.getEndpoint()', function() {
     it('Should return the registered endpoint, or null.', function() {
-      let config = new Config;
+      let config = container.get(Config);
 
       config.registerEndpoint('api', baseUrls.api);
 
@@ -72,7 +80,7 @@ describe('Config', function() {
 
   describe('.endpointExists()', function() {
     it('Should return if given name is a registered endpoint.', function() {
-      let config = new Config;
+      let config = container.get(Config);
 
       config.registerEndpoint('api', baseUrls.api);
 
@@ -84,7 +92,7 @@ describe('Config', function() {
 
   describe('.setDefaultEndpoint()', function() {
     it('Should set the default endpoint.', function() {
-      let config = new Config;
+      let config = container.get(Config);
 
       config.registerEndpoint('api', baseUrls.api);
       expect(config.getEndpoint()).toBe(null);
