@@ -33,12 +33,14 @@
     "dependencies": {
       "aurelia-dependency-injection": "^1.0.0-beta.1.2.0",
       "aurelia-fetch-client": "^1.0.0-beta.1.2.0",
+      "aurelia-framework": "^1.0.0-beta.1.2.2",
       "extend": "^3.0.0",
       "qs": "^6.1.0"
     },
     "peerDependencies": {
       "aurelia-dependency-injection": "^1.0.0-beta.1.2.0",
       "aurelia-fetch-client": "^1.0.0-beta.1.2.0",
+      "aurelia-framework": "^1.0.0-beta.1.2.2",
       "extend": "^3.0.0",
       "qs": "^6.1.0"
     },
@@ -50,6 +52,7 @@
   "dependencies": {
     "aurelia-dependency-injection": "^1.0.0-beta.1.2.0",
     "aurelia-fetch-client": "^1.0.0-beta.1.2.0",
+    "aurelia-framework": "^1.0.0-beta.1.2.2",
     "extend": "^3.0.0",
     "qs": "^6.1.0"
   },
