@@ -42,7 +42,7 @@ export class Rest {
     }
 
     return this.client.fetch(path, requestOptions).then(response => {
-      if (response.status >= 200 && response.status < 400) {
+      if (response.ok) {
         return response.json().catch(error => null);
       }
 
