@@ -38,7 +38,7 @@ export class Rest {
     requestOptions.method = method;
 
     if (typeof body === 'object') {
-      requestOptions.body = json(body);
+      requestOptions.body = (typeof Blob === 'function') ? json(body) : JSON.stringify(body);
     }
 
     return this.client.fetch(path, requestOptions).then(response => {
