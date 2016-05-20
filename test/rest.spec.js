@@ -29,38 +29,45 @@ describe('Rest', function() {
       expect(injectTest.apiEndpoint instanceof Rest).toBe(true);
       expect(injectTest.githubEndpoint instanceof Rest).toBe(true);
 
-      Promise.all([
-        injectTest.githubEndpoint.find('repos/spoonx/aurelia-orm/contributors')
-          .then(x => {
-            expect(x[0].login).toBe('RWOverdijk');
-          }),
-        injectTest.apiEndpoint.find('posts')
-          .then(y => {
-            expect(y.method).toBe('GET');
-          }),
-        injectTest.apiEndpoint.find('posts')
-          .then(y => {
-            expect(y.path).toBe('/posts');
-          }),
-        injectTest.apiEndpoint.find('posts', 'id')
-          .then(y => {
-            expect(y.path).toBe('/posts/id');
-            expect(JSON.stringify(y.query)).toBe('{}');
-          }),
-        injectTest.apiEndpoint.find('posts', criteria)
-          .then(y => {
-            expect(y.path).toBe('/posts');
-            expect(JSON.stringify(y.query)).toBe(JSON.stringify(criteria));
-          }),
-        injectTest.apiEndpoint.find('posts', undefined, options)
-          .then(y => {
-            expect(y.path).toBe('/posts');
-            expect(y.contentType).toBe(options.headers['Content-Type']);
-            expect(y.Authorization).toBe(options.headers['Authorization']);
-          })
-      ]).then(x => {
-        done();
-      });
+      injectTest.githubEndpoint.find('repos/spoonx/aurelia-orm/contributors')
+        .then(x => {
+          expect(x[0].login).toBe('RWOverdijk');
+          done();
+        });
+
+      injectTest.apiEndpoint.find('posts')
+        .then(y => {
+          expect(y.method).toBe('GET');
+          done();
+        });
+
+      injectTest.apiEndpoint.find('posts')
+        .then(y => {
+          expect(y.path).toBe('/posts');
+          done();
+        });
+
+      injectTest.apiEndpoint.find('posts', 'id')
+        .then(y => {
+          expect(y.path).toBe('/posts/id');
+          expect(JSON.stringify(y.query)).toBe('{}');
+          done();
+        });
+
+      injectTest.apiEndpoint.find('posts', criteria)
+        .then(y => {
+          expect(y.path).toBe('/posts');
+          expect(JSON.stringify(y.query)).toBe(JSON.stringify(criteria));
+          done();
+        });
+
+      injectTest.apiEndpoint.find('posts', undefined, options)
+        .then(y => {
+          expect(y.path).toBe('/posts');
+          expect(y.contentType).toBe(options.headers['Content-Type']);
+          expect(y.Authorization).toBe(options.headers['Authorization']);
+          done();
+        });
     });
   });
 
