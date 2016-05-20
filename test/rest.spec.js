@@ -73,7 +73,7 @@ describe('Rest', function() {
           expect(y.method).toBe('PUT');
           expect(y.path).toBe('/posts');
           expect(JSON.stringify(y.query)).toBe(JSON.stringify(criteria));
-          expect(y.contentType).toBe('application/json');
+          expect(y.contentType).toMatch('application/json');
           expect(y.Authorization).toBe(options.headers['Authorization']);
           done();
         });
@@ -89,7 +89,7 @@ describe('Rest', function() {
           expect(y.method).toBe('PATCH');
           expect(y.path).toBe('/post');
           expect(JSON.stringify(y.query)).toBe(JSON.stringify(criteria));
-          expect(y.contentType).toBe('application/json');
+          expect(y.contentType).toMatch('application/json');
           expect(y.Authorization).toBe(options.headers['Authorization']);
           done();
         });
@@ -119,7 +119,7 @@ describe('Rest', function() {
         .then(y => {
           expect(y.method).toBe('POST');
           expect(y.path).toBe('/posts');
-          expect(y.contentType).toBe('application/json');
+          expect(y.contentType).toMatch('application/json');
           expect(y.Authorization).toBe(options.headers['Authorization']);
           done();
         });
