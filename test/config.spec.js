@@ -49,7 +49,7 @@ describe('Config', function() {
       let config   = new Config;
       let returned = config.registerEndpoint('api', baseUrls.api, {}, HttpClientAdapter);
 
-      let message= {}
+      let message = {};
       config.endpoints.api.client.requestTransformers[0](null, null, message);
 
       expect(message.baseUrl).toEqual(baseUrls.api);
