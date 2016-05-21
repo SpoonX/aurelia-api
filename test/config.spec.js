@@ -1,5 +1,7 @@
 import {HttpClient} from 'aurelia-fetch-client';
 import {Config, Rest} from '../src/aurelia-api';
+import {HttpClientAdapter} from '../src/http-client-adapter';
+import {FetchClientAdapter} from '../src/fetch-client-adapter';
 import extend from 'extend';
 
 describe('Config', function() {
@@ -40,6 +42,17 @@ describe('Config', function() {
 
       expect(config.endpoints.api.defaults).toEqual(extend(true, {}, defaultOptions, userOptions));
       expect(config.endpoints.api.client.baseUrl).toEqual(baseUrls.api);
+      expect(returned).toBe(config);
+    });
+
+    it('Should properly register an endpoint when providing the http client adapter.', function() {
+      let config   = new Config;
+      let returned = config.registerEndpoint('api', baseUrls.api, {}, HttpClientAdapter);
+
+      let message= {}
+      config.endpoints.api.client.requestTransformers[0](null, null, message);
+
+      expect(message.baseUrl).toEqual(baseUrls.api);
       expect(returned).toBe(config);
     });
   });
@@ -90,6 +103,23 @@ describe('Config', function() {
       expect(config.getEndpoint()).toBe(null);
       config.setDefaultEndpoint('api');
       expect(config.getEndpoint() instanceof Rest).toBe(true);
+    });
+  });
+
+  describe('.setDefaultClientAdapter()', function() {
+    it('Should set the DefaultClientAdapter.', function() {
+      let config = new Config;
+
+      config.setDefaultClientAdapter(HttpClientAdapter);
+      expect(config.defaultClientAdapter).toBe(HttpClientAdapter);
+    });
+  });
+
+  describe('.setDefaultClientAdapter()', function() {
+    it('Should use the DefaultClientAdapter.', function() {
+      let config = new Config;
+
+      expect(config.defaultClientAdapter).toBe(FetchClientAdapter);
     });
   });
 });
