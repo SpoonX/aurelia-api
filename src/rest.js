@@ -1,5 +1,6 @@
 import qs from 'qs';
 import extend from 'extend';
+import {HttpRequestMessage, Headers} from 'aurelia-http-client';
 
 export class Rest {
 
@@ -34,20 +35,41 @@ export class Rest {
   request(method, path, body, options = {}) {
     let requestOptions = extend(true, {}, this.defaults, options);
 
-    requestOptions.method = method;
+    let fetchRequest = () => {
+      requestOptions.method = method;
 
-    if (typeof body === 'object') {
-      requestOptions.body = JSON.stringify(body);
-      requestOptions.headers['Content-Type'] = 'application/json';
-    }
-
-    return this.client.fetch(path, requestOptions).then(response => {
-      if (response.status >= 200 && response.status < 400) {
-        return response.json().catch(error => null);
+      if (typeof body === 'object') {
+        requestOptions.body = JSON.stringify(body);
+        requestOptions.headers['Content-Type'] = 'application/json';
       }
 
-      throw response;
-    });
+      return this.client.fetch(path, requestOptions).then(response => {
+        if (response.status >= 200 && response.status < 400) {
+          return response.json().catch(error => null);
+        }
+
+        throw response;
+      });
+    };
+
+    let sendRequest = () => {
+      let msg = new HttpRequestMessage(method, path, body, new Headers(requestOptions.headers));
+
+      return this.client.send(msg)
+        .then(response => {
+          if (response.statusCode >= 200 && response.statusCode < 400) {
+            return JSON.parse(response.response);
+          }
+
+          throw response;
+        });
+    };
+
+    if (this.client.fetch) {
+      return fetchRequest();
+    } else {
+      return sendRequest();
+    }
   }
 
   /**
