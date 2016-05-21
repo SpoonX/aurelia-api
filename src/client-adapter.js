@@ -9,7 +9,7 @@ export class ClientAdapter {
    *
    * @return {Promise}
    */
-  request(method, path, body, options = {}) {
-    throw new Error('The client adapter must implement a request method.')
+  request(method, path, body, optionsCopy) {
+    throw new Error('The client adapter must implement a request method.');
   }
 }

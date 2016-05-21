@@ -33,7 +33,9 @@ export class Rest {
    * @return {Promise}
    */
   request(method, path, body, options = {}) {
-    return this.clientAdapter.request(method, path, body, options);
+    let requestOptions = extend(true, {}, this.defaults, options);
+
+    return this.clientAdapter.request(method, path, body, requestOptions);
   }
 
   /**
