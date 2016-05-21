@@ -1,10 +1,27 @@
-import {HttpClient} from 'aurelia-fetch-client';
+import {ClientAdapter} from './client-adapter';
+import {FetchClientAdapter} from './fetch-client-adapter';
 import {Rest} from './rest';
 import extend from 'extend';
 
 export class Config {
   endpoints       = {};
   defaultEndpoint = null;
+  defaultClientAdapter = FetchClientAdapter;
+
+  /**
+   * Set a new defaultClientAdapter
+   *
+   * @param {string}  clientAdapter  The ClientAdapter class
+   *
+   * @return {Config}
+   */
+  setDefaultClientAdapter(clientAdapter) {
+    if (!clientAdapter instanceof ClientAdapter) throw new TypeError('No a ClientAdapter');
+
+    this.defaultClientAdapter = clientAdapter;
+
+    return this;
+  }
 
   /**
    * Register a new endpoint.
@@ -16,16 +33,16 @@ export class Config {
    * @see http://aurelia.io/docs.html#/aurelia/fetch-client/latest/doc/api/class/HttpClientConfiguration
    * @return {Config}
    */
-  registerEndpoint(name, configureMethod, defaults = {}) {
-    let newClient        = new HttpClient();
-    this.endpoints[name] = new Rest(newClient, name);
+  registerEndpoint(name, configureMethod, defaults = {}, CurrentClientAdapter = this.defaultClientAdapter) {
+    let clientAdapter    = new CurrentClientAdapter();
+    this.endpoints[name] = new Rest(clientAdapter, name);
 
     // add custom defaults to Rest
     extend(true, this.endpoints[name].defaults, defaults);
 
     // Manual configure of client.
     if (typeof configureMethod === 'function') {
-      newClient.configure(configureMethod);
+      clientAdapter.client.configure(configureMethod);
 
       return this;
     }
@@ -36,7 +53,7 @@ export class Config {
     }
 
     // Base url is string. Configure.
-    newClient.configure(configure => {
+    clientAdapter.client.configure(configure => {
       configure.withBaseUrl(configureMethod);
     });
 

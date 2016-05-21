@@ -16,9 +16,10 @@ export class Rest {
    * @param {HttpClient} httpClient
    * @param {string}     [endpoint]
    */
-  constructor(httpClient, endpoint) {
-    this.client   = httpClient;
-    this.endpoint = endpoint;
+  constructor(clientAdapter, endpoint) {
+    this.clientAdapter   = clientAdapter;
+    this.client          = clientAdapter.client;
+    this.endpoint        = endpoint;
   }
 
   /**
@@ -32,22 +33,7 @@ export class Rest {
    * @return {Promise}
    */
   request(method, path, body, options = {}) {
-    let requestOptions = extend(true, {}, this.defaults, options);
-
-    requestOptions.method = method;
-
-    if (typeof body === 'object') {
-      requestOptions.body = JSON.stringify(body);
-      requestOptions.headers['Content-Type'] = 'application/json';
-    }
-
-    return this.client.fetch(path, requestOptions).then(response => {
-      if (response.status >= 200 && response.status < 400) {
-        return response.json().catch(error => null);
-      }
-
-      throw response;
-    });
+    return this.clientAdapter.request(method, path, body, options);
   }
 
   /**
