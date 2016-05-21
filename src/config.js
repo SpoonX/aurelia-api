@@ -1,11 +1,17 @@
+import {inject, Factory} from 'aurelia-dependency-injection';
 import {HttpClient} from 'aurelia-fetch-client';
 import {Rest} from './rest';
 import extend from 'extend';
 
+@inject(Factory.of(HttpClient))
 export class Config {
   endpoints       = {};
   defaultEndpoint = null;
+  httpClientFactory = null;
 
+  constructor(httpClientFactory: Factory) {
+    this.httpClientFactory = httpClientFactory;
+  }
   /**
    * Register a new endpoint.
    *
@@ -17,7 +23,7 @@ export class Config {
    * @return {Config}
    */
   registerEndpoint(name, configureMethod, defaults = {}) {
-    let newClient        = new HttpClient();
+    let newClient        = this.httpClientFactory();
     this.endpoints[name] = new Rest(newClient, name);
 
     // add custom defaults to Rest
