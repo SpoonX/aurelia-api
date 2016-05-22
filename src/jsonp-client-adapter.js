@@ -8,10 +8,10 @@ export class JSONPClientAdapter extends ClientAdapter {
    *
    * @param {HttpClient} httpClient
    */
-  constructor() {
+  constructor(client) {
     super();
 
-    this.client = new HttpClient();
+    this.client = client ? client : new HttpClient();
   }
 
   /**
