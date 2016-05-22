@@ -3,6 +3,7 @@ import {Container} from 'aurelia-dependency-injection';
 import {InjectTest} from './resources/inject-test';
 import {HttpClientAdapter} from '../src/http-client-adapter';
 import {FetchClientAdapter} from '../src/fetch-client-adapter';
+import {JSONPClientAdapter} from '../src/jsonp-client-adapter';
 
 let container = new Container();
 let config    = container.get(Config);
@@ -14,6 +15,7 @@ let baseUrls  = {
 config.registerEndpoint('api', baseUrls.api);
 config.registerEndpoint('github', baseUrls.github);
 config.registerEndpoint('api-http', baseUrls.api, {}, HttpClientAdapter);
+config.registerEndpoint('api-jsonp', baseUrls.api + 'jsonp/', {}, JSONPClientAdapter);
 
 let criteria = {user: 'john', comment: 'last'};
 let body = {message: 'some'};
@@ -26,16 +28,14 @@ let options = {
 
 describe('Rest', function() {
   describe('.find()', function() {
-    it('Should find results for multiple endpoints.', function(done) {
+    it('Should find results for multiple endpoints (with default ClientAdapter).', function(done) {
       let injectTest = container.get(InjectTest);
 
       expect(injectTest.apiEndpoint instanceof Rest).toBe(true);
       expect(injectTest.githubEndpoint instanceof Rest).toBe(true);
-      expect(injectTest.apiHttpEndpoint instanceof Rest).toBe(true);
 
       expect(injectTest.apiEndpoint.clientAdapter instanceof FetchClientAdapter).toBe(true);
       expect(injectTest.githubEndpoint.clientAdapter instanceof FetchClientAdapter).toBe(true);
-      expect(injectTest.apiHttpEndpoint.clientAdapter instanceof HttpClientAdapter).toBe(true);
 
       injectTest.githubEndpoint.find('repos/spoonx/aurelia-orm/contributors')
         .then(x => {
@@ -76,6 +76,13 @@ describe('Rest', function() {
           expect(y.Authorization).toBe(options.headers['Authorization']);
           done();
         });
+    });
+
+    it('Should find results with HttpClientAdapter).', function(done) {
+      let injectTest = container.get(InjectTest);
+
+      expect(injectTest.apiHttpEndpoint instanceof Rest).toBe(true);
+      expect(injectTest.apiHttpEndpoint.clientAdapter instanceof HttpClientAdapter).toBe(true);
 
       injectTest.apiHttpEndpoint.find('posts')
         .then(y => {
@@ -108,6 +115,38 @@ describe('Rest', function() {
           expect(y.path).toBe('/posts');
           expect(y.contentType).toBe(options.headers['Content-Type']);
           expect(y.Authorization).toBe(options.headers['Authorization']);
+          done();
+        });
+    });
+
+    it('Should find results with JSONPClientAdapter).', function(done) {
+      let injectTest = container.get(InjectTest);
+
+      expect(injectTest.apiJSONPEndpoint instanceof Rest).toBe(true);
+      expect(injectTest.apiJSONPEndpoint.clientAdapter instanceof JSONPClientAdapter).toBe(true);
+
+      injectTest.apiJSONPEndpoint.find('posts')
+        .then(y => {
+          expect(y.method).toBe('GET');
+          done();
+        });
+
+      injectTest.apiJSONPEndpoint.find('posts')
+        .then(y => {
+          expect(y.path).toBe('/jsonp/posts');
+          done();
+        });
+
+      injectTest.apiJSONPEndpoint.find('posts', 'id')
+        .then(y => {
+          expect(y.path).toBe('/jsonp/posts/id');
+          done();
+        });
+
+      injectTest.apiJSONPEndpoint.find('posts', criteria)
+        .then(y => {
+          expect(y.path).toBe('/jsonp/posts');
+          expect(criteria.user).toBe(y.query.user);
           done();
         });
     });
