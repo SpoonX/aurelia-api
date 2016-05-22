@@ -1,4 +1,4 @@
-import {HttpClient, JSONPRequestMessage} from 'aurelia-http-client';
+import {HttpClient} from 'aurelia-http-client';
 import {ClientAdapter} from './client-adapter';
 
 export class JSONPClientAdapter extends ClientAdapter {

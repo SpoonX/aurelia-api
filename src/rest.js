@@ -11,10 +11,10 @@ export class Rest {
   }
 
   /**
-   * Inject the httpClient to use for requests.
+   * Inject the clientAdapter to use for requests.
    *
-   * @param {HttpClient} httpClient
-   * @param {string}     [endpoint]
+   * @param {ClientAdapter} clientAdapter
+   * @param {string}        [endpoint]
    */
   constructor(clientAdapter, endpoint) {
     this.clientAdapter   = clientAdapter;
