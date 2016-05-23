@@ -48,13 +48,7 @@ export class Rest {
    * @return {Promise}
    */
   find(resource, criteria, options) {
-    let requestPath = resource;
-
-    if (criteria !== undefined && criteria !== null) {
-      requestPath += typeof criteria !== 'object' ? `/${criteria}` : '?' + qs.stringify(criteria);
-    }
-
-    return this.request('GET', requestPath, undefined, options);
+    return this.request('GET', getRequestPath(resource, criteria), undefined, options);
   }
 
   /**
@@ -81,13 +75,7 @@ export class Rest {
    * @return {Promise}
    */
   update(resource, criteria, body, options) {
-    let requestPath = resource;
-
-    if (criteria !== undefined && criteria !== null) {
-      requestPath += typeof criteria !== 'object' ? `/${criteria}` : '?' + qs.stringify(criteria);
-    }
-
-    return this.request('PUT', requestPath, body, options);
+    return this.request('PUT', getRequestPath(resource, criteria), body, options);
   }
 
   /**
@@ -101,13 +89,7 @@ export class Rest {
    * @return {Promise}
    */
   patch(resource, criteria, body, options) {
-    let requestPath = resource;
-
-    if (criteria !== undefined && criteria !== null) {
-      requestPath += typeof criteria !== 'object' ? `/${criteria}` : '?' + qs.stringify(criteria);
-    }
-
-    return this.request('PATCH', requestPath, body, options);
+    return this.request('PATCH', getRequestPath(resource, criteria), body, options);
   }
 
   /**
@@ -120,13 +102,7 @@ export class Rest {
    * @return {Promise}
    */
   destroy(resource, criteria, options) {
-    let requestPath = resource;
-
-    if (criteria !== undefined && criteria !== null) {
-      requestPath += typeof criteria !== 'object' ? `/${criteria}` : '?' + qs.stringify(criteria);
-    }
-
-    return this.request('DELETE', requestPath, undefined, options);
+    return this.request('DELETE', getRequestPath(resource, criteria), undefined, options);
   }
 
   /**
@@ -141,4 +117,10 @@ export class Rest {
   create(resource, body, options) {
     return this.post(...arguments);
   }
+}
+
+function getRequestPath(resource, criteria) {
+  return (criteria !== undefined && criteria !== null
+    ? resource + (typeof criteria !== 'object' ? `/${criteria}` : '?' + qs.stringify(criteria))
+    : resource);
 }
