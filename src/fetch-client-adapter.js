@@ -9,9 +9,7 @@ export class FetchClientAdapter extends ClientAdapter {
    * @param {HttpClient} httpClient
    */
   constructor(client) {
-    super();
-
-    this.client = client ? client : new HttpClient();
+    super(client ? client : new HttpClient());
   }
 
   /**
