@@ -5,6 +5,25 @@ export class ClientAdapter {
    * @param {any} client
    */
   constructor(client) {
+    if (!client) {
+      throw new TypeError('Contructor must provide a client to a client adapter');
+    }
+
+    if (typeof client.configure !== 'function') {
+      throw new TypeError('Client implementation must provide a configure function');
+    }
+
+    let hasWithBaseUrl = false;
+    client.configure(configure => {
+      if (!configure || typeof configure.withBaseUrl !== 'function') {
+        return;
+      }
+      hasWithBaseUrl = true;
+    });
+    if (!hasWithBaseUrl) {
+      throw new TypeError('Client configure function implementation must return an builder with a builder.withBaseUrl function');
+    }
+
     this.client = client;
   }
   /**
