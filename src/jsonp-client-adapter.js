@@ -32,9 +32,7 @@ export class JSONPClientAdapter extends ClientAdapter {
   request(method, path, body, optionsCopy) {
     return this.client.jsonp(path, optionsCopy.callbackParameterName
                                   ? optionsCopy.callbackParameterName
-                                  : (this.callbackParameterName
-                                    ? this.callbackParameterName
-                                     : undefined))
+                                  : this.callbackParameterName)
       .then(response => {
         if (response.statusCode >= 200 && response.statusCode < 400) {
           return response.response;
