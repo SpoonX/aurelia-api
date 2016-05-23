@@ -6,7 +6,7 @@ var server;
 app.use(bodyParser.json());
 app.use(cors());
 
-app.set("jsonp callback name", "callback");
+app.set("jsonp callback name", "jsoncallback");
 
 app.get('/jsonp/*', function(req, res) {
   res.jsonp({

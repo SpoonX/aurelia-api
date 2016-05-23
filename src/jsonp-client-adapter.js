@@ -4,6 +4,13 @@ import {ClientAdapter} from './client-adapter';
 export class JSONPClientAdapter extends ClientAdapter {
 
   /**
+   * Optional default callbackParameterName
+   *
+   * @param {callbackParameterName} default callbackParameterName
+   */
+  callbackParameterName;
+
+  /**
    * Inject the httpClient to use for requests.
    *
    * @param {HttpClient} httpClient
@@ -27,7 +34,9 @@ export class JSONPClientAdapter extends ClientAdapter {
   request(method, path, body, optionsCopy) {
     return this.client.jsonp(path, optionsCopy.callbackParameterName
                                   ? optionsCopy.callbackParameterName
-                                  : 'callback')
+                                  : (this.callbackParameterName
+                                    ? this.callbackParameterName
+                                     : undefined))
       .then(response => {
         if (response.statusCode >= 200 && response.statusCode < 400) {
           return response.response;
