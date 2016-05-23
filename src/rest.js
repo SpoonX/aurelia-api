@@ -50,7 +50,7 @@ export class Rest {
   find(resource, criteria, options) {
     let requestPath = resource;
 
-    if (criteria) {
+    if (criteria !== undefined && criteria !== null) {
       requestPath += typeof criteria !== 'object' ? `/${criteria}` : '?' + qs.stringify(criteria);
     }
 
@@ -83,7 +83,7 @@ export class Rest {
   update(resource, criteria, body, options) {
     let requestPath = resource;
 
-    if (criteria) {
+    if (criteria !== undefined && criteria !== null) {
       requestPath += typeof criteria !== 'object' ? `/${criteria}` : '?' + qs.stringify(criteria);
     }
 
@@ -103,7 +103,7 @@ export class Rest {
   patch(resource, criteria, body, options) {
     let requestPath = resource;
 
-    if (criteria) {
+    if (criteria !== undefined && criteria !== null) {
       requestPath += typeof criteria !== 'object' ? `/${criteria}` : '?' + qs.stringify(criteria);
     }
 
@@ -122,7 +122,7 @@ export class Rest {
   destroy(resource, criteria, options) {
     let requestPath = resource;
 
-    if (criteria) {
+    if (criteria !== undefined && criteria !== null) {
       requestPath += typeof criteria !== 'object' ? `/${criteria}` : '?' + qs.stringify(criteria);
     }
 
