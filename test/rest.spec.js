@@ -65,7 +65,8 @@ describe('Rest', function() {
       injectTest.apiEndpoint.find('posts', criteria)
         .then(y => {
           expect(y.path).toBe('/posts');
-          expect(JSON.stringify(y.query)).toBe(JSON.stringify(criteria));
+          expect(y.query.user).toBe(criteria.user);
+          expect(y.query.comment).toBe(criteria.comment);
           done();
         });
 
@@ -106,7 +107,8 @@ describe('Rest', function() {
       injectTest.apiHttpEndpoint.find('posts', criteria)
         .then(y => {
           expect(y.path).toBe('/posts');
-          expect(JSON.stringify(y.query)).toBe(JSON.stringify(criteria));
+          expect(y.query.user).toBe(criteria.user);
+          expect(y.query.comment).toBe(criteria.comment);
           done();
         });
 
@@ -146,7 +148,8 @@ describe('Rest', function() {
       injectTest.apiJSONPEndpoint.find('posts', criteria)
         .then(y => {
           expect(y.path).toBe('/jsonp/posts');
-          expect(criteria.user).toBe(y.query.user);
+          expect(y.query.user).toBe(criteria.user);
+          expect(y.query.comment).toBe(criteria.comment);
           done();
         });
     });
@@ -160,7 +163,8 @@ describe('Rest', function() {
         .then(y => {
           expect(y.method).toBe('PUT');
           expect(y.path).toBe('/posts');
-          expect(JSON.stringify(y.query)).toBe(JSON.stringify(criteria));
+          expect(y.query.user).toBe(criteria.user);
+          expect(y.query.comment).toBe(criteria.comment);
           expect(y.contentType).toMatch('application/json');
           expect(y.Authorization).toBe(options.headers['Authorization']);
           done();
@@ -170,7 +174,8 @@ describe('Rest', function() {
         .then(y => {
           expect(y.method).toBe('PUT');
           expect(y.path).toBe('/posts');
-          expect(JSON.stringify(y.query)).toBe(JSON.stringify(criteria));
+          expect(y.query.user).toBe(criteria.user);
+          expect(y.query.comment).toBe(criteria.comment);
           expect(y.contentType).toMatch('application/json');
           expect(y.Authorization).toBe(options.headers['Authorization']);
           done();
@@ -186,7 +191,8 @@ describe('Rest', function() {
         .then(y => {
           expect(y.method).toBe('PATCH');
           expect(y.path).toBe('/post');
-          expect(JSON.stringify(y.query)).toBe(JSON.stringify(criteria));
+          expect(y.query.user).toBe(criteria.user);
+          expect(y.query.comment).toBe(criteria.comment);
           expect(y.contentType).toMatch('application/json');
           expect(y.Authorization).toBe(options.headers['Authorization']);
           done();
@@ -196,7 +202,8 @@ describe('Rest', function() {
         .then(y => {
           expect(y.method).toBe('PATCH');
           expect(y.path).toBe('/post');
-          expect(JSON.stringify(y.query)).toBe(JSON.stringify(criteria));
+          expect(y.query.user).toBe(criteria.user);
+          expect(y.query.comment).toBe(criteria.comment);
           expect(y.contentType).toMatch('application/json');
           expect(y.Authorization).toBe(options.headers['Authorization']);
           done();

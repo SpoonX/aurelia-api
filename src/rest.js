@@ -1,4 +1,4 @@
-import qs from 'qs';
+import {buildQueryString} from 'aurelia-path';
 import extend from 'extend';
 
 export class Rest {
@@ -121,6 +121,6 @@ export class Rest {
 
 function getRequestPath(resource, criteria) {
   return (criteria !== undefined && criteria !== null
-    ? resource + (typeof criteria !== 'object' ? `/${criteria}` : '?' + qs.stringify(criteria))
+    ? resource + (typeof criteria !== 'object' ? `/${criteria}` : '?' + buildQueryString(criteria))
     : resource);
 }

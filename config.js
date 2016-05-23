@@ -11,10 +11,10 @@ System.config({
     "aurelia-fetch-client": "npm:aurelia-fetch-client@1.0.0-beta.1.2.5",
     "aurelia-http-client": "npm:aurelia-http-client@1.0.0-beta.1.2.1",
     "aurelia-pal-browser": "npm:aurelia-pal-browser@1.0.0-beta.1.2.1",
+    "aurelia-path": "npm:aurelia-path@1.0.0-beta.1.2.2",
     "aurelia-polyfills": "npm:aurelia-polyfills@1.0.0-beta.1.1.4",
     "extend": "npm:extend@3.0.0",
     "fetch": "github:github/fetch@0.11.1",
-    "qs": "npm:qs@6.2.0",
     "npm:aurelia-dependency-injection@1.0.0-beta.1.2.3": {
       "aurelia-logging": "npm:aurelia-logging@1.0.0-beta.1.2.1",
       "aurelia-metadata": "npm:aurelia-metadata@1.0.0-beta.1.2.1",
