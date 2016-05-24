@@ -1,11 +1,12 @@
 import {parseQueryString, join} from 'aurelia-path';
 import {DefaultLoader} from 'aurelia-loader-default';
-import {findSelected} from './utils';
+import {findSelected} from './util';
 
 export class FileClient {
-  constructor() {
-    this.baseUrl = '';
-    this.loader = new DefaultLoader();
+  baseUrl = '';
+
+  constructor(loader = new DefaultLoader()) {
+    this.loader = loader;
   }
 
   builder = {

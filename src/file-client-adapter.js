@@ -1,15 +1,18 @@
 import {ClientAdapter} from './client-adapter';
 import {FileClient} from './file-client';
 
+/**
+* A file client adapter for the fetch-client
+*/
 export class FileClientAdapter extends ClientAdapter {
   /**
-   * Inject the storageClient to use for requests.
+   * Creates an instance of FileClientAdapter.
    *
-   * @param {FileClient} FileClient
+   * @param {FileClient} fileClient
    */
-  constructor() {
-    super(new FileClient());
-  }
+   constructor(client = new FileClient()) {
+     super(client);
+   }
 
   /**
    * Make a request to the file system.
@@ -19,7 +22,7 @@ export class FileClientAdapter extends ClientAdapter {
    * @param {{}}     [body]        -> not used
    * @param {{}}     [optionsCopy] -> not used
    *
-   * @return {Promise}
+   * @return {Promise<Object|Error>}
    */
   request(method, path, body, optionsCopy) {
     return this.client.loadJson(path);

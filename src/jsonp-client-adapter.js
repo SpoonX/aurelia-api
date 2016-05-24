@@ -1,22 +1,22 @@
 import {HttpClient} from 'aurelia-http-client';
 import {ClientAdapter} from './client-adapter';
 
+/**
+* A jsonp client adapter for the aurelia-http-client
+*/
 export class JSONPClientAdapter extends ClientAdapter {
-
   /**
    * Optional default callbackParameterName
-   *
-   * @param {callbackParameterName} default callbackParameterName
-   */
+  */
   callbackParameterName;
 
   /**
-   * Inject the httpClient to use for requests.
+   * Creates an instance of JSONPClientAdapter.
    *
-   * @param {HttpClient} httpClient
+   * @param {HttpClient} httpClient from aurelia-http-client
    */
-  constructor(client) {
-    super(client ? client : new HttpClient());
+  constructor(client = new HttpClient()) {
+    super(client);
   }
 
   /**
@@ -27,7 +27,7 @@ export class JSONPClientAdapter extends ClientAdapter {
    * @param {{}}     [body], not used
    * @param {{}}     [optionsCopy] only callbackParameterName is used
    *
-   * @return {Promise}
+   * @return {Promise<Object|Error>}
    */
   request(method, path, body, optionsCopy) {
     return this.client.jsonp(path, optionsCopy.callbackParameterName

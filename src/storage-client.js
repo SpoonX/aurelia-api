@@ -1,25 +1,28 @@
 import {parseQueryString} from 'aurelia-path';
 import extend from 'extend';
-import {findSelected} from './utils';
+import {findSelected} from './util';
 
+/**
+* the key base for all storage keys
+*/
 const baseStorageKey = 'AureliaStorageClient';
 
+/**
+* A client for browser storage
+*/
 export class StorageClient {
-  constructor(storage) {
-    this.storage = storage ? storage : window.localStorage;
+  /**
+  * additional base for the storgae key
+  */
+  baseUrl = '';
 
-    this.baseUrl = '';
-  }
-
-  get baseUrl() {
-    return this._baseUrl;
-  }
-
-  set baseUrl(url) {
-    this._baseUrl = url;
-    this.storageKey = `${baseStorageKey}-${url}`;
-
-    return url;
+  /**
+  * Creates an instance of StorageClient.
+   *
+   * @param {Storage} localStorage (default), sessionStore or any other interface compliant storage
+   */
+  constructor(storage = window.localStorage) {
+    this.storage = storage;
   }
 
   builder = {
@@ -39,7 +42,7 @@ export class StorageClient {
 
   send(method, path, body, optionsCopy) {
     let [, pathKey, , id, , query] = /^([^\/^\?]+)(\/)?([^\/^\?]+)?(\?)?(.+)?/.exec(path);
-    let key = `${this.storageKey}${pathKey}`;
+    let key = `${this.getStorageKey()}${pathKey}`;
     let queryParameters = parseQueryString(query);
     if (id) queryParameters.id = id;
 
@@ -117,7 +120,7 @@ export class StorageClient {
   }
 
   clear() {
-    this.storage.deleteItem(this.storageKey);
+    this.storage.deleteItem(this.getStorageKey());
   }
 
   static clear() {
@@ -128,5 +131,9 @@ export class StorageClient {
         this.storage.deleteItem(localStorage.key(i));
       }
     }
+  }
+
+  getStorageKey() {
+    return `${baseStorageKey}-${this.baseUrl}`;
   }
 }

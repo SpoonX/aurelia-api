@@ -1,14 +1,17 @@
 import {ClientAdapter} from './client-adapter';
 import {StorageClient} from './storage-client';
 
+/**
+* A storage client adapter for the storage-client
+*/
 export class StorageClientAdapter extends ClientAdapter {
   /**
-   * Inject the storageClient to use for requests.
+  * Creates an instance of StorageClientAdapter.
    *
    * @param {StorageClient} StorageClient
    */
-  constructor(client) {
-    super(client ? client : new StorageClient());
+  constructor(client = new StorageClient()) {
+    super(client);
   }
 
   /**
@@ -19,7 +22,7 @@ export class StorageClientAdapter extends ClientAdapter {
    * @param {{}}     [body]
    * @param {{}}     [optionsCopy]
    *
-   * @return {Promise}
+   * @return {Promise<Object|Error>}
    */
   request(method, path, body, optionsCopy) {
     return this.client.send(...arguments);

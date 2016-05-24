@@ -1,15 +1,17 @@
 import {HttpClient, HttpRequestMessage, Headers} from 'aurelia-http-client';
 import {ClientAdapter} from './client-adapter';
 
+/**
+* A http client adapter for the aurelia-http-client
+*/
 export class HttpClientAdapter extends ClientAdapter {
-
   /**
-   * Inject the httpClient to use for requests.
+   * Creates an instance of HttphClientAdapter.
    *
-   * @param {HttpClient} httpClient
+   * @param {HttpClient} httpClient from aurelia-http-client
    */
-  constructor(client) {
-    super(client ? client : new HttpClient());
+  constructor(client = new HttpClient()) {
+    super(client);
   }
 
   /**
@@ -20,7 +22,7 @@ export class HttpClientAdapter extends ClientAdapter {
    * @param {{}}     [body]
    * @param {{}}     [optionsCopy]
    *
-   * @return {Promise}
+   * @return {Promise<Object|Error>}
    */
   request(method, path, body, optionsCopy) {
     if (typeof body === 'object') {

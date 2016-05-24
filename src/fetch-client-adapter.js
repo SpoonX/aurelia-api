@@ -1,15 +1,17 @@
 import {HttpClient as FetchClient} from 'aurelia-fetch-client';
 import {ClientAdapter} from './client-adapter';
 
+/**
+* A fetch client adapter for the aurelia-fetch-client
+*/
 export class FetchClientAdapter extends ClientAdapter {
-
   /**
-   * Inject the httpClient to use for requests.
+   * Creates an instance of FetchClientAdapter.
    *
-   * @param {HttpClient} httpClient
+   * @param {HttpClient} httpClient from aurelia-fetch-client
    */
-  constructor(client) {
-    super(client ? client : new FetchClient());
+  constructor(client = new FetchClient()) {
+    super(client);
   }
 
   /**
@@ -20,7 +22,7 @@ export class FetchClientAdapter extends ClientAdapter {
    * @param {{}}     [body]
    * @param {{}}     [optionsCopy]
    *
-   * @return {Promise}
+   * @return {Promise<Object|Error>}
    */
   request(method, path, body, optionsCopy) {
     optionsCopy.method = method;

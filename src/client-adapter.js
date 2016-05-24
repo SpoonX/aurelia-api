@@ -1,8 +1,11 @@
+/**
+* A generic client adapter, for wrapping clients service requests to a standard interface
+*/
 export class ClientAdapter {
   /**
-   * Inject the client to use for requests.
+   * Creates an instance of ClientAdapter.
    *
-   * @param {any} client
+   * @param {any} client - required
    */
   constructor(client) {
     if (!client) {
@@ -27,14 +30,14 @@ export class ClientAdapter {
     this.client = client;
   }
   /**
-   * Make a request to the server.
+   * Make a request to the service.
    *
    * @param {string} method
    * @param {string} path
    * @param {{}}     [body]
    * @param {{}}     [options]
    *
-   * @return {Promise}
+   * @return {Promise<Object|Error>}
    */
   request(method, path, body, optionsCopy) {
     throw new TypeError('The client adapter must implement a request method.');
