@@ -34,6 +34,7 @@
       "aurelia-dependency-injection": "^1.0.0-beta.1.2.3",
       "aurelia-fetch-client": "^1.0.0-beta.1.2.5",
       "aurelia-http-client": "^1.0.0-beta.1.2.1",
+      "aurelia-loader-default": "^1.0.0-beta.1.2.2",
       "aurelia-path": "^1.0.0-beta.1.2.2",
       "extend": "^3.0.0"
     },
@@ -41,6 +42,7 @@
       "aurelia-dependency-injection": "^1.0.0-beta.1.2.3",
       "aurelia-fetch-client": "^1.0.0-beta.1.2.5",
       "aurelia-http-client": "^1.0.0-beta.1.2.1",
+      "aurelia-loader-default": "^1.0.0-beta.1.2.2",
       "aurelia-path": "^1.0.0-beta.1.2.2",
       "extend": "^3.0.0"
     },
@@ -54,6 +56,7 @@
     "aurelia-dependency-injection": "^1.0.0-beta.1.2.3",
     "aurelia-fetch-client": "^1.0.0-beta.1.2.5",
     "aurelia-http-client": "^1.0.0-beta.1.2.1",
+    "aurelia-loader-default": "^1.0.0-beta.1.2.2",
     "aurelia-path": "^1.0.0-beta.1.2.2",
     "extend": "^3.0.0"
   },
