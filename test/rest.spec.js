@@ -5,6 +5,7 @@ import {HttpClientAdapter} from '../src/http-client-adapter';
 import {FetchClientAdapter} from '../src/fetch-client-adapter';
 import {JSONPClientAdapter} from '../src/jsonp-client-adapter';
 import {StorageClientAdapter} from '../src/storage-client-adapter';
+import {FileClientAdapter} from '../src/file-client-adapter';
 
 let container = new Container();
 let config    = container.get(Config);
@@ -18,6 +19,7 @@ config.registerEndpoint('github', baseUrls.github);
 config.registerEndpoint('api-http', baseUrls.api, {}, HttpClientAdapter);
 config.registerEndpoint('api-jsonp', baseUrls.api + 'jsonp/', {}, JSONPClientAdapter);
 config.registerEndpoint('api-storage', baseUrls.api, {}, StorageClientAdapter);
+config.registerEndpoint('api-file', './test/resources/', {}, FileClientAdapter);
 
 let criteria = {user: 'john', comment: 'last'};
 let body = {message: 'some'};
@@ -165,6 +167,31 @@ describe('Rest', function() {
           .then(y => {
             expect(y[0].user).toBe('john');
             expect(y.length).toBe(2);
+          })
+      ]).then(done);
+    });
+
+    it('Should find results with FileClientAdapter).', function(done) {
+      let injectTest = container.get(InjectTest);
+      let data = [{id: 0, user: 'john', comment: 'last'},
+                  {id: 1, user: 'john', comment: 'first'},
+                  {id: 2, user: 'jane'}];
+
+      expect(injectTest.apiFileEndpoint instanceof Rest).toBe(true);
+      expect(injectTest.apiFileEndpoint.clientAdapter instanceof FileClientAdapter).toBe(true);
+
+      Promise.all([
+        injectTest.apiFileEndpoint.find('posts')
+          .then(y => {
+            expect(JSON.stringify(y)).toBe(JSON.stringify(data));
+          }),
+        injectTest.apiFileEndpoint.find('posts', '0')
+          .then(y => {
+            expect(JSON.stringify(y[0])).toBe(JSON.stringify(data[0]));
+          }),
+        injectTest.apiFileEndpoint.find('posts', criteria)
+          .then(y => {
+            expect(JSON.stringify(y[0])).toBe(JSON.stringify(data[0]));
           })
       ]).then(done);
     });
