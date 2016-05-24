@@ -2,6 +2,7 @@ export let settings = {
   baseUrls: {
     github: 'https://api.github.com/',
     api   : 'http://127.0.0.1:1927/',
+    jsonp : 'http://127.0.0.1:1927/jsonp/',
     file  : './test/resources/'
   },
   criteria: {user: 'john', comment: 'last'},

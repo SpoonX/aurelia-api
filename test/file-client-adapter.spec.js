@@ -1,32 +1,31 @@
-import {Config, Rest} from '../src/aurelia-api';
 import {FileClientAdapter} from '../src/file-client-adapter';
 import {FileClient} from '../src/file-client';
-import {Container} from 'aurelia-dependency-injection';
+import {buildQueryString} from 'aurelia-path';
 import {settings} from './resources/settings';
 
-let container = new Container();
-let config    = container.get(Config);
-
-config.registerEndpoint('api-file', settings.baseUrls.file, {}, FileClientAdapter);
-let endpoint = config.getEndpoint('api-file');
+let adapter  = new FileClientAdapter();
 
 describe('FileClientAdapter', function() {
+  describe('.client', function() {
+    it('Should be client with configure(config => config.withBaseUrl(base))', function() {
+      expect(adapter.client instanceof FileClient).toBe(true);
+
+      adapter.client.configure(config => config.withBaseUrl(settings.baseUrls.file));
+    });
+  });
+
   describe('.find()', function() {
     it('Should find results.', function(done) {
-      expect(endpoint instanceof Rest).toBe(true);
-      expect(endpoint.clientAdapter instanceof FileClientAdapter).toBe(true);
-      expect(endpoint.clientAdapter.client instanceof FileClient).toBe(true);
-
       Promise.all([
-        endpoint.find('posts')
+        adapter.request('', 'posts')
           .then(y => {
             expect(JSON.stringify(y)).toBe(JSON.stringify(settings.data));
           }),
-        endpoint.find('posts', '0')
+        adapter.request('', 'posts/0')
           .then(y => {
             expect(JSON.stringify(y[0])).toBe(JSON.stringify(settings.data[0]));
           }),
-        endpoint.find('posts', settings.criteria)
+        adapter.request('', 'posts?' + buildQueryString(settings.criteria))
           .then(y => {
             expect(JSON.stringify(y[0])).toBe(JSON.stringify(settings.data[0]));
           })

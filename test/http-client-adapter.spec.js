@@ -1,52 +1,42 @@
-import {Config, Rest} from '../src/aurelia-api';
-import {Container} from 'aurelia-dependency-injection';
 import {HttpClientAdapter} from '../src/http-client-adapter';
 import {HttpClient} from 'aurelia-http-client';
+import {buildQueryString} from 'aurelia-path';
 import {settings} from './resources/settings';
 
-let container = new Container();
-let config    = container.get(Config);
-
-config.registerEndpoint('api', settings.baseUrls.api, {}, HttpClientAdapter);
-config.registerEndpoint('github', settings.baseUrls.github, {}, HttpClientAdapter);
-let apiEndpoint = config.getEndpoint('api');
-let githubEndpoint = config.getEndpoint('github');
+let adapter  = new HttpClientAdapter();
 
 describe('HttpClientAdapter', function() {
+  describe('.client', function() {
+    it('Should be client with configure(config => config.withBaseUrl(base))', function() {
+      expect(adapter.client instanceof HttpClient).toBe(true);
+
+      adapter.client.configure(config => config.withBaseUrl(settings.baseUrls.api));
+    });
+  });
+
   describe('.find()', function() {
     it('Should find results for multiple endpoints', function(done) {
-      expect(apiEndpoint instanceof Rest).toBe(true);
-      expect(githubEndpoint instanceof Rest).toBe(true);
-      expect(apiEndpoint.clientAdapter instanceof HttpClientAdapter).toBe(true);
-      expect(apiEndpoint.clientAdapter.client instanceof HttpClient).toBe(true);
-      expect(githubEndpoint.clientAdapter instanceof HttpClientAdapter).toBe(true);
-      expect(githubEndpoint.clientAdapter.client instanceof HttpClient).toBe(true);
-
       Promise.all([
-        githubEndpoint.find('repos/spoonx/aurelia-orm/contributors')
-          .then(x => {
-            expect(x[0].login).toBe('RWOverdijk');
-          }),
-        apiEndpoint.find('posts')
+        adapter.request('GET', 'posts')
           .then(y => {
             expect(y.method).toBe('GET');
           }),
-        apiEndpoint.find('posts')
+        adapter.request('GET', 'posts')
           .then(y => {
             expect(y.path).toBe('/posts');
           }),
-        apiEndpoint.find('posts', 'id')
+        adapter.request('GET', 'posts/id')
           .then(y => {
             expect(y.path).toBe('/posts/id');
             expect(JSON.stringify(y.query)).toBe('{}');
           }),
-        apiEndpoint.find('posts', settings.criteria)
+        adapter.request('GET', 'posts?'+buildQueryString(settings.criteria))
           .then(y => {
             expect(y.path).toBe('/posts');
             expect(y.query.user).toBe(settings.criteria.user);
             expect(y.query.comment).toBe(settings.criteria.comment);
           }),
-        apiEndpoint.find('posts', undefined, settings.options)
+        adapter.request('GET', 'posts', undefined, settings.options)
           .then(y => {
             expect(y.path).toBe('/posts');
             expect(y.contentType).toBe(settings.options.headers['Content-Type']);
@@ -55,10 +45,10 @@ describe('HttpClientAdapter', function() {
       ]).then(done);
     });
   });
-
+return;
   describe('.update()', function() {
     it('Should update with body (as json), criteria and options.', function(done) {
-      apiEndpoint.update('posts', settings.criteria, settings.body, settings.options)
+      adapter.request('PUT', 'posts?' + buildQueryString(settings.criteria), settings.body, settings.options)
         .then(y => {
           expect(y.method).toBe('PUT');
           expect(y.path).toBe('/posts');
@@ -73,7 +63,7 @@ describe('HttpClientAdapter', function() {
 
   describe('.patch()', function() {
     it('Should patch with body (as json), criteria and options.', function(done) {
-      apiEndpoint.patch('post', settings.criteria, settings.body, settings.options)
+      adapter.request('PATCH', 'post?' + buildQueryString(settings.criteria), settings.body, settings.options)
         .then(y => {
           expect(y.method).toBe('PATCH');
           expect(y.path).toBe('/post');
@@ -87,8 +77,8 @@ describe('HttpClientAdapter', function() {
   });
 
   describe('.destroy()', function() {
-    it ('Should destroy with id and options.', function(done) {
-      apiEndpoint.destroy('posts', 'id', settings.options)
+    it ('Should destroy with id and options .', function(done) {
+      adapter.request('DELETE', 'posts/id', undefined, settings.options)
         .then(y => {
           expect(y.method).toBe('DELETE');
           expect(y.path).toBe('/posts/id');
@@ -101,7 +91,7 @@ describe('HttpClientAdapter', function() {
 
   describe('.create()', function() {
     it('Should create body (as json) and options.', function(done) {
-      apiEndpoint.create('posts', settings.body, settings.options)
+      adapter.request('POST', 'posts', settings.body, settings.options)
         .then(y => {
           expect(y.method).toBe('POST');
           expect(y.path).toBe('/posts');
