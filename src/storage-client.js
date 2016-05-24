@@ -40,14 +40,14 @@ export class StorageClient {
     }
   }
 
-  send(method, path, body, optionsCopy) {
+  send(method, path, body) {
     let [, pathKey, , id, , query] = /^([^\/^\?]+)(\/)?([^\/^\?]+)?(\?)?(.+)?/.exec(path);
     let key = `${this.getStorageKey()}${pathKey}`;
     let queryParameters = parseQueryString(query);
     if (id) queryParameters.id = id;
 
     let resource = JSON.parse(this.storage.getItem(key));
-    let selection = findSelected(resource, queryParameters);
+    let selection = findSelected(resource, queryParameters) || [];
 
     return new Promise(resolve => {
       switch (method.toUpperCase()) {
@@ -96,7 +96,7 @@ export class StorageClient {
       }
       case 'DELETE': {
         if (Object.keys(queryParameters).length === 0) {
-          this.storage.deleteItem(key);
+          this.storage.removeItem(key);
 
           resolve(resource);
           break;
@@ -120,15 +120,14 @@ export class StorageClient {
   }
 
   clear() {
-    this.storage.deleteItem(this.getStorageKey());
+    this.storage.removeItem(this.getStorageKey());
   }
 
-  static clear() {
-    const reg = /^${baseStorageKey}.+?/;
-
-    for (let i = 0; i < localStorage.length; i++) {
-      if (reg.test(localStorage.key(i))) {
-        this.storage.deleteItem(localStorage.key(i));
+  static clear(storage) {
+    const reg = /^`${baseStorageKey}`-.+/;
+    for (let i = 0; i < storage.length; i++) {
+      if (reg.test(storage.key(i))) {
+        storage.removeItem(storage.key(i));
       }
     }
   }

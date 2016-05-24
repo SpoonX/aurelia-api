@@ -24,7 +24,7 @@ export class HttpClientAdapter extends ClientAdapter {
    *
    * @return {Promise<Object|Error>}
    */
-  request(method, path, body, optionsCopy) {
+  request(method, path, body, optionsCopy = {}) {
     if (typeof body === 'object') {
       optionsCopy.body = JSON.stringify(body);
       optionsCopy.headers['Content-Type'] = 'application/json';

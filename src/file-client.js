@@ -33,7 +33,7 @@ export class FileClient {
 
     return this.loader.loadText(join(this.baseUrl, pathKey) + '.json').then(text => {
       let resource = JSON.parse(text);
-      return findSelected(resource, queryParameters);
+      return findSelected(resource, queryParameters) || [];
     });
   }
 }

@@ -20,11 +20,10 @@ export class StorageClientAdapter extends ClientAdapter {
    * @param {string} method
    * @param {string} path
    * @param {{}}     [body]
-   * @param {{}}     [optionsCopy]
    *
    * @return {Promise<Object|Error>}
    */
-  request(method, path, body, optionsCopy) {
+  request(method, path, body) {
     return this.client.send(...arguments);
   }
 }

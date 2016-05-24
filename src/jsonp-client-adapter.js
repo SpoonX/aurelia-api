@@ -29,7 +29,7 @@ export class JSONPClientAdapter extends ClientAdapter {
    *
    * @return {Promise<Object|Error>}
    */
-  request(method, path, body, optionsCopy) {
+  request(method, path, body, optionsCopy = {}) {
     return this.client.jsonp(path, optionsCopy.callbackParameterName
                                   ? optionsCopy.callbackParameterName
                                   : this.callbackParameterName)

@@ -19,12 +19,10 @@ export class FileClientAdapter extends ClientAdapter {
    *
    * @param {string} method        -> not used, fixed to json/loadJson
    * @param {string} path
-   * @param {{}}     [body]        -> not used
-   * @param {{}}     [optionsCopy] -> not used
    *
    * @return {Promise<Object|Error>}
    */
-  request(method, path, body, optionsCopy) {
+  request(method, path) {
     return this.client.loadJson(path);
   }
 }

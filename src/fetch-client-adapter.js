@@ -24,7 +24,7 @@ export class FetchClientAdapter extends ClientAdapter {
    *
    * @return {Promise<Object|Error>}
    */
-  request(method, path, body, optionsCopy) {
+  request(method, path, body, optionsCopy = {}) {
     optionsCopy.method = method;
 
     if (typeof body === 'object') {
