@@ -1,4 +1,4 @@
-import {HttpClient} from 'aurelia-fetch-client';
+import {HttpClient as FetchClient} from 'aurelia-fetch-client';
 import {ClientAdapter} from './client-adapter';
 
 export class FetchClientAdapter extends ClientAdapter {
@@ -9,7 +9,7 @@ export class FetchClientAdapter extends ClientAdapter {
    * @param {HttpClient} httpClient
    */
   constructor(client) {
-    super(client ? client : new HttpClient());
+    super(client ? client : new FetchClient());
   }
 
   /**
