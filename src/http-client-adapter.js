@@ -20,17 +20,19 @@ export class HttpClientAdapter extends ClientAdapter {
    * @param {string} method
    * @param {string} path
    * @param {{}}     [body]
-   * @param {{}}     [optionsCopy]
+   * @param {{}}     [options]
    *
    * @return {Promise<Object|Error>}
    */
-  request(method, path, body, optionsCopy = {}) {
+  request(method, path, body, options) {
+    let requestoptions = Object.assign({}, options);
+
     if (typeof body === 'object') {
-      optionsCopy.body = JSON.stringify(body);
-      optionsCopy.headers['Content-Type'] = 'application/json';
+      requestoptions.body = JSON.stringify(body);
+      requestoptions.headers['Content-Type'] = 'application/json';
     }
 
-    let msg = new HttpRequestMessage(method, path, body, new Headers(optionsCopy.headers));
+    let msg = new HttpRequestMessage(method, path, body, new Headers(requestoptions.headers));
 
     return this.client.send(msg)
       .then(response => {

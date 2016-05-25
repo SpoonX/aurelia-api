@@ -25,14 +25,16 @@ export class JSONPClientAdapter extends ClientAdapter {
    * @param {string} method, not used fixed to JSONP get
    * @param {string} path
    * @param {{}}     [body], not used
-   * @param {{}}     [optionsCopy] only callbackParameterName is used
+   * @param {{}}     [options] only callbackParameterName is used
    *
    * @return {Promise<Object|Error>}
    */
-  request(method, path, body, optionsCopy = {}) {
-    return this.client.jsonp(path, optionsCopy.callbackParameterName
-                                  ? optionsCopy.callbackParameterName
-                                  : this.callbackParameterName)
+  request(method, path, body, options = {}) {
+    let callbackParameterName = options.callbackParameterName
+                              ? options.callbackParameterName
+                              : this.callbackParameterName;
+
+    return this.client.jsonp(path, callbackParameterName)
       .then(response => {
         if (response.statusCode >= 200 && response.statusCode < 400) {
           return response.response;
