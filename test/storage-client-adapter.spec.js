@@ -4,7 +4,7 @@ import {buildQueryString} from 'aurelia-path';
 import {settings} from './resources/settings';
 
 
-let adapter  = new StorageClientAdapter();
+let adapter = new StorageClientAdapter();
 let key = 'AureliaStorageClient-' + settings.baseUrls.api + 'posts';
 
 describe('StorageClientAdapter', function() {
@@ -64,7 +64,7 @@ describe('StorageClientAdapter', function() {
           expect(res[1].message).toBeUndefined();
           expect(res[2].message).toBeUndefined();
           done();
-      });
+        });
     });
   });
 
@@ -86,7 +86,7 @@ describe('StorageClientAdapter', function() {
           expect(res[1].message).toBeUndefined();
           expect(res[2].message).toBeUndefined();
           done();
-      });
+        });
     });
   });
 
@@ -104,7 +104,7 @@ describe('StorageClientAdapter', function() {
           expect(res[0].comment).toBe('first');
           expect(res[1].user).toBe('jane');
           done();
-      });
+        });
     });
   });
 
@@ -120,7 +120,7 @@ describe('StorageClientAdapter', function() {
           expect(res[3].id).toBe(3);
           expect(res[3].user).toBe('jim');
           done();
-      });
+        });
     });
   });
 });

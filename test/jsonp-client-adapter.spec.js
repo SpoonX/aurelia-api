@@ -3,7 +3,7 @@ import {HttpClient} from 'aurelia-http-client';
 import {buildQueryString} from 'aurelia-path';
 import {settings} from './resources/settings';
 
-let adapter  = new JSONPClientAdapter();
+let adapter = new JSONPClientAdapter();
 
 describe('JSONPClientAdapter', function() {
   describe('.client', function() {
@@ -25,7 +25,7 @@ describe('JSONPClientAdapter', function() {
           .then(y => {
             expect(y.path).toBe('/jsonp/posts/id');
           }),
-        adapter.request('', 'posts?'+buildQueryString(settings.criteria))
+        adapter.request('', 'posts?' + buildQueryString(settings.criteria))
           .then(y => {
             expect(y.path).toBe('/jsonp/posts');
             expect(y.query.user).toBe(settings.criteria.user);

@@ -1,43 +1,59 @@
+import {Config, Rest} from '../src/aurelia-api';
+import {Container} from 'aurelia-dependency-injection';
+import {InjectTest} from './resources/inject-test';
 import {FetchClientAdapter} from '../src/fetch-client-adapter';
-import {HttpClient} from 'aurelia-fetch-client';
-import {buildQueryString} from 'aurelia-path';
+import {TestClientAdapter} from './resources/test-client-adapters';
 import {settings} from './resources/settings';
 
-let adapter = new FetchClientAdapter();
+let container = new Container();
+let config    = container.get(Config);
 
-describe('FetchClientAdapter', function() {
-  describe('.client', function() {
-    it('Should be client with configure(config => config.withBaseUrl(base))', function() {
-      expect(adapter.client instanceof HttpClient).toBe(true);
+config.registerEndpoint('api', settings.baseUrls.api);
+config.registerEndpoint('github', settings.baseUrls.github);
+config.registerEndpoint('test', settings.baseUrls.github, null, TestClientAdapter);
 
-      adapter.client.configure(config => config.withBaseUrl(settings.baseUrls.api));
-      expect(adapter.client.baseUrl).toBe(settings.baseUrls.api);
-    });
-  });
+describe('Rest', function() {
+  FetchClientAdapter.request = function(method, path, body, requestOptions) {
+    return {method, path, body, requestOptions};
+  };
 
   describe('.find()', function() {
-    it('Should find results for multiple endpoints', function(done) {
+    it('Should find results for multiple endpoints (with default ClientAdapter).', function(done) {
+      let injectTest = container.get(InjectTest);
+
+      expect(injectTest.apiEndpoint instanceof Rest).toBe(true);
+      expect(injectTest.githubEndpoint instanceof Rest).toBe(true);
+      expect(injectTest.testEndpoint instanceof Rest).toBe(true);
+
+      expect(injectTest.apiEndpoint.clientAdapter instanceof FetchClientAdapter).toBe(true);
+      expect(injectTest.githubEndpoint.clientAdapter instanceof FetchClientAdapter).toBe(true);
+      expect(injectTest.testEndpoint.clientAdapter instanceof TestClientAdapter).toBe(true);
+
       Promise.all([
-        adapter.request('GET', 'posts')
+        injectTest.githubEndpoint.find('repos/spoonx/aurelia-orm/contributors')
+          .then(x => {
+            expect(x[0].login).toBe('RWOverdijk');
+          }),
+        injectTest.apiEndpoint.find('posts')
           .then(y => {
             expect(y.method).toBe('GET');
           }),
-        adapter.request('GET', 'posts')
+        injectTest.apiEndpoint.find('posts')
           .then(y => {
             expect(y.path).toBe('/posts');
           }),
-        adapter.request('GET', 'posts/id')
+        injectTest.apiEndpoint.find('posts', 'id')
           .then(y => {
             expect(y.path).toBe('/posts/id');
             expect(JSON.stringify(y.query)).toBe('{}');
           }),
-        adapter.request('GET', 'posts?' + buildQueryString(settings.criteria))
+        injectTest.apiEndpoint.find('posts', settings.criteria)
           .then(y => {
             expect(y.path).toBe('/posts');
             expect(y.query.user).toBe(settings.criteria.user);
             expect(y.query.comment).toBe(settings.criteria.comment);
           }),
-        adapter.request('GET', 'posts', undefined, settings.options)
+        injectTest.apiEndpoint.find('posts', undefined, settings.options)
           .then(y => {
             expect(y.path).toBe('/posts');
             expect(y.contentType).toBe(settings.options.headers['Content-Type']);
@@ -49,7 +65,9 @@ describe('FetchClientAdapter', function() {
 
   describe('.update()', function() {
     it('Should update with body (as json), criteria and options.', function(done) {
-      adapter.request('PUT', 'posts?' + buildQueryString(settings.criteria), settings.body, settings.options)
+      let injectTest = container.get(InjectTest);
+
+      injectTest.apiEndpoint.update('posts', settings.criteria, settings.body, settings.options)
         .then(y => {
           expect(y.method).toBe('PUT');
           expect(y.path).toBe('/posts');
@@ -64,7 +82,9 @@ describe('FetchClientAdapter', function() {
 
   describe('.patch()', function() {
     it('Should patch with body (as json), criteria and options.', function(done) {
-      adapter.request('PATCH', 'post?' + buildQueryString(settings.criteria), settings.body, settings.options)
+      let injectTest = container.get(InjectTest);
+
+      injectTest.apiEndpoint.patch('post', settings.criteria, settings.body, settings.options)
         .then(y => {
           expect(y.method).toBe('PATCH');
           expect(y.path).toBe('/post');
@@ -78,8 +98,10 @@ describe('FetchClientAdapter', function() {
   });
 
   describe('.destroy()', function() {
-    it('Should destroy with id and options .', function(done) {
-      adapter.request('DELETE', 'posts/id', undefined, settings.options)
+    it('Should destroy with id and settings.options .', function(done) {
+      let injectTest = container.get(InjectTest);
+
+      injectTest.apiEndpoint.destroy('posts', 'id', settings.options)
         .then(y => {
           expect(y.method).toBe('DELETE');
           expect(y.path).toBe('/posts/id');
@@ -92,7 +114,9 @@ describe('FetchClientAdapter', function() {
 
   describe('.create()', function() {
     it('Should create body (as json) and options.', function(done) {
-      adapter.request('POST', 'posts', settings.body, settings.options)
+      let injectTest = container.get(InjectTest);
+
+      injectTest.apiEndpoint.create('posts', settings.body, settings.options)
         .then(y => {
           expect(y.method).toBe('POST');
           expect(y.path).toBe('/posts');

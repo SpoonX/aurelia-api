@@ -3,7 +3,7 @@ import {HttpClient} from 'aurelia-http-client';
 import {buildQueryString} from 'aurelia-path';
 import {settings} from './resources/settings';
 
-let adapter  = new HttpClientAdapter();
+let adapter = new HttpClientAdapter();
 
 describe('HttpClientAdapter', function() {
   describe('.client', function() {
@@ -30,7 +30,7 @@ describe('HttpClientAdapter', function() {
             expect(y.path).toBe('/posts/id');
             expect(JSON.stringify(y.query)).toBe('{}');
           }),
-        adapter.request('GET', 'posts?'+buildQueryString(settings.criteria))
+        adapter.request('GET', 'posts?' + buildQueryString(settings.criteria))
           .then(y => {
             expect(y.path).toBe('/posts');
             expect(y.query.user).toBe(settings.criteria.user);
@@ -45,7 +45,7 @@ describe('HttpClientAdapter', function() {
       ]).then(done);
     });
   });
-return;
+
   describe('.update()', function() {
     it('Should update with body (as json), criteria and options.', function(done) {
       adapter.request('PUT', 'posts?' + buildQueryString(settings.criteria), settings.body, settings.options)
@@ -77,7 +77,7 @@ return;
   });
 
   describe('.destroy()', function() {
-    it ('Should destroy with id and options .', function(done) {
+    it('Should destroy with id and options.', function(done) {
       adapter.request('DELETE', 'posts/id', undefined, settings.options)
         .then(y => {
           expect(y.method).toBe('DELETE');

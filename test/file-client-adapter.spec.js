@@ -3,7 +3,7 @@ import {FileClient} from '../src/file-client';
 import {buildQueryString} from 'aurelia-path';
 import {settings} from './resources/settings';
 
-let adapter  = new FileClientAdapter();
+let adapter = new FileClientAdapter();
 
 describe('FileClientAdapter', function() {
   describe('.client', function() {
