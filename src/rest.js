@@ -32,14 +32,16 @@ export class Rest {
    * @return {Promise}
    */
   request(method, path, body, options = {}) {
-    let requestOptions = extend(true, {}, this.defaults, options);
+    let requestOptions = extend(true, {}, this.defaults, {method});
 
-    requestOptions.method = method;
-
-    if (typeof body === 'object') {
+    if (typeof body === 'object'
+    && !(typeof Blob === 'function' && body instanceof Blob)
+    && !(typeof FormData === 'function' && body instanceof FormData)) {
       requestOptions.body = JSON.stringify(body);
       requestOptions.headers['Content-Type'] = 'application/json';
     }
+
+    extend(true, requestOptions, options);
 
     return this.client.fetch(path, requestOptions).then(response => {
       if (response.status >= 200 && response.status < 400) {

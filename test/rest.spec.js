@@ -72,6 +72,18 @@ describe('Rest', function() {
   });
 
   describe('.update()', function() {
+    it('Should update with body (as json).', function(done) {
+      let injectTest = container.get(InjectTest);
+
+      injectTest.apiEndpoint.update('posts', null, body)
+        .then(y => {
+          expect(y.method).toBe('PUT');
+          expect(y.path).toBe('/posts');
+          expect(y.contentType).toBe('application/json');
+          done();
+        });
+    });
+
     it('Should update with body (as json), criteria and options.', function(done) {
       let injectTest = container.get(InjectTest);
 
@@ -80,7 +92,7 @@ describe('Rest', function() {
           expect(y.method).toBe('PUT');
           expect(y.path).toBe('/posts');
           expect(JSON.stringify(y.query)).toBe(JSON.stringify(criteria));
-          expect(y.contentType).toMatch('application/json');
+          expect(y.contentType).toBe(options.headers['Content-Type']);
           expect(y.Authorization).toBe(options.headers['Authorization']);
           done();
         });
@@ -88,6 +100,18 @@ describe('Rest', function() {
   });
 
   describe('.patch()', function() {
+    it('Should patch with body (as json).', function(done) {
+      let injectTest = container.get(InjectTest);
+
+      injectTest.apiEndpoint.patch('post', null, body)
+        .then(y => {
+          expect(y.method).toBe('PATCH');
+          expect(y.path).toBe('/post');
+          expect(y.contentType).toBe('application/json');
+          done();
+        });
+    });
+
     it('Should patch with body (as json), criteria and options.', function(done) {
       let injectTest = container.get(InjectTest);
 
@@ -96,7 +120,7 @@ describe('Rest', function() {
           expect(y.method).toBe('PATCH');
           expect(y.path).toBe('/post');
           expect(JSON.stringify(y.query)).toBe(JSON.stringify(criteria));
-          expect(y.contentType).toMatch('application/json');
+          expect(y.contentType).toBe(options.headers['Content-Type']);
           expect(y.Authorization).toBe(options.headers['Authorization']);
           done();
         });
@@ -119,6 +143,18 @@ describe('Rest', function() {
   });
 
   describe('.create()', function() {
+    it('Should create body (as json).', function(done) {
+      let injectTest = container.get(InjectTest);
+
+      injectTest.apiEndpoint.create('posts', body)
+        .then(y => {
+          expect(y.method).toBe('POST');
+          expect(y.path).toBe('/posts');
+          expect(y.contentType).toBe('application/json');
+          done();
+        });
+    });
+
     it('Should create body (as json) and options.', function(done) {
       let injectTest = container.get(InjectTest);
 
@@ -126,7 +162,7 @@ describe('Rest', function() {
         .then(y => {
           expect(y.method).toBe('POST');
           expect(y.path).toBe('/posts');
-          expect(y.contentType).toMatch('application/json');
+          expect(y.contentType).toBe(options.headers['Content-Type']);
           expect(y.Authorization).toBe(options.headers['Authorization']);
           done();
         });
