@@ -11,13 +11,11 @@ export class Config {
   /**
    * Set a new defaultClientAdapter
    *
-   * @param {string}  clientAdapter  The ClientAdapter class
+   * @param {class}  clientAdapter  The ClientAdapter class
    *
    * @return {Config}
    */
   setDefaultClientAdapter(clientAdapter) {
-    if (!clientAdapter instanceof ClientAdapter) throw new TypeError('No a ClientAdapter');
-
     this.defaultClientAdapter = clientAdapter;
 
     return this;
@@ -33,8 +31,10 @@ export class Config {
    * @see http://aurelia.io/docs.html#/aurelia/fetch-client/latest/doc/api/class/HttpClientConfiguration
    * @return {Config}
    */
-  registerEndpoint(name, configureMethod, defaults = {}, CurrentClientAdapter = this.defaultClientAdapter) {
-    let clientAdapter    = new CurrentClientAdapter();
+  registerEndpoint(name, configureMethod, defaults = {}, SelectedClientAdapter = this.defaultClientAdapter) {
+    let clientAdapter    = new SelectedClientAdapter();
+    if (!(clientAdapter instanceof ClientAdapter)) throw new TypeError('clientAdapter not of type ClientAdapter');
+
     this.endpoints[name] = new Rest(clientAdapter, name);
 
     // add custom defaults to Rest
