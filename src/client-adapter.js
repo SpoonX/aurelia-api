@@ -17,18 +17,21 @@ export class ClientAdapter {
     }
 
     let hasWithBaseUrl = false;
+
     client.configure(configure => {
       if (!configure || typeof configure.withBaseUrl !== 'function') {
         return;
       }
       hasWithBaseUrl = true;
     });
+
     if (!hasWithBaseUrl) {
       throw new TypeError('Client configure function implementation must return an builder with a builder.withBaseUrl function');
     }
 
     this.client = client;
   }
+
   /**
    * Make a request to the service.
    *
