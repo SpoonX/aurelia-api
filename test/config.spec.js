@@ -1,8 +1,16 @@
 import {HttpClient} from 'aurelia-fetch-client';
 import {Config, Rest} from '../src/aurelia-api';
+import {FetchClientAdapter} from '../src/client-adapters/fetch-client-adapter';
+import {HttpClientAdapter} from '../src/client-adapters/http-client-adapter';
 import extend from 'extend';
 
 describe('Config', function() {
+  it('Should use the DefaultClientAdapter.', function() {
+    let config = new Config;
+
+    expect(config.defaultClientAdapter).toBe(FetchClientAdapter);
+  });
+
   describe('.registerEndpoint()', function() {
     it('Should properly register an endpoint when providing a config callback.', function() {
       let config   = new Config;
@@ -10,6 +18,8 @@ describe('Config', function() {
         configure.withBaseUrl(baseUrls.github);
         configure.withDefaults(userOptions);
       });
+
+      expect(config.endpoints.github instanceof Rest).toBe(true);
       expect(config.endpoints.github.defaults).toEqual(defaultOptions);
       expect(config.endpoints.github.client.defaults).toEqual(userOptions);
       expect(config.endpoints.github.client.baseUrl).toEqual(baseUrls.github);
@@ -41,6 +51,24 @@ describe('Config', function() {
       expect(config.endpoints.api.defaults).toEqual(extend(true, {}, defaultOptions, userOptions));
       expect(config.endpoints.api.client.baseUrl).toEqual(baseUrls.api);
       expect(returned).toBe(config);
+    });
+
+    it('Should properly register an endpoint when providing the http client adapter.', function() {
+      let config   = new Config;
+      let returned = config.registerEndpoint('api', baseUrls.api, {}, HttpClientAdapter);
+
+      let message = {};
+      config.endpoints.api.client.requestTransformers[0](null, null, message);
+
+      expect(message.baseUrl).toEqual(baseUrls.api);
+      expect(returned).toBe(config);
+    });
+
+    it('Should fail to register an endpoint when providing a non-compliant client adapter.', function() {
+      let config   = new Config;
+
+      let wrongClass = () => config.registerEndpoint('api', baseUrls.api, {}, Object);
+      expect(wrongClass).toThrow();
     });
   });
 
@@ -90,6 +118,15 @@ describe('Config', function() {
       expect(config.getEndpoint()).toBe(null);
       config.setDefaultEndpoint('api');
       expect(config.getEndpoint() instanceof Rest).toBe(true);
+    });
+  });
+
+  describe('.setDefaultClientAdapter()', function() {
+    it('Should set the DefaultClientAdapter.', function() {
+      let config = new Config;
+
+      config.setDefaultClientAdapter(HttpClientAdapter);
+      expect(config.defaultClientAdapter).toBe(HttpClientAdapter);
     });
   });
 });

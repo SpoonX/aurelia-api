@@ -1,5 +1,4 @@
-import {json} from 'aurelia-fetch-client';
-import qs from 'qs';
+import {buildQueryString} from 'aurelia-path';
 import extend from 'extend';
 
 export class Rest {
@@ -12,14 +11,15 @@ export class Rest {
   }
 
   /**
-   * Inject the httpClient to use for requests.
+   * Inject the clientAdapter to use for requests.
    *
-   * @param {HttpClient} httpClient
-   * @param {string}     [endpoint]
+   * @param {ClientAdapter} clientAdapter
+   * @param {string}        [endpoint]
    */
-  constructor(httpClient, endpoint) {
-    this.client   = httpClient;
-    this.endpoint = endpoint;
+  constructor(clientAdapter, endpoint) {
+    this.clientAdapter   = clientAdapter;
+    this.client          = clientAdapter.client;
+    this.endpoint        = endpoint;
   }
 
   /**
@@ -35,19 +35,7 @@ export class Rest {
   request(method, path, body, options = {}) {
     let requestOptions = extend(true, {}, this.defaults, options);
 
-    requestOptions.method = method;
-
-    if (typeof body === 'object') {
-      requestOptions.body = json(body);
-    }
-
-    return this.client.fetch(path, requestOptions).then(response => {
-      if (response.status >= 200 && response.status < 400) {
-        return response.json().catch(error => null);
-      }
-
-      throw response;
-    });
+    return this.clientAdapter.request(method, path, body, requestOptions);
   }
 
   /**
@@ -60,13 +48,7 @@ export class Rest {
    * @return {Promise}
    */
   find(resource, criteria, options) {
-    let requestPath = resource;
-
-    if (criteria) {
-      requestPath += typeof criteria !== 'object' ? `/${criteria}` : '?' + qs.stringify(criteria);
-    }
-
-    return this.request('GET', requestPath, undefined, options);
+    return this.request('GET', getRequestPath(resource, criteria), undefined, options);
   }
 
   /**
@@ -93,13 +75,7 @@ export class Rest {
    * @return {Promise}
    */
   update(resource, criteria, body, options) {
-    let requestPath = resource;
-
-    if (criteria) {
-      requestPath += typeof criteria !== 'object' ? `/${criteria}` : '?' + qs.stringify(criteria);
-    }
-
-    return this.request('PUT', requestPath, body, options);
+    return this.request('PUT', getRequestPath(resource, criteria), body, options);
   }
 
   /**
@@ -113,13 +89,7 @@ export class Rest {
    * @return {Promise}
    */
   patch(resource, criteria, body, options) {
-    let requestPath = resource;
-
-    if (criteria) {
-      requestPath += typeof criteria !== 'object' ? `/${criteria}` : '?' + qs.stringify(criteria);
-    }
-
-    return this.request('PATCH', requestPath, body, options);
+    return this.request('PATCH', getRequestPath(resource, criteria), body, options);
   }
 
   /**
@@ -132,13 +102,7 @@ export class Rest {
    * @return {Promise}
    */
   destroy(resource, criteria, options) {
-    let requestPath = resource;
-
-    if (criteria) {
-      requestPath += typeof criteria !== 'object' ? `/${criteria}` : '?' + qs.stringify(criteria);
-    }
-
-    return this.request('DELETE', requestPath, undefined, options);
+    return this.request('DELETE', getRequestPath(resource, criteria), undefined, options);
   }
 
   /**
@@ -153,4 +117,10 @@ export class Rest {
   create(resource, body, options) {
     return this.post(...arguments);
   }
+}
+
+function getRequestPath(resource, criteria) {
+  return (criteria !== undefined && criteria !== null
+    ? resource + (typeof criteria !== 'object' ? `/${criteria}` : '?' + buildQueryString(criteria))
+    : resource);
 }
