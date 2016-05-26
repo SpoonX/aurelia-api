@@ -57,7 +57,6 @@ describe('Rest', function() {
         injectTest.apiEndpoint.find('posts', undefined, settings.options)
           .then(y => {
             expect(y.path).toBe('/posts');
-            expect(y.contentType).toBe(settings.options.headers['Content-Type']);
             expect(y.Authorization).toBe(settings.options.headers['Authorization']);
           })
       ]).then(done);

@@ -40,7 +40,6 @@ describe('FetchClientAdapter', function() {
         adapter.request('GET', 'posts', undefined, settings.options)
           .then(y => {
             expect(y.path).toBe('/posts');
-            expect(y.contentType).toBe(settings.options.headers['Content-Type']);
             expect(y.Authorization).toBe(settings.options.headers['Authorization']);
           })
       ]).then(done);
@@ -98,6 +97,23 @@ describe('FetchClientAdapter', function() {
           expect(y.path).toBe('/posts');
           expect(y.contentType).toMatch('application/json');
           expect(y.Authorization).toBe(settings.options.headers['Authorization']);
+          done();
+        });
+    });
+  });
+
+  describe('.post()', function() {
+    it('Should post body (as FormData) and options.', function(done) {
+      let data = new FormData();
+      data.append('user', 'Jane Doe');
+
+      adapter.request('POST', 'posts', data, settings.optionsForm)
+        .then(y => {
+          expect(y.method).toBe('POST');
+          expect(y.path).toBe('/posts');
+          expect(y.contentType).toMatch(settings.optionsForm.headers['Content-Type']);
+          expect(y.Authorization).toBe(settings.optionsForm.headers['Authorization']);
+          expect(JSON.stringify(y.body)).toMatch('Jane Doe');
           done();
         });
     });

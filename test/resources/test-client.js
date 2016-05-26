@@ -4,7 +4,7 @@ export class TestClient {
   builder = {
     withBaseUrl: baseUrl => {
       this.baseUrl = baseUrl;
-      return baseUrl;
+      return this.builder;
     }
   };
 
