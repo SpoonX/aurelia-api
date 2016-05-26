@@ -17,14 +17,8 @@ export class StorageClient {
   baseUrl = '';
 
   /**
-  * Creates an instance of StorageClient.
-   *
-   * @param {Storage} localStorage (default), sessionStore or any other interface compliant storage
-   */
-  constructor(storage = window.localStorage) {
-    this.storage = storage;
-  }
-
+  * builder object
+  */
   builder = {
     withBaseUrl: baseUrl => {
       this.baseUrl = baseUrl;
@@ -32,15 +26,43 @@ export class StorageClient {
     }
   };
 
+  /**
+  * Creates an instance of StorageClient.
+   *
+   * @param {storage} localStorage (default), sessionStore or any other interface compliant storage
+   */
+  constructor(storage = window.localStorage) {
+    this.storage = storage;
+  }
+
+  /**
+  * Configure this client with default settings to be used by all requests.
+  *
+  * @param config A configuration object, or a function that takes a config
+  * object and configures it.
+  * @returns The chainable instance of this StorageClient.
+  * @chainable
+  */
   configure(_configure) {
     if (typeof _configure === 'function') {
       _configure(this.builder);
     } else if (typeof _configure === 'string') {
       this.baseUrl = _configure;
     }
+
+    return this;
   }
 
-  send(method, path, body) {
+  /**
+  * Fetches a resource. Default configuration parameters
+  * will be applied.
+  *
+  * @param method The method to apply (GET, PUT, PATCH, POST, DELETE)
+  * @param path A string containing the URL of the resource.
+  * @param [Body] The body to send (optional)
+  * @returns A Promise<Object|Error> with the response
+  */
+   send(method, path, body) {
     let [, pathKey, , id, , query] = /^([^\/^\?]+)(\/)?([^\/^\?]+)?(\?)?(.+)?/.exec(path);
     let key = `${this.getStorageKey()}${pathKey}`;
     let queryParameters = parseQueryString(query);
@@ -119,10 +141,16 @@ export class StorageClient {
     });
   }
 
+  /**
+  * Clears the storage of all items of the baseUrl key
+  */
   clear() {
     this.storage.removeItem(this.getStorageKey());
   }
 
+  /**
+  * Clears the storage of all items of all storage clients
+  */
   static clear(storage) {
     const reg = /^`${baseStorageKey}`-.+/;
     for (let i = 0; i < storage.length; i++) {
@@ -132,6 +160,11 @@ export class StorageClient {
     }
   }
 
+  /**
+  * Gets the full key for this baseUrl key.
+  *
+  * @returns The key
+  */
   getStorageKey() {
     return `${baseStorageKey}-${this.baseUrl}`;
   }
