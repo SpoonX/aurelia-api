@@ -36,7 +36,7 @@ export class FileClient {
   * @returns The chainable instance of this FileClient.
   * @chainable
   */
-   configure(_configure) {
+  configure(_configure) {
     if (typeof _configure === 'function') {
       _configure(this.builder);
     } else if (typeof _configure === 'string') {

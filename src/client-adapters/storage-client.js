@@ -62,7 +62,7 @@ export class StorageClient {
   * @param [Body] The body to send (optional)
   * @returns A Promise<Object|Error> with the response
   */
-   send(method, path, body) {
+  send(method, path, body) {
     let [, pathKey, , id, , query] = /^([^\/^\?]+)(\/)?([^\/^\?]+)?(\?)?(.+)?/.exec(path);
     let key = `${this.getStorageKey()}${pathKey}`;
     let queryParameters = parseQueryString(query);
