@@ -1,7 +1,7 @@
 import {Config, Rest} from '../src/aurelia-api';
 import {Container} from 'aurelia-dependency-injection';
 import {InjectTest} from './resources/inject-test';
-import {FetchClientAdapter} from '../src/fetch-client-adapter';
+import {FetchClientAdapter} from '../src/client-adapters/fetch-client-adapter';
 import {TestClientAdapter} from './resources/test-client-adapters';
 import {settings} from './resources/settings';
 

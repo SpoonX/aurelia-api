@@ -1,7 +1,7 @@
-import {JSONPClientAdapter} from '../src/jsonp-client-adapter';
+import {JSONPClientAdapter} from '../../src/client-adapters/jsonp-client-adapter';
 import {HttpClient} from 'aurelia-http-client';
 import {buildQueryString} from 'aurelia-path';
-import {settings} from './resources/settings';
+import {settings} from '../resources/settings';
 
 let adapter = new JSONPClientAdapter();
 

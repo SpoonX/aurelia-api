@@ -1,4 +1,4 @@
-import {ClientAdapter} from '../../src/client-adapter';
+import {ClientAdapter} from '../../src/client-adapters/client-adapter';
 import {TestClient, ClientNoBuilder} from './test-client';
 
 export class TestClientAdapter extends ClientAdapter {

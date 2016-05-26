@@ -1,5 +1,5 @@
-import {ClientAdapter} from './client-adapter';
-import {FetchClientAdapter} from './fetch-client-adapter';
+import {ClientAdapter} from './client-adapters/client-adapter';
+import {FetchClientAdapter} from './client-adapters/fetch-client-adapter';
 import {Rest} from './rest';
 import extend from 'extend';
 

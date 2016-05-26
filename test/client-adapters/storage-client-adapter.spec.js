@@ -1,7 +1,7 @@
-import {StorageClientAdapter} from '../src/storage-client-adapter';
-import {StorageClient} from '../src/storage-client';
+import {StorageClientAdapter} from '../../src/client-adapters/storage-client-adapter';
+import {StorageClient} from '../../src/client-adapters/storage-client';
 import {buildQueryString} from 'aurelia-path';
-import {settings} from './resources/settings';
+import {settings} from '../resources/settings';
 
 
 let adapter = new StorageClientAdapter();

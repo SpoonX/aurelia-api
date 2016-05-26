@@ -1,7 +1,7 @@
-import {FileClientAdapter} from '../src/file-client-adapter';
-import {FileClient} from '../src/file-client';
+import {FileClientAdapter} from '../../src/client-adapters/file-client-adapter';
+import {FileClient} from '../../src/client-adapters/file-client';
 import {buildQueryString} from 'aurelia-path';
-import {settings} from './resources/settings';
+import {settings} from '../resources/settings';
 
 let adapter = new FileClientAdapter();
 

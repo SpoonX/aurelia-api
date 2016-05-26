@@ -1,4 +1,9 @@
-import {TestClientAdapter, ClientAdapterNoClient, FaultyClientAdapterNoClientConfigure, FaultyClientAdapterNoClientBuilder} from './resources/test-client-adapters';
+import {
+  TestClientAdapter,
+  ClientAdapterNoClient,
+  FaultyClientAdapterNoClientConfigure,
+  FaultyClientAdapterNoClientBuilder
+} from '../resources/test-client-adapters';
 
 describe('Client-Adapter', function() {
   describe('.constructor()', function() {

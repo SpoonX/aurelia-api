@@ -1,7 +1,7 @@
 import {HttpClient} from 'aurelia-fetch-client';
 import {Config, Rest} from '../src/aurelia-api';
-import {FetchClientAdapter} from '../src/fetch-client-adapter';
-import {HttpClientAdapter} from '../src/http-client-adapter';
+import {FetchClientAdapter} from '../src/client-adapters/fetch-client-adapter';
+import {HttpClientAdapter} from '../src/client-adapters/http-client-adapter';
 import extend from 'extend';
 
 describe('Config', function() {

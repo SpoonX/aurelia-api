@@ -1,16 +1,17 @@
-import {HttpClientAdapter} from '../src/http-client-adapter';
-import {HttpClient} from 'aurelia-http-client';
+import {FetchClientAdapter} from '../../src/client-adapters/fetch-client-adapter';
+import {HttpClient} from 'aurelia-fetch-client';
 import {buildQueryString} from 'aurelia-path';
-import {settings} from './resources/settings';
+import {settings} from '../resources/settings';
 
-let adapter = new HttpClientAdapter();
+let adapter = new FetchClientAdapter();
 
-describe('HttpClientAdapter', function() {
+describe('FetchClientAdapter', function() {
   describe('.client', function() {
     it('Should be client with configure(config => config.withBaseUrl(base))', function() {
       expect(adapter.client instanceof HttpClient).toBe(true);
 
       adapter.client.configure(config => config.withBaseUrl(settings.baseUrls.api));
+      expect(adapter.client.baseUrl).toBe(settings.baseUrls.api);
     });
   });
 
@@ -77,7 +78,7 @@ describe('HttpClientAdapter', function() {
   });
 
   describe('.destroy()', function() {
-    it('Should destroy with id and options.', function(done) {
+    it('Should destroy with id and options .', function(done) {
       adapter.request('DELETE', 'posts/id', undefined, settings.options)
         .then(y => {
           expect(y.method).toBe('DELETE');
