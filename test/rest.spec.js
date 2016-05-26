@@ -168,4 +168,20 @@ describe('Rest', function() {
         });
     });
   });
+
+  describe('.post()', function() {
+    it('Should post body (as FormData) and options.', function(done) {
+      let injectTest = container.get(InjectTest);
+      let data = new FormData();
+
+      injectTest.apiEndpoint.post('posts', data, options)
+        .then(y => {
+          expect(y.method).toBe('POST');
+          expect(y.path).toBe('/posts');
+          expect(y.contentType).toMatch(options.headers['Content-Type']);
+          expect(y.Authorization).toBe(options.headers['Authorization']);
+          done();
+        });
+    });
+  });
 });
