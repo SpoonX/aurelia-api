@@ -3,7 +3,8 @@ import extend from 'extend';
 import {findSelected} from './util';
 
 /**
-* the key base for all storage keys
+*  the key base for all storage keys
+*  @type {String}
 */
 const baseStorageKey = 'AureliaStorageClient';
 
@@ -12,12 +13,14 @@ const baseStorageKey = 'AureliaStorageClient';
 */
 export class StorageClient {
   /**
-  * additional base for the storgae key
+  *  additional base for the storgae key
+  *  @type {String}
   */
   baseUrl = '';
 
   /**
-  * builder object
+  *  builder object
+  *  @type {Object}
   */
   builder = {
     withBaseUrl: baseUrl => {

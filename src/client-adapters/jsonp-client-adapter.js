@@ -6,14 +6,15 @@ import {ClientAdapter} from './client-adapter';
 */
 export class JSONPClientAdapter extends ClientAdapter {
   /**
-   * Optional default callbackParameterName
+   *  Optional default callbackParameterName
+   *  @type {String}
   */
   callbackParameterName;
 
   /**
-   * Creates an instance of JSONPClientAdapter.
+   *  Creates an instance of JSONPClientAdapter.
    *
-   * @param {HttpClient} httpClient from aurelia-http-client
+   *  @param {HttpClient} httpClient from aurelia-http-client
    */
   constructor(client = new HttpClient()) {
     super(client);

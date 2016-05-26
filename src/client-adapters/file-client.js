@@ -4,12 +4,14 @@ import {findSelected} from './util';
 
 export class FileClient {
   /**
-  * base path
+  *  base path
+  *  @type {String}
   */
   baseUrl = '';
 
   /**
-  * builder object
+  *  builder object
+  *  @type {Object}
   */
   builder = {
     withBaseUrl: baseUrl => {
