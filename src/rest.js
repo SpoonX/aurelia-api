@@ -1,18 +1,9 @@
 import {buildQueryString} from 'aurelia-path';
-import extend from 'extend';
 
 /**
  * Rest class. A simple rest client to fetch resources
  */
 export class Rest {
-
-  defaults = {
-    headers: {
-      'Accept': 'application/json',
-      'Content-Type': 'application/json'
-    }
-  }
-
   /**
    * Inject the clientAdapter to use for requests.
    *
@@ -36,23 +27,7 @@ export class Rest {
    * @return {Promise<Object>|Promise<Error>} Server response as Object
    */
   request(method, path, body, options = {}) {
-    let requestOptions = extend(true, {headers: {}}, this.defaults, options, {method, body});
-
-    let contentType = requestOptions.headers['Content-Type'] || requestOptions.headers['content-type'];
-
-    if (typeof body === 'object' && contentType) {
-      requestOptions.body = contentType.toLowerCase() === 'application/json'
-                          ? JSON.stringify(body)
-                          : qs.stringify(body);
-    }
-
-    return this.client.fetch(path, requestOptions).then(response => {
-      if (response.status >= 200 && response.status < 400) {
-        return response.json().catch(error => null);
-      }
-
-      throw response;
-    });
+    return this.clientAdapter.request(method, path, body, options);
   }
 
   /**

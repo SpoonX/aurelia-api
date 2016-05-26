@@ -1,10 +1,22 @@
 import {HttpClient as FetchClient} from 'aurelia-fetch-client';
 import {ClientAdapter} from './client-adapter';
+import extend from 'extend';
 
 /**
 * A fetch client adapter for the aurelia-fetch-client
 */
 export class FetchClientAdapter extends ClientAdapter {
+  /**
+   * defaults for the fetch client
+   * @type {Object}
+   */
+  defaults = {
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json'
+    }
+  }
+
   /**
    * Creates an instance of FetchClientAdapter.
    *
@@ -25,15 +37,17 @@ export class FetchClientAdapter extends ClientAdapter {
    * @return {Promise<Object|Error>}
    */
   request(method, path, body, options) {
-    let requestoptions = Object.assign({}, options);
-    requestoptions.method = method;
+    let requestOptions = extend(true, {}, this.defaults, {method, body});
 
-    if (body !== undefined && body !== null && typeof body === 'object') {
-      requestoptions.body = JSON.stringify(body);
-      requestoptions.headers['Content-Type'] = 'application/json';
+    if (typeof body === 'object'
+    && !(typeof Blob === 'function' && body instanceof Blob)
+    && !(typeof FormData === 'function' && body instanceof FormData)) {
+      requestOptions.body = JSON.stringify(body);
     }
 
-    return this.client.fetch(path, requestoptions).then(response => {
+    extend(true, requestOptions, options);
+
+    return this.client.fetch(path, requestOptions).then(response => {
       if (response.status >= 200 && response.status < 400) {
         return response.json().catch(error => null);
       }

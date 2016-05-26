@@ -1,10 +1,22 @@
 import {HttpClient, HttpRequestMessage, Headers} from 'aurelia-http-client';
 import {ClientAdapter} from './client-adapter';
+import extend from 'extend';
 
 /**
 * A http client adapter for the aurelia-http-client
 */
 export class HttpClientAdapter extends ClientAdapter {
+  /**
+   * defaults for the http client
+   * @type {Object}
+   */
+  defaults = {
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json'
+    }
+  }
+
   /**
    * Creates an instance of HttphClientAdapter.
    *
@@ -25,14 +37,17 @@ export class HttpClientAdapter extends ClientAdapter {
    * @return {Promise<Object|Error>}
    */
   request(method, path, body, options) {
-    let requestoptions = Object.assign({}, options);
+    let requestOptions = extend(true, {}, this.defaults, {method, body});
 
-    if (typeof body === 'object') {
-      requestoptions.body = JSON.stringify(body);
-      requestoptions.headers['Content-Type'] = 'application/json';
+    if (typeof body === 'object'
+    && !(typeof Blob === 'function' && body instanceof Blob)
+    && !(typeof FormData === 'function' && body instanceof FormData)) {
+      requestOptions.body = JSON.stringify(body);
     }
 
-    let msg = new HttpRequestMessage(method, path, body, new Headers(requestoptions.headers));
+    extend(true, requestOptions, options);
+
+    let msg = new HttpRequestMessage(method, path, body, new Headers(requestOptions.headers));
 
     return this.client.send(msg)
       .then(response => {

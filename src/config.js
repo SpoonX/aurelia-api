@@ -48,8 +48,8 @@ export class Config {
 
     this.endpoints[name] = new Rest(clientAdapter, name);
 
-    // set custom defaults to Rest
-    if (defaults !== undefined) this.endpoints[name].defaults = defaults;
+    // add custom defaults to clientAdapter
+    clientAdapter.defaults = extend(true, {}, clientAdapter.defaults || {}, defaults);
 
     // Manual configure of client.
     if (typeof configureMethod === 'function') {
