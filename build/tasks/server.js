@@ -4,6 +4,7 @@ var cors       = require('cors');
 var server;
 
 app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cors());
 
 app.all('*', function(req, res) {

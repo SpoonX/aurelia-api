@@ -1,4 +1,3 @@
-import {json} from 'aurelia-fetch-client';
 import qs from 'qs';
 import extend from 'extend';
 
@@ -33,13 +32,15 @@ export class Rest {
    * @return {Promise}
    */
   request(method, path, body, options = {}) {
-    let requestOptions = extend(true, {}, this.defaults, options);
+    let requestOptions = extend(true, {}, this.defaults, {method, body});
 
-    requestOptions.method = method;
-
-    if (typeof body === 'object') {
-      requestOptions.body = json(body);
+    if (typeof body === 'object'
+    && !(typeof Blob === 'function' && body instanceof Blob)
+    && !(typeof FormData === 'function' && body instanceof FormData)) {
+      requestOptions.body = JSON.stringify(body);
     }
+
+    extend(true, requestOptions, options);
 
     return this.client.fetch(path, requestOptions).then(response => {
       if (response.status >= 200 && response.status < 400) {

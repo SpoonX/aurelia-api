@@ -75,6 +75,8 @@ export class MyClass {
 
 ## Quick Rest api overview
 
+All methods stringify the body when passed as an object and set the `Content-Type` to `application/json`.
+
 ````js
 endpoint
   .client                                     // the httpClient instance
