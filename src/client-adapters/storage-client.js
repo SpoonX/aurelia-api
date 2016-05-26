@@ -19,7 +19,7 @@ export class StorageClient {
   baseUrl = '';
 
   /**
-  *  builder object
+  *  The builder with builder.withBaseUrl() for the use in configure
   *  @type {Object}
   */
   builder = {

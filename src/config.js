@@ -7,27 +7,32 @@ import {Rest} from './rest';
  */
 export class Config {
   /**
-   * Collection of configures endpionts
-   * @type {Object} Key: endpoint name, value: Rest client
+   * GOJO of registered endpoint names and Rest clients
+   * @type {Object}
    */
-  endpoints       = {};
+  endpoints = {};
 
   /**
    * Current default endpoint if set
    * @type {[Rest]} Default Rest client
    */
   defaultEndpoint = null;
-  defaultClientAdapter = FetchClientAdapter;
+
+  /**
+  * The default client adpater class
+  *  @type {function}
+  */
+  DefaultClientAdapter;
 
   /**
    * Set a new defaultClientAdapter
    *
-   * @param {class}  clientAdapter  The ClientAdapter class
+   * @param {function}  ClientAdapter  A ClientAdapter class (default: FetchClientAdapter)
    *
    * @return {Config}
    */
-  setDefaultClientAdapter(clientAdapter) {
-    this.defaultClientAdapter = clientAdapter;
+  setDefaultClientAdapter(ClientAdapter = FetchClientAdapter) {
+    this.DefaultClientAdapter = ClientAdapter;
 
     return this;
   }
@@ -38,11 +43,12 @@ export class Config {
    * @type {string}          name              The name of the new endpoint.
    * @type {function|string} [configureMethod] Configure method or endpoint.
    * @type {{}}              [defaults]        New defaults for the HttpClient
+   * @param {[function]}     [SelectedClientAdapter]  ClientAdapter class for this endpoint [default: DefaultClientAdapter]
    *
    * @see http://aurelia.io/docs.html#/aurelia/fetch-client/latest/doc/api/class/HttpClientConfiguration
    * @return {Config}
    */
-  registerEndpoint(name, configureMethod, defaults = {}, SelectedClientAdapter = this.defaultClientAdapter) {
+  registerEndpoint(name, configureMethod, defaults = {}, SelectedClientAdapter = this.DefaultClientAdapter) {
     let clientAdapter    = new SelectedClientAdapter();
     if (!(clientAdapter instanceof ClientAdapter)) throw new TypeError('clientAdapter not of type ClientAdapter');
 

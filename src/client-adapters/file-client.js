@@ -10,7 +10,7 @@ export class FileClient {
   baseUrl = '';
 
   /**
-  *  builder object
+  *  The builder with builder.withBaseUrl() for the use in configure
   *  @type {Object}
   */
   builder = {
@@ -23,9 +23,9 @@ export class FileClient {
 
   /**
   * Creates an instance of FileClient.
-   *
-   * @param {loader} File loader with loader.loadText(path). default: (aurelia-)DefaultLoader
-   */
+  *
+  * @param {function} File loader with loader.loadText(path). default: (aurelia-)DefaultLoader
+  */
   constructor(loader = new DefaultLoader()) {
     this.loader = loader;
   }
