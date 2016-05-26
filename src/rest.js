@@ -32,13 +32,12 @@ export class Rest {
    * @return {Promise}
    */
   request(method, path, body, options = {}) {
-    let requestOptions = extend(true, {}, this.defaults, {method});
+    let requestOptions = extend(true, {}, this.defaults, {method, body});
 
     if (typeof body === 'object'
     && !(typeof Blob === 'function' && body instanceof Blob)
     && !(typeof FormData === 'function' && body instanceof FormData)) {
       requestOptions.body = JSON.stringify(body);
-      requestOptions.headers['Content-Type'] = 'application/json';
     }
 
     extend(true, requestOptions, options);
