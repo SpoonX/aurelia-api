@@ -34,7 +34,7 @@ export class StorageClient {
    *
    * @param {storage} localStorage (default), sessionStore or any other interface compliant storage
    */
-  constructor(storage = window.localStorage) {
+  constructor(storage = localStorage) {
     this.storage = storage;
   }
 
