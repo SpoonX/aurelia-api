@@ -22,7 +22,7 @@ export class Config {
   * The default client adpater class
   *  @type {function}
   */
-  DefaultClientAdapter;
+  DefaultClientAdapter = FetchClientAdapter;
 
   /**
    * Set a new defaultClientAdapter
@@ -31,8 +31,8 @@ export class Config {
    *
    * @return {Config}
    */
-  setDefaultClientAdapter(ClientAdapter = FetchClientAdapter) {
-    this.DefaultClientAdapter = ClientAdapter;
+  setDefaultClientAdapter(DefaultClientAdapter) {
+    this.DefaultClientAdapter = DefaultClientAdapter;
 
     return this;
   }

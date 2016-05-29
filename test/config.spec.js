@@ -8,7 +8,7 @@ describe('Config', function() {
   it('Should use the DefaultClientAdapter.', function() {
     let config = new Config;
 
-    expect(config.defaultClientAdapter).toBe(FetchClientAdapter);
+    expect(config.DefaultClientAdapter).toBe(FetchClientAdapter);
   });
 
   describe('.registerEndpoint()', function() {
@@ -124,7 +124,7 @@ describe('Config', function() {
       let config = new Config;
 
       config.setDefaultClientAdapter(HttpClientAdapter);
-      expect(config.defaultClientAdapter).toBe(HttpClientAdapter);
+      expect(config.DefaultClientAdapter).toBe(HttpClientAdapter);
     });
   });
 });
