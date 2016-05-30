@@ -46,8 +46,8 @@ aurelia.use
   .plugin('aurelia-api', config => {
 
     // Register hosts
-    config.registerEndpoint('api');
-    config.registerEndpoint('other-api');
+    config.registerEndpoint('api', '/mypath');
+    config.registerEndpoint('other-api', '/otherpath', {headers: {'Content-Type': 'x-www-form-urlencoded'}});
   })
 ```
 
@@ -66,7 +66,7 @@ export class MyClass {
 
     this.apiEndpoint.find('users')
     .then(users => {
-        // use your recieved users.json
+        // use your received users.json
     })
     .catch(console.error);
   }
@@ -74,6 +74,8 @@ export class MyClass {
 ```
 
 ## Quick Rest api overview
+
+All methods will when the body passed as an object stringify it if the `Content-Type` is `application/json`, resp. convert it to a querystring format if the `Content-Type` is `application/x-www-form-urlencoded`.
 
 ````js
 endpoint

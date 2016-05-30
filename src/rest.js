@@ -1,4 +1,3 @@
-import {json} from 'aurelia-fetch-client';
 import qs from 'qs';
 import extend from 'extend';
 
@@ -33,12 +32,15 @@ export class Rest {
    * @return {Promise}
    */
   request(method, path, body, options = {}) {
-    let requestOptions = extend(true, {}, this.defaults, options);
+    let requestOptions = extend(true, {}, this.defaults, options, {method, body});
 
-    requestOptions.method = method;
-
-    if (typeof body === 'object') {
-      requestOptions.body = json(body);
+    if (typeof body === 'object'
+    && !(typeof FormData === 'function' && body instanceof FormData)) {
+      if (requestOptions.headers['Content-Type'].search('application/x-www-form-urlencoded') !== -1) {
+        requestOptions.body = qs.stringify(body);
+      } else if (requestOptions.headers['Content-Type'].search('application/json') !== -1) {
+        requestOptions.body = JSON.stringify(body);
+      }
     }
 
     return this.client.fetch(path, requestOptions).then(response => {
