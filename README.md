@@ -75,7 +75,7 @@ export class MyClass {
 
 ## Quick Rest api overview
 
-All methods will when the body passed as an object stringify it if the `Content-Type` is `application/json`, resp. convert it to a querystring format if the `Content-Type` is `application/x-www-form-urlencoded`.
+All methods will, when the body is passed as an object, stringify the body if the `Content-Type` is set to `application/json` or convert the body to querystring format for all other set `Content-Type`s.
 
 ````js
 endpoint

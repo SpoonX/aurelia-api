@@ -32,15 +32,14 @@ export class Rest {
    * @return {Promise}
    */
   request(method, path, body, options = {}) {
-    let requestOptions = extend(true, {}, this.defaults, options, {method, body});
+    let requestOptions = extend(true, {headers: {}}, this.defaults, options, {method, body});
 
-    if (typeof body === 'object'
-    && !(typeof FormData === 'function' && body instanceof FormData)) {
-      if (requestOptions.headers['Content-Type'].search('application/x-www-form-urlencoded') !== -1) {
-        requestOptions.body = qs.stringify(body);
-      } else if (requestOptions.headers['Content-Type'].search('application/json') !== -1) {
-        requestOptions.body = JSON.stringify(body);
-      }
+    let contentType = requestOptions.headers['Content-Type'];
+
+    if (typeof body === 'object' && contentType) {
+      requestOptions.body = contentType.toLowerCase() === 'application/json'
+                          ? JSON.stringify(body)
+                          : qs.stringify(body);
     }
 
     return this.client.fetch(path, requestOptions).then(response => {
