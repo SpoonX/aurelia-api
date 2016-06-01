@@ -25,10 +25,13 @@ describe('Rest', function() {
       expect(injectTest.apiEndpoint instanceof Rest).toBe(true);
       expect(injectTest.githubEndpoint instanceof Rest).toBe(true);
       expect(injectTest.testEndpoint instanceof Rest).toBe(true);
+      expect(injectTest.newEndpoint instanceof Rest).toBe(true);
 
       expect(injectTest.apiEndpoint.clientAdapter instanceof FetchClientAdapter).toBe(true);
       expect(injectTest.githubEndpoint.clientAdapter instanceof FetchClientAdapter).toBe(true);
       expect(injectTest.testEndpoint.clientAdapter instanceof TestClientAdapter).toBe(true);
+      expect(injectTest.newEndpoint.clientAdapter instanceof FetchClientAdapter).toBe(true);
+      expect(injectTest.newEndpoint.clientAdapter.defaults.options).toBe('any');
 
       Promise.all([
         injectTest.githubEndpoint.find('repos/spoonx/aurelia-orm/contributors')
