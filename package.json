@@ -31,25 +31,25 @@
       "dist": "dist/amd"
     },
     "dependencies": {
-      "aurelia-dependency-injection": "^1.0.0-beta.1.2.0",
-      "aurelia-fetch-client": "^1.0.0-beta.1.2.0",
+      "aurelia-dependency-injection": "^1.0.0-beta.1.2.3",
+      "aurelia-fetch-client": "^1.0.0-beta.1.2.5",
       "extend": "^3.0.0",
       "qs": "^6.1.0"
     },
     "peerDependencies": {
-      "aurelia-dependency-injection": "^1.0.0-beta.1.2.0",
-      "aurelia-fetch-client": "^1.0.0-beta.1.2.0",
+      "aurelia-dependency-injection": "^1.0.0-beta.1.2.3",
+      "aurelia-fetch-client": "^1.0.0-beta.1.2.5",
       "extend": "^3.0.0",
       "qs": "^6.1.0"
     },
     "devDependencies": {
-      "aurelia-polyfills": "^1.0.0-beta.1.1.0",
-      "fetch": "github:github/fetch@^0.11.0"
+      "aurelia-polyfills": "^1.0.0-beta.1.1.6",
+      "fetch": "github:github/fetch@^1.0.0"
     }
   },
   "dependencies": {
-    "aurelia-dependency-injection": "^1.0.0-beta.1.2.0",
-    "aurelia-fetch-client": "^1.0.0-beta.1.2.0",
+    "aurelia-dependency-injection": "^1.0.0-beta.1.2.3",
+    "aurelia-fetch-client": "^1.0.0-beta.1.2.5",
     "extend": "^3.0.0",
     "qs": "^6.1.0"
   },
