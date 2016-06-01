@@ -9,7 +9,7 @@ export class ClientAdapter {
    */
   constructor(client) {
     if (!client) {
-      throw new TypeError('Contructor must provide a client to a client adapter');
+      throw new TypeError('A client instance must get provided');
     }
 
     if (typeof client.configure !== 'function') {
@@ -26,7 +26,7 @@ export class ClientAdapter {
     });
 
     if (!hasWithBaseUrl) {
-      throw new TypeError('Client configure function implementation must return an builder with a builder.withBaseUrl function');
+      throw new TypeError('Client configure function implementation must return a builder with a builder.withBaseUrl function');
     }
 
     this.client = client;
@@ -45,4 +45,6 @@ export class ClientAdapter {
   request(method, path, body, optionsCopy) {
     throw new TypeError('The client adapter must implement a request method.');
   }
+
+  static Client;
 }

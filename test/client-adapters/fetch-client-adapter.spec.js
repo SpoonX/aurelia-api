@@ -3,7 +3,7 @@ import {HttpClient} from 'aurelia-fetch-client';
 import {buildQueryString} from 'aurelia-path';
 import {settings} from '../resources/settings';
 
-let adapter = new FetchClientAdapter();
+let adapter = new FetchClientAdapter;
 
 describe('FetchClientAdapter', function() {
   describe('.client', function() {

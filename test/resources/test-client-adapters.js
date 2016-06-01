@@ -9,6 +9,8 @@ export class TestClientAdapter extends ClientAdapter {
   request(method, path, body, optionsCopy = {}) {
     return this.client.send(method, path, body, optionsCopy);
   }
+
+  static Client = TestClient;
 }
 
 export class ClientAdapterNoClient extends ClientAdapter {

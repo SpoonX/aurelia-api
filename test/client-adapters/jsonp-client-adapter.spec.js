@@ -3,7 +3,7 @@ import {HttpClient} from 'aurelia-http-client';
 import {buildQueryString} from 'aurelia-path';
 import {settings} from '../resources/settings';
 
-let adapter = new JSONPClientAdapter();
+let adapter = new JSONPClientAdapter;
 
 describe('JSONPClientAdapter', function() {
   describe('.client', function() {

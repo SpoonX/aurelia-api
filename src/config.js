@@ -48,8 +48,7 @@ export class Config {
    * @see http://aurelia.io/docs.html#/aurelia/fetch-client/latest/doc/api/class/HttpClientConfiguration
    * @return {Config}
    */
-  registerEndpoint(name, configureMethod, defaults = {}, SelectedClientAdapter = this.DefaultClientAdapter) {
-    let clientAdapter    = new SelectedClientAdapter();
+  registerEndpoint(name, configureMethod, defaults = {}, clientAdapter = new this.DefaultClientAdapter(new this.DefaultClientAdapter.Client)) {
     if (!(clientAdapter instanceof ClientAdapter)) throw new TypeError('clientAdapter not of type ClientAdapter');
 
     this.endpoints[name] = new Rest(clientAdapter, name);

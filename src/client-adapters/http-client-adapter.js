@@ -22,7 +22,7 @@ export class HttpClientAdapter extends ClientAdapter {
    *
    * @param {HttpClient} httpClient from aurelia-http-client
    */
-  constructor(client = new HttpClient()) {
+  constructor(client = new HttpClientAdapter.Client) {
     super(client);
   }
 
@@ -58,4 +58,6 @@ export class HttpClientAdapter extends ClientAdapter {
         throw response;
       });
   }
+
+  static Client = HttpClient;
 }

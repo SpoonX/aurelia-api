@@ -22,7 +22,7 @@ export class FetchClientAdapter extends ClientAdapter {
    *
    * @param {HttpClient} httpClient from aurelia-fetch-client
    */
-  constructor(client = new FetchClient()) {
+  constructor(client = new FetchClientAdapter.Client) {
     super(client);
   }
 
@@ -55,4 +55,6 @@ export class FetchClientAdapter extends ClientAdapter {
       throw response;
     });
   }
+
+  static Client = FetchClient;
 }

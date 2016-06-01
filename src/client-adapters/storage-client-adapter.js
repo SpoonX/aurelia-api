@@ -10,7 +10,7 @@ export class StorageClientAdapter extends ClientAdapter {
    *
    * @param {StorageClient} StorageClient
    */
-  constructor(client = new StorageClient()) {
+  constructor(client = new StorageClientAdapter.Client) {
     super(client);
   }
 
@@ -26,4 +26,6 @@ export class StorageClientAdapter extends ClientAdapter {
   request(method, path, body) {
     return this.client.send(...arguments);
   }
+
+  static Client = StorageClient;
 }

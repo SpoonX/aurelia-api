@@ -1,7 +1,9 @@
-import {HttpClient} from 'aurelia-fetch-client';
+import {HttpClient as FetchClient} from 'aurelia-fetch-client';
 import {Config, Rest} from '../src/aurelia-api';
 import {FetchClientAdapter} from '../src/client-adapters/fetch-client-adapter';
 import {HttpClientAdapter} from '../src/client-adapters/http-client-adapter';
+import {StorageClientAdapter} from '../src/client-adapters/storage-client-adapter';
+import {StorageClient} from '../src/client-adapters/storage-client';
 import {settings} from './resources/settings';
 
 describe('Config', function() {
@@ -53,12 +55,24 @@ describe('Config', function() {
 
     it('Should properly register an endpoint when providing the http client adapter.', function() {
       let config   = new Config;
-      let returned = config.registerEndpoint('api', settings.baseUrls.api, {}, HttpClientAdapter);
+      let returned = config.registerEndpoint('api', settings.baseUrls.api, {}, new HttpClientAdapter);
 
       let message = {};
       config.endpoints.api.client.requestTransformers[0](null, null, message);
 
       expect(message.baseUrl).toEqual(settings.baseUrls.api);
+      expect(returned).toBe(config);
+    });
+
+    it('Should properly register an endpoint when providing the storage client adapter useing sessionStorage.', function() {
+      let config   = new Config;
+      let storageClient = new StorageClient(sessionStorage);
+      let returned = config.registerEndpoint('api', settings.baseUrls.api, {}, new StorageClientAdapter(storageClient));
+      let endpoint = config.getEndpoint('api');
+
+      expect(endpoint.client.baseUrl).toEqual(settings.baseUrls.api);
+      expect(endpoint.client).toEqual(storageClient);
+      expect(endpoint.client.storage).toEqual(sessionStorage);
       expect(returned).toBe(config);
     });
 
@@ -81,7 +95,7 @@ describe('Config', function() {
       let defaultNullEndpoint = config.getEndpoint();
 
       expect(endpoint instanceof Rest).toBe(true);
-      expect(endpoint.client instanceof HttpClient).toBe(true);
+      expect(endpoint.client instanceof FetchClient).toBe(true);
       expect(nullEndpoint instanceof Rest).toBe(false);
       expect(nullEndpoint).toBe(null);
       expect(defaultNullEndpoint instanceof Rest).toBe(false);
@@ -92,7 +106,7 @@ describe('Config', function() {
       let defaultEndpoint = config.getEndpoint();
 
       expect(defaultEndpoint instanceof Rest).toBe(true);
-      expect(defaultEndpoint.client instanceof HttpClient).toBe(true);
+      expect(defaultEndpoint.client instanceof FetchClient).toBe(true);
     });
   });
 

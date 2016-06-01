@@ -10,7 +10,7 @@ export class FileClientAdapter extends ClientAdapter {
    *
    * @param {FileClient} fileClient
    */
-   constructor(client = new FileClient()) {
+   constructor(client = new FileClientAdapter.Client) {
      super(client);
    }
 
@@ -25,4 +25,6 @@ export class FileClientAdapter extends ClientAdapter {
   request(method, path) {
     return this.client.loadJson(path);
   }
+
+   static Client = FileClient;
 }

@@ -3,8 +3,7 @@ import {StorageClient} from '../../src/client-adapters/storage-client';
 import {buildQueryString} from 'aurelia-path';
 import {settings} from '../resources/settings';
 
-
-let adapter = new StorageClientAdapter();
+let adapter = new StorageClientAdapter;
 let key = 'AureliaStorageClient-' + settings.baseUrls.api + 'posts';
 
 describe('StorageClientAdapter', function() {

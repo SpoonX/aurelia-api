@@ -16,7 +16,7 @@ export class JSONPClientAdapter extends ClientAdapter {
    *
    *  @param {HttpClient} httpClient from aurelia-http-client
    */
-  constructor(client = new HttpClient()) {
+  constructor(client = new JSONPClientAdapter.Client) {
     super(client);
   }
 
@@ -44,4 +44,6 @@ export class JSONPClientAdapter extends ClientAdapter {
         throw response;
       });
   }
+
+  static Client = HttpClient;
 }
