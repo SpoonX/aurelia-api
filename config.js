@@ -11,7 +11,7 @@ System.config({
     "aurelia-fetch-client": "npm:aurelia-fetch-client@1.0.0-beta.1.2.5",
     "aurelia-polyfills": "npm:aurelia-polyfills@1.0.0-beta.1.1.6",
     "extend": "npm:extend@3.0.0",
-    "fetch": "github:github/fetch@0.11.1",
+    "fetch": "github:github/fetch@1.0.0",
     "qs": "npm:qs@6.2.0",
     "npm:aurelia-dependency-injection@1.0.0-beta.1.2.3": {
       "aurelia-logging": "npm:aurelia-logging@1.0.0-beta.1.2.1",

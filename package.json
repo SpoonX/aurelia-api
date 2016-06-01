@@ -44,7 +44,7 @@
     },
     "devDependencies": {
       "aurelia-polyfills": "^1.0.0-beta.1.1.6",
-      "fetch": "github:github/fetch@^0.11.1"
+      "fetch": "github:github/fetch@^1.0.0"
     }
   },
   "dependencies": {
