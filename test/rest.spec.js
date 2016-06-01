@@ -30,6 +30,10 @@ describe('Rest', function() {
       expect(injectTest.apiEndpoint instanceof Rest).toBe(true);
       expect(injectTest.githubEndpoint instanceof Rest).toBe(true);
 
+      expect(injectTest.newEndpoint instanceof Rest).toBe(true);
+      expect(injectTest.newEndpoint.client.baseUrl).toBe(baseUrls.api);
+      expect(injectTest.newEndpoint.defaults.headers['Authorization']).toBe('Bearer aToken');
+
       Promise.all([
         injectTest.githubEndpoint.find('repos/spoonx/aurelia-orm/contributors')
           .then(x => {
@@ -58,6 +62,11 @@ describe('Rest', function() {
             expect(y.path).toBe('/posts');
             expect(y.contentType).toBe(options.headers['Content-Type']);
             expect(y.Authorization).toBe(options.headers['Authorization']);
+          }),
+        injectTest.newEndpoint.find('posts')
+          .then(y => {
+            expect(y.path).toBe('/posts');
+            expect(y.Authorization).toBe('Bearer aToken');
           })
       ]).then(x => {
         done();
