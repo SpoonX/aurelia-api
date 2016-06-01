@@ -1,6 +1,5 @@
 import {HttpClient} from 'aurelia-fetch-client';
 import {Config, Rest} from '../src/aurelia-api';
-import extend from 'extend';
 
 describe('Config', function() {
   describe('.registerEndpoint()', function() {
@@ -38,7 +37,7 @@ describe('Config', function() {
       let config   = new Config;
       let returned = config.registerEndpoint('api', baseUrls.api, userOptions);
 
-      expect(config.endpoints.api.defaults).toEqual(extend(true, {}, defaultOptions, userOptions));
+      expect(config.endpoints.api.defaults).toEqual(userOptions);
       expect(config.endpoints.api.client.baseUrl).toEqual(baseUrls.api);
       expect(returned).toBe(config);
     });

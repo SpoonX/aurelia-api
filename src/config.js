@@ -1,6 +1,5 @@
 import {HttpClient} from 'aurelia-fetch-client';
 import {Rest} from './rest';
-import extend from 'extend';
 
 export class Config {
   endpoints       = {};
@@ -11,17 +10,17 @@ export class Config {
    *
    * @param {string}          name              The name of the new endpoint.
    * @param {function|string} [configureMethod] Configure method or endpoint.
-   * @param {{}}              [defaults]        Defaults for the HttpClient
+   * @param {{}}              [defaults]        New defaults for the HttpClient
    *
    * @see http://aurelia.io/docs.html#/aurelia/fetch-client/latest/doc/api/class/HttpClientConfiguration
    * @return {Config}
    */
-  registerEndpoint(name, configureMethod, defaults = {}) {
+  registerEndpoint(name, configureMethod, defaults) {
     let newClient        = new HttpClient();
     this.endpoints[name] = new Rest(newClient, name);
 
-    // add custom defaults to Rest
-    extend(true, this.endpoints[name].defaults, defaults);
+    // set custom defaults to Rest
+    if (defaults !== undefined) this.endpoints[name].defaults = defaults;
 
     // Manual configure of client.
     if (typeof configureMethod === 'function') {
