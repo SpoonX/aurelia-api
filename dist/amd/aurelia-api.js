@@ -48,12 +48,12 @@ define(['exports', 'qs', 'extend', 'aurelia-fetch-client', 'aurelia-dependency-i
     Rest.prototype.request = function request(method, path, body) {
       var options = arguments.length <= 3 || arguments[3] === undefined ? {} : arguments[3];
 
-      var requestOptions = (0, _extend2.default)(true, {}, this.defaults, options);
+      var requestOptions = (0, _extend2.default)(true, { headers: {} }, this.defaults, options, { method: method, body: body });
 
-      requestOptions.method = method;
+      var contentType = requestOptions.headers['Content-Type'];
 
-      if ((typeof body === 'undefined' ? 'undefined' : _typeof(body)) === 'object') {
-        requestOptions.body = (0, _aureliaFetchClient.json)(body);
+      if ((typeof body === 'undefined' ? 'undefined' : _typeof(body)) === 'object' && contentType) {
+        requestOptions.body = contentType.toLowerCase() === 'application/json' ? JSON.stringify(body) : _qs2.default.stringify(body);
       }
 
       return this.client.fetch(path, requestOptions).then(function (response) {
@@ -126,13 +126,11 @@ define(['exports', 'qs', 'extend', 'aurelia-fetch-client', 'aurelia-dependency-i
       this.defaultEndpoint = null;
     }
 
-    Config.prototype.registerEndpoint = function registerEndpoint(name, configureMethod) {
-      var defaults = arguments.length <= 2 || arguments[2] === undefined ? {} : arguments[2];
-
+    Config.prototype.registerEndpoint = function registerEndpoint(name, configureMethod, defaults) {
       var newClient = new _aureliaFetchClient.HttpClient();
       this.endpoints[name] = new Rest(newClient, name);
 
-      (0, _extend2.default)(true, this.endpoints[name].defaults, defaults);
+      if (defaults !== undefined) this.endpoints[name].defaults = defaults;
 
       if (typeof configureMethod === 'function') {
         newClient.configure(configureMethod);
