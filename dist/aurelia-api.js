@@ -1,6 +1,6 @@
 import qs from 'qs';
 import extend from 'extend';
-import {json,HttpClient} from 'aurelia-fetch-client';
+import {HttpClient} from 'aurelia-fetch-client';
 import {resolver} from 'aurelia-dependency-injection';
 
 export class Rest {
@@ -34,12 +34,14 @@ export class Rest {
    * @return {Promise}
    */
   request(method, path, body, options = {}) {
-    let requestOptions = extend(true, {}, this.defaults, options);
+    let requestOptions = extend(true, {headers: {}}, this.defaults, options, {method, body});
 
-    requestOptions.method = method;
+    let contentType = requestOptions.headers['Content-Type'];
 
-    if (typeof body === 'object') {
-      requestOptions.body = json(body);
+    if (typeof body === 'object' && contentType) {
+      requestOptions.body = contentType.toLowerCase() === 'application/json'
+                          ? JSON.stringify(body)
+                          : qs.stringify(body);
     }
 
     return this.client.fetch(path, requestOptions).then(response => {
@@ -165,17 +167,17 @@ export class Config {
    *
    * @param {string}          name              The name of the new endpoint.
    * @param {function|string} [configureMethod] Configure method or endpoint.
-   * @param {{}}              [defaults]        Defaults for the HttpClient
+   * @param {{}}              [defaults]        New defaults for the HttpClient
    *
    * @see http://aurelia.io/docs.html#/aurelia/fetch-client/latest/doc/api/class/HttpClientConfiguration
    * @return {Config}
    */
-  registerEndpoint(name, configureMethod, defaults = {}) {
+  registerEndpoint(name, configureMethod, defaults) {
     let newClient        = new HttpClient();
     this.endpoints[name] = new Rest(newClient, name);
 
-    // add custom defaults to Rest
-    extend(true, this.endpoints[name].defaults, defaults);
+    // set custom defaults to Rest
+    if (defaults !== undefined) this.endpoints[name].defaults = defaults;
 
     // Manual configure of client.
     if (typeof configureMethod === 'function') {

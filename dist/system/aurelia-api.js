@@ -1,7 +1,7 @@
 'use strict';
 
 System.register(['qs', 'extend', 'aurelia-fetch-client', 'aurelia-dependency-injection'], function (_export, _context) {
-  var qs, extend, json, HttpClient, resolver, _dec, _class3, _typeof, Rest, Config, Endpoint;
+  var qs, extend, HttpClient, resolver, _dec, _class3, _typeof, Rest, Config, Endpoint;
 
   function _classCallCheck(instance, Constructor) {
     if (!(instance instanceof Constructor)) {
@@ -21,7 +21,6 @@ System.register(['qs', 'extend', 'aurelia-fetch-client', 'aurelia-dependency-inj
     }, function (_extend) {
       extend = _extend.default;
     }, function (_aureliaFetchClient) {
-      json = _aureliaFetchClient.json;
       HttpClient = _aureliaFetchClient.HttpClient;
     }, function (_aureliaDependencyInjection) {
       resolver = _aureliaDependencyInjection.resolver;
@@ -51,12 +50,12 @@ System.register(['qs', 'extend', 'aurelia-fetch-client', 'aurelia-dependency-inj
         Rest.prototype.request = function request(method, path, body) {
           var options = arguments.length <= 3 || arguments[3] === undefined ? {} : arguments[3];
 
-          var requestOptions = extend(true, {}, this.defaults, options);
+          var requestOptions = extend(true, { headers: {} }, this.defaults, options, { method: method, body: body });
 
-          requestOptions.method = method;
+          var contentType = requestOptions.headers['Content-Type'];
 
-          if ((typeof body === 'undefined' ? 'undefined' : _typeof(body)) === 'object') {
-            requestOptions.body = json(body);
+          if ((typeof body === 'undefined' ? 'undefined' : _typeof(body)) === 'object' && contentType) {
+            requestOptions.body = contentType.toLowerCase() === 'application/json' ? JSON.stringify(body) : qs.stringify(body);
           }
 
           return this.client.fetch(path, requestOptions).then(function (response) {
@@ -131,13 +130,11 @@ System.register(['qs', 'extend', 'aurelia-fetch-client', 'aurelia-dependency-inj
           this.defaultEndpoint = null;
         }
 
-        Config.prototype.registerEndpoint = function registerEndpoint(name, configureMethod) {
-          var defaults = arguments.length <= 2 || arguments[2] === undefined ? {} : arguments[2];
-
+        Config.prototype.registerEndpoint = function registerEndpoint(name, configureMethod, defaults) {
           var newClient = new HttpClient();
           this.endpoints[name] = new Rest(newClient, name);
 
-          extend(true, this.endpoints[name].defaults, defaults);
+          if (defaults !== undefined) this.endpoints[name].defaults = defaults;
 
           if (typeof configureMethod === 'function') {
             newClient.configure(configureMethod);

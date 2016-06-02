@@ -2,7 +2,7 @@ var _dec, _class3;
 
 import qs from 'qs';
 import extend from 'extend';
-import { json, HttpClient } from 'aurelia-fetch-client';
+import { HttpClient } from 'aurelia-fetch-client';
 import { resolver } from 'aurelia-dependency-injection';
 
 export let Rest = class Rest {
@@ -19,12 +19,12 @@ export let Rest = class Rest {
   }
 
   request(method, path, body, options = {}) {
-    let requestOptions = extend(true, {}, this.defaults, options);
+    let requestOptions = extend(true, { headers: {} }, this.defaults, options, { method, body });
 
-    requestOptions.method = method;
+    let contentType = requestOptions.headers['Content-Type'];
 
-    if (typeof body === 'object') {
-      requestOptions.body = json(body);
+    if (typeof body === 'object' && contentType) {
+      requestOptions.body = contentType.toLowerCase() === 'application/json' ? JSON.stringify(body) : qs.stringify(body);
     }
 
     return this.client.fetch(path, requestOptions).then(response => {
@@ -91,11 +91,11 @@ export let Config = class Config {
     this.defaultEndpoint = null;
   }
 
-  registerEndpoint(name, configureMethod, defaults = {}) {
+  registerEndpoint(name, configureMethod, defaults) {
     let newClient = new HttpClient();
     this.endpoints[name] = new Rest(newClient, name);
 
-    extend(true, this.endpoints[name].defaults, defaults);
+    if (defaults !== undefined) this.endpoints[name].defaults = defaults;
 
     if (typeof configureMethod === 'function') {
       newClient.configure(configureMethod);

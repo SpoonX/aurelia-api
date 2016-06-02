@@ -99,7 +99,7 @@ declare module 'aurelia-api' {
        *
        * @param {string}          name              The name of the new endpoint.
        * @param {function|string} [configureMethod] Configure method or endpoint.
-       * @param {{}}              [defaults]        Defaults for the HttpClient
+       * @param {{}}              [defaults]        New defaults for the HttpClient
        *
        * @see http://aurelia.io/docs.html#/aurelia/fetch-client/latest/doc/api/class/HttpClientConfiguration
        * @return {Config}
