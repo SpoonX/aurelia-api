@@ -2,8 +2,7 @@
     "root": "./doc",
     "plugins": [
         "edit-link",
-        "github",
-        "versions"
+        "github"
     ],
     "pluginsConfig": {
         "edit-link": {
@@ -12,9 +11,6 @@
         },
         "github": {
             "url": "https://github.com/spoonx/aurelia-api"
-        },
-        "versions": {
-            "type": "tags"
         }
     }
 }
