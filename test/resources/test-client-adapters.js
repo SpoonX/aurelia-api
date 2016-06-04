@@ -6,8 +6,8 @@ export class TestClientAdapter extends ClientAdapter {
     super(client);
   }
 
-  request(method, path, body, optionsCopy = {}) {
-    return this.client.send(method, path, body, optionsCopy);
+  request(method, path, body, options = {}) {
+    return this.client.send(method, path, body, options);
   }
 
   static Client = TestClient;

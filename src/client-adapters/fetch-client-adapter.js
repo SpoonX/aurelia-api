@@ -1,3 +1,4 @@
+import {buildQueryString} from 'aurelia-path';
 import {HttpClient as FetchClient} from 'aurelia-fetch-client';
 import {ClientAdapter} from './client-adapter';
 import extend from 'extend';
@@ -37,15 +38,18 @@ export class FetchClientAdapter extends ClientAdapter {
    * @return {Promise<Object|Error>}
    */
   request(method, path, body, options) {
-    let requestOptions = extend(true, {}, this.defaults, {method, body});
+    let requestOptions = extend(true, {headers: {}}, this.defaults, options, {method, body});
 
-    if (typeof body === 'object'
-    && !(typeof Blob === 'function' && body instanceof Blob)
-    && !(typeof FormData === 'function' && body instanceof FormData)) {
-      requestOptions.body = JSON.stringify(body);
+    let contentType = requestOptions.headers && (requestOptions.headers['Content-Type'] || requestOptions.headers['content-type']);
+
+    if (typeof body === 'object' && contentType) {
+      requestOptions.body = contentType.toLowerCase() === 'application/json'
+                          ? JSON.stringify(body)
+                          : buildQueryString(body);
     }
 
     extend(true, requestOptions, options);
+    if (!requestOptions.headers) delete requestOptions.headers;
 
     return this.client.fetch(path, requestOptions).then(response => {
       if (response.status >= 200 && response.status < 400) {

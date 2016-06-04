@@ -103,16 +103,17 @@ describe('FetchClientAdapter', function() {
   });
 
   describe('.post()', function() {
-    it('Should post body (as FormData) and options.', function(done) {
+    it('Should post body (as FormData).', function(done) {
+      adapter.defaults = null;
+
       let data = new FormData();
       data.append('user', 'Jane Doe');
 
-      adapter.request('POST', 'posts', data, settings.optionsForm)
+      adapter.request('POST', 'uploads', data)
         .then(y => {
           expect(y.method).toBe('POST');
-          expect(y.path).toBe('/posts');
-          expect(y.contentType).toMatch(settings.optionsForm.headers['Content-Type']);
-          expect(y.Authorization).toBe(settings.optionsForm.headers['Authorization']);
+          expect(y.path).toBe('/uploads');
+          expect(y.contentType).toMatch('multipart/form-data');
           expect(JSON.stringify(y.body)).toMatch('Jane Doe');
           done();
         });

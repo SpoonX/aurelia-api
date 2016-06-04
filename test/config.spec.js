@@ -5,6 +5,7 @@ import {HttpClientAdapter} from '../src/client-adapters/http-client-adapter';
 import {StorageClientAdapter} from '../src/client-adapters/storage-client-adapter';
 import {StorageClient} from '../src/client-adapters/storage-client';
 import {settings} from './resources/settings';
+import extend from 'extend';
 
 describe('Config', function() {
   it('Should use the DefaultClientAdapter.', function() {

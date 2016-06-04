@@ -10,8 +10,8 @@ let config    = container.get(Config);
 
 config.registerEndpoint('api', settings.baseUrls.api);
 config.registerEndpoint('github', settings.baseUrls.github);
-config.registerEndpoint('form', settings.baseUrls.form, null);
-config.registerEndpoint('test', settings.baseUrls.github, null, TestClientAdapter);
+config.registerEndpoint('form', settings.baseUrls.api, null);
+config.registerEndpoint('test', settings.baseUrls.github, null, new TestClientAdapter);
 
 describe('Rest', function() {
   FetchClientAdapter.request = function(method, path, body, requestOptions) {
@@ -24,10 +24,12 @@ describe('Rest', function() {
 
       expect(injectTest.apiEndpoint instanceof Rest).toBe(true);
       expect(injectTest.githubEndpoint instanceof Rest).toBe(true);
+      expect(injectTest.formEndpoint instanceof Rest).toBe(true);
       expect(injectTest.testEndpoint instanceof Rest).toBe(true);
 
       expect(injectTest.apiEndpoint.clientAdapter instanceof FetchClientAdapter).toBe(true);
       expect(injectTest.githubEndpoint.clientAdapter instanceof FetchClientAdapter).toBe(true);
+      expect(injectTest.formEndpoint.clientAdapter instanceof FetchClientAdapter).toBe(true);
       expect(injectTest.testEndpoint.clientAdapter instanceof TestClientAdapter).toBe(true);
 
       Promise.all([
@@ -67,7 +69,7 @@ describe('Rest', function() {
     it('Should update with body (as json).', function(done) {
       let injectTest = container.get(InjectTest);
 
-      injectTest.apiEndpoint.update('posts', null, body)
+      injectTest.apiEndpoint.update('posts', null, settings.body)
         .then(y => {
           expect(y.method).toBe('PUT');
           expect(y.path).toBe('/posts');
@@ -96,7 +98,7 @@ describe('Rest', function() {
     it('Should patch with body (as json).', function(done) {
       let injectTest = container.get(InjectTest);
 
-      injectTest.apiEndpoint.patch('post', null, body)
+      injectTest.apiEndpoint.patch('post', null, settings.body)
         .then(y => {
           expect(y.method).toBe('PATCH');
           expect(y.path).toBe('/post');
@@ -140,7 +142,7 @@ describe('Rest', function() {
     it('Should create body (as json).', function(done) {
       let injectTest = container.get(InjectTest);
 
-      injectTest.apiEndpoint.create('posts', body)
+      injectTest.apiEndpoint.create('posts', settings.body)
         .then(y => {
           expect(y.method).toBe('POST');
           expect(y.path).toBe('/posts');
@@ -167,18 +169,19 @@ describe('Rest', function() {
     it('Should post body (as urlencoded).', function(done) {
       let injectTest = container.get(InjectTest);
 
-      injectTest.apiEndpoint.post('posts', body, options)
+      injectTest.apiEndpoint.post('posts', settings.body, settings.optionsForm)
         .then(y => {
           expect(JSON.stringify(y.body)).toBe(JSON.stringify(y.body));
           expect(y.method).toBe('POST');
           expect(y.path).toBe('/posts');
-          expect(y.contentType).toMatch(options.headers['Content-Type']);
+          expect(y.contentType).toMatch(settings.optionsForm.headers['Content-Type']);
           done();
         });
     });
 
     it('Should post body (as FormData) and options.', function(done) {
       let injectTest = container.get(InjectTest);
+      injectTest.formEndpoint.clientAdapter.defaults = null;
 
       let data = new FormData();
       data.append('message', 'some');

@@ -1,6 +1,7 @@
 import {ClientAdapter} from './client-adapters/client-adapter';
 import {FetchClientAdapter} from './client-adapters/fetch-client-adapter';
 import {Rest} from './rest';
+import extend from 'extend';
 
 /**
  * Config class. Configures and stores endpoints
