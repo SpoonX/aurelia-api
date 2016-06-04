@@ -18,7 +18,7 @@ export class Endpoint {
    *
    * @param {Container} container
    *
-   * @return {*}
+   * @return {Rest}
    */
   get(container) {
     return container.get(Config).getEndpoint(this._key);
