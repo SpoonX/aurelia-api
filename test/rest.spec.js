@@ -1,34 +1,36 @@
 import {Config, Rest} from '../src/aurelia-api';
 import {Container} from 'aurelia-dependency-injection';
 import {InjectTest} from './resources/inject-test';
+import {FetchClientAdapter} from '../src/client-adapters/fetch-client-adapter';
+import {TestClientAdapter} from './resources/test-client-adapters';
+import {settings} from './resources/settings';
 
 let container = new Container();
 let config    = container.get(Config);
-let baseUrls  = {
-  github: 'https://api.github.com/',
-  api   : 'http://127.0.0.1:1927/'
-};
 
-config.registerEndpoint('api', baseUrls.api);
-config.registerEndpoint('github', baseUrls.github);
-config.registerEndpoint('form', baseUrls.api, null);
-
-let criteria = {user: 'john', comment: 'last'};
-let body = {message: 'some'};
-let options = {
-  headers: {
-    'Content-Type': 'application/x-www-form-urlencoded',
-    'Authorization': 'Bearer aToken'
-  }
-};
+config.registerEndpoint('api', settings.baseUrls.api);
+config.registerEndpoint('github', settings.baseUrls.github);
+config.registerEndpoint('form', settings.baseUrls.api, null);
+config.registerEndpoint('test', settings.baseUrls.github, null, new TestClientAdapter);
 
 describe('Rest', function() {
+  FetchClientAdapter.request = function(method, path, body, requestOptions) {
+    return {method, path, body, requestOptions};
+  };
+
   describe('.find()', function() {
-    it('Should find results for multiple endpoints.', function(done) {
+    it('Should find results for multiple endpoints (with default ClientAdapter).', function(done) {
       let injectTest = container.get(InjectTest);
 
       expect(injectTest.apiEndpoint instanceof Rest).toBe(true);
       expect(injectTest.githubEndpoint instanceof Rest).toBe(true);
+      expect(injectTest.formEndpoint instanceof Rest).toBe(true);
+      expect(injectTest.testEndpoint instanceof Rest).toBe(true);
+
+      expect(injectTest.apiEndpoint.clientAdapter instanceof FetchClientAdapter).toBe(true);
+      expect(injectTest.githubEndpoint.clientAdapter instanceof FetchClientAdapter).toBe(true);
+      expect(injectTest.formEndpoint.clientAdapter instanceof FetchClientAdapter).toBe(true);
+      expect(injectTest.testEndpoint.clientAdapter instanceof TestClientAdapter).toBe(true);
 
       Promise.all([
         injectTest.githubEndpoint.find('repos/spoonx/aurelia-orm/contributors')
@@ -48,20 +50,18 @@ describe('Rest', function() {
             expect(y.path).toBe('/posts/id');
             expect(JSON.stringify(y.query)).toBe('{}');
           }),
-        injectTest.apiEndpoint.find('posts', criteria)
+        injectTest.apiEndpoint.find('posts', settings.criteria)
           .then(y => {
             expect(y.path).toBe('/posts');
-            expect(JSON.stringify(y.query)).toBe(JSON.stringify(criteria));
+            expect(y.query.user).toBe(settings.criteria.user);
+            expect(y.query.comment).toBe(settings.criteria.comment);
           }),
-        injectTest.apiEndpoint.find('posts', undefined, options)
+        injectTest.apiEndpoint.find('posts', undefined, settings.options)
           .then(y => {
             expect(y.path).toBe('/posts');
-            expect(y.contentType).toBe(options.headers['Content-Type']);
-            expect(y.Authorization).toBe(options.headers['Authorization']);
+            expect(y.Authorization).toBe(settings.options.headers['Authorization']);
           })
-      ]).then(x => {
-        done();
-      });
+      ]).then(done);
     });
   });
 
@@ -69,7 +69,7 @@ describe('Rest', function() {
     it('Should update with body (as json).', function(done) {
       let injectTest = container.get(InjectTest);
 
-      injectTest.apiEndpoint.update('posts', null, body)
+      injectTest.apiEndpoint.update('posts', null, settings.body)
         .then(y => {
           expect(y.method).toBe('PUT');
           expect(y.path).toBe('/posts');
@@ -81,13 +81,14 @@ describe('Rest', function() {
     it('Should update with body (as json), criteria and options.', function(done) {
       let injectTest = container.get(InjectTest);
 
-      injectTest.apiEndpoint.update('posts', criteria, body, options)
+      injectTest.apiEndpoint.update('posts', settings.criteria, settings.body, settings.options)
         .then(y => {
           expect(y.method).toBe('PUT');
           expect(y.path).toBe('/posts');
-          expect(JSON.stringify(y.query)).toBe(JSON.stringify(criteria));
-          expect(y.contentType).toMatch(options.headers['Content-Type']);
-          expect(y.Authorization).toBe(options.headers['Authorization']);
+          expect(y.query.user).toBe(settings.criteria.user);
+          expect(y.query.comment).toBe(settings.criteria.comment);
+          expect(y.contentType).toMatch('application/json');
+          expect(y.Authorization).toBe(settings.options.headers['Authorization']);
           done();
         });
     });
@@ -97,7 +98,7 @@ describe('Rest', function() {
     it('Should patch with body (as json).', function(done) {
       let injectTest = container.get(InjectTest);
 
-      injectTest.apiEndpoint.patch('post', null, body)
+      injectTest.apiEndpoint.patch('post', null, settings.body)
         .then(y => {
           expect(y.method).toBe('PATCH');
           expect(y.path).toBe('/post');
@@ -109,28 +110,29 @@ describe('Rest', function() {
     it('Should patch with body (as json), criteria and options.', function(done) {
       let injectTest = container.get(InjectTest);
 
-      injectTest.apiEndpoint.patch('post', criteria, body, options)
+      injectTest.apiEndpoint.patch('post', settings.criteria, settings.body, settings.options)
         .then(y => {
           expect(y.method).toBe('PATCH');
           expect(y.path).toBe('/post');
-          expect(JSON.stringify(y.query)).toBe(JSON.stringify(criteria));
-          expect(y.contentType).toMatch(options.headers['Content-Type']);
-          expect(y.Authorization).toBe(options.headers['Authorization']);
+          expect(y.query.user).toBe(settings.criteria.user);
+          expect(y.query.comment).toBe(settings.criteria.comment);
+          expect(y.contentType).toMatch('application/json');
+          expect(y.Authorization).toBe(settings.options.headers['Authorization']);
           done();
         });
     });
   });
 
   describe('.destroy()', function() {
-    it('Should destroy with id and options.', function(done) {
+    it('Should destroy with id and settings.options .', function(done) {
       let injectTest = container.get(InjectTest);
 
-      injectTest.apiEndpoint.destroy('posts', 'id', options)
+      injectTest.apiEndpoint.destroy('posts', 'id', settings.options)
         .then(y => {
           expect(y.method).toBe('DELETE');
           expect(y.path).toBe('/posts/id');
           expect(JSON.stringify(y.query)).toBe('{}');
-          expect(y.Authorization).toBe(options.headers['Authorization']);
+          expect(y.Authorization).toBe(settings.options.headers['Authorization']);
           done();
         });
     });
@@ -140,7 +142,7 @@ describe('Rest', function() {
     it('Should create body (as json).', function(done) {
       let injectTest = container.get(InjectTest);
 
-      injectTest.apiEndpoint.create('posts', body)
+      injectTest.apiEndpoint.create('posts', settings.body)
         .then(y => {
           expect(y.method).toBe('POST');
           expect(y.path).toBe('/posts');
@@ -152,12 +154,12 @@ describe('Rest', function() {
     it('Should create body (as json) and options.', function(done) {
       let injectTest = container.get(InjectTest);
 
-      injectTest.apiEndpoint.create('posts', body, options)
+      injectTest.apiEndpoint.create('posts', settings.body, settings.options)
         .then(y => {
           expect(y.method).toBe('POST');
           expect(y.path).toBe('/posts');
-          expect(y.contentType).toMatch(options.headers['Content-Type']);
-          expect(y.Authorization).toBe(options.headers['Authorization']);
+          expect(y.contentType).toMatch('application/json');
+          expect(y.Authorization).toBe(settings.options.headers['Authorization']);
           done();
         });
     });
@@ -167,19 +169,19 @@ describe('Rest', function() {
     it('Should post body (as urlencoded).', function(done) {
       let injectTest = container.get(InjectTest);
 
-      injectTest.apiEndpoint.post('posts', body, options)
+      injectTest.apiEndpoint.post('posts', settings.body, settings.optionsForm)
         .then(y => {
           expect(JSON.stringify(y.body)).toBe(JSON.stringify(y.body));
           expect(y.method).toBe('POST');
           expect(y.path).toBe('/posts');
-          expect(y.contentType).toMatch(options.headers['Content-Type']);
-          expect(y.Authorization).toBe(options.headers['Authorization']);
+          expect(y.contentType).toMatch(settings.optionsForm.headers['Content-Type']);
           done();
         });
     });
 
     it('Should post body (as FormData) and options.', function(done) {
       let injectTest = container.get(InjectTest);
+      injectTest.formEndpoint.clientAdapter.defaults = null;
 
       let data = new FormData();
       data.append('message', 'some');

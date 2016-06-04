@@ -1,30 +1,65 @@
-import {HttpClient} from 'aurelia-fetch-client';
+import {ClientAdapter} from './client-adapters/client-adapter';
+import {FetchClientAdapter} from './client-adapters/fetch-client-adapter';
 import {Rest} from './rest';
+import extend from 'extend';
 
+/**
+ * Config class. Configures and stores endpoints
+ */
 export class Config {
-  endpoints       = {};
+  /**
+   * GOJO of registered endpoint names and Rest clients
+   * @type {Object}
+   */
+  endpoints = {};
+
+  /**
+   * Current default endpoint if set
+   * @type {[Rest]} Default Rest client
+   */
   defaultEndpoint = null;
+
+  /**
+  * The default client adpater class
+  *  @type {function}
+  */
+  DefaultClientAdapter = FetchClientAdapter;
+
+  /**
+   * Set a new defaultClientAdapter
+   *
+   * @param {function}  ClientAdapter  A ClientAdapter class (default: FetchClientAdapter)
+   *
+   * @return {Config}
+   */
+  setDefaultClientAdapter(DefaultClientAdapter) {
+    this.DefaultClientAdapter = DefaultClientAdapter;
+
+    return this;
+  }
 
   /**
    * Register a new endpoint.
    *
-   * @param {string}          name              The name of the new endpoint.
-   * @param {function|string} [configureMethod] Configure method or endpoint.
-   * @param {{}}              [defaults]        New defaults for the HttpClient
+   * @type {string}          name              The name of the new endpoint.
+   * @type {function|string} [configureMethod] Configure method or endpoint.
+   * @type {{}}              [defaults]        New defaults for the HttpClient
+   * @param {[function]}     [SelectedClientAdapter]  ClientAdapter class for this endpoint [default: DefaultClientAdapter]
    *
    * @see http://aurelia.io/docs.html#/aurelia/fetch-client/latest/doc/api/class/HttpClientConfiguration
    * @return {Config}
    */
-  registerEndpoint(name, configureMethod, defaults) {
-    let newClient        = new HttpClient();
-    this.endpoints[name] = new Rest(newClient, name);
+  registerEndpoint(name, configureMethod, defaults = {}, clientAdapter = new this.DefaultClientAdapter(new this.DefaultClientAdapter.Client)) {
+    if (!(clientAdapter instanceof ClientAdapter)) throw new TypeError('clientAdapter not of type ClientAdapter');
 
-    // set custom defaults to Rest
-    if (defaults !== undefined) this.endpoints[name].defaults = defaults;
+    this.endpoints[name] = new Rest(clientAdapter, name);
+
+    // add custom defaults to clientAdapter
+    clientAdapter.defaults = extend(true, {}, clientAdapter.defaults || {}, defaults);
 
     // Manual configure of client.
     if (typeof configureMethod === 'function') {
-      newClient.configure(configureMethod);
+      clientAdapter.client.configure(configureMethod);
 
       return this;
     }
@@ -35,7 +70,7 @@ export class Config {
     }
 
     // Base url is string. Configure.
-    newClient.configure(configure => {
+    clientAdapter.client.configure(configure => {
       configure.withBaseUrl(configureMethod);
     });
 
@@ -45,7 +80,7 @@ export class Config {
   /**
    * Get a previously registered endpoint. Returns null when not found.
    *
-   * @param {string} [name] Returns default endpoint when not set.
+   * @type {string} [name] Endpoint bame. Returns default endpoint when not set.
    *
    * @return {Rest|null}
    */
@@ -60,7 +95,7 @@ export class Config {
   /**
    * Check if an endpoint has been registered.
    *
-   * @param {string} name
+   * @type {string} name The endpoint name
    *
    * @return {boolean}
    */
@@ -71,7 +106,7 @@ export class Config {
   /**
    * Set a previously registered endpoint as the default.
    *
-   * @param {string} name
+   * @type {string} name The endpoint name
    *
    * @return {Config}
    */
