@@ -12,9 +12,8 @@ export class Endpoint {
    *
    * @type {string} key
    */
-  constructor(key, ...rest) {
+  constructor(key) {
     this._key = key;
-    this._rest = rest;
   }
 
   /**
@@ -25,13 +24,7 @@ export class Endpoint {
    * @return {Rest}
    */
   get(container) {
-    let config = container.get(Config);
-    let endpoint = config.getEndpoint(this._key);
-
-    if (endpoint) return endpoint;
-
-    config.registerEndpoint(this._key, ...this._rest);
-    return config.getEndpoint(this._key);
+    return container.get(Config).getEndpoint(this._key);
   }
 
   /**
@@ -41,7 +34,7 @@ export class Endpoint {
    *
    * @return {Endpoint}  Resolves to the Rest client for this endpoint
    */
-  static of(key, ...rest) {
-    return new Endpoint(key, ...rest);
+  static of(key) {
+    return new Endpoint(key);
   }
 }
