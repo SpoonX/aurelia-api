@@ -10,7 +10,7 @@ export class Endpoint {
   /**
    * Construct the resolver with the specified key.
    *
-   * @type {string} key
+   * @param {string} key
    */
   constructor(key) {
     this._key = key;
@@ -19,7 +19,7 @@ export class Endpoint {
   /**
    * Resolve for key.
    *
-   * @type {Container} container
+   * @param {Container} container
    *
    * @return {Rest}
    */
@@ -30,7 +30,7 @@ export class Endpoint {
   /**
    * Get a new resolver for `key`.
    *
-   * @type {string} key  The endpoint name
+   * @param {string} key  The endpoint name
    *
    * @return {Endpoint}  Resolves to the Rest client for this endpoint
    */

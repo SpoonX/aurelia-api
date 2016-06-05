@@ -16,8 +16,8 @@ export class Rest {
   /**
    * Inject the httpClient to use for requests.
    *
-   * @type {HttpClient} httpClient The httpClient to use
-   * @type {string}     [endpoint] The endpoint name
+   * @param {HttpClient} httpClient The httpClient to use
+   * @param {string}     [endpoint] The endpoint name
    */
   constructor(httpClient, endpoint) {
     this.client   = httpClient;
@@ -27,10 +27,10 @@ export class Rest {
   /**
    * Make a request to the server.
    *
-   * @type {string} method     The fetch method
-   * @type {string} path       Path to the resource
-   * @type {{}}     [body]     The body to send if applicable
-   * @type {{}}     [options]  Fetch options overwrites
+   * @param {string} method     The fetch method
+   * @param {string} path       Path to the resource
+   * @param {{}}     [body]     The body to send if applicable
+   * @param {{}}     [options]  Fetch options overwrites
    *
    * @return {Promise<Object>|Promise<Error>} Server response as Object
    */
@@ -57,9 +57,9 @@ export class Rest {
   /**
    * Find a resource.
    *
-   * @type {string}           resource  Resource to find in
-   * @type {{}|string|Number} criteria  Object for where clause, string / number for id.
-   * @type {{}}               [options] Extra fetch options.
+   * @param {string}           resource  Resource to find in
+   * @param {{}|string|Number} criteria  Object for where clause, string / number for id.
+   * @param {{}}               [options] Extra fetch options.
    *
    * @return {Promise<Object>|Promise<Error>} Server response as Object
    */
@@ -76,9 +76,9 @@ export class Rest {
   /**
    * Create a new instance for resource.
    *
-   * @type {string} resource  Resource to create
-   * @type {{}}     body      The data to post (as Object)
-   * @type {{}}     [options] Extra fetch options.
+   * @param {string} resource  Resource to create
+   * @param {{}}     body      The data to post (as Object)
+   * @param {{}}     [options] Extra fetch options.
    *
    * @return {Promise<Object>|Promise<Error>} Server response as Object
    */
@@ -89,10 +89,10 @@ export class Rest {
   /**
    * Update a resource.
    *
-   * @type {string}           resource  Resource to update
-   * @type {{}|string|Number} criteria  Object for where clause, string / number for id.
-   * @type {object}           body      New data for provided criteria.
-   * @type {{}}               [options] Extra fetch options.
+   * @param {string}           resource  Resource to update
+   * @param {{}|string|Number} criteria  Object for where clause, string / number for id.
+   * @param {object}           body      New data for provided criteria.
+   * @param {{}}               [options] Extra fetch options.
    *
    * @return {Promise<Object>|Promise<Error>} Server response as Object
    */
@@ -109,10 +109,10 @@ export class Rest {
   /**
    * Patch a resource.
    *
-   * @type {string}           resource  Resource to patch
-   * @type {{}|string|Number} criteria  Object for where clause, string / number for id.
-   * @type {object}           body      Data to patch for provided criteria.
-   * @type {{}}               [options] Extra fetch options.
+   * @param {string}           resource  Resource to patch
+   * @param {{}|string|Number} criteria  Object for where clause, string / number for id.
+   * @param {object}           body      Data to patch for provided criteria.
+   * @param {{}}               [options] Extra fetch options.
    *
    * @return {Promise<Object>|Promise<Error>} Server response as Object
    */
@@ -129,9 +129,9 @@ export class Rest {
   /**
    * Delete a resource.
    *
-   * @type {string}           resource  The resource to delete
-   * @type {{}|string|Number} criteria  Object for where clause, string / number for id.
-   * @type {{}}               [options] Extra fetch options.
+   * @param {string}           resource  The resource to delete
+   * @param {{}|string|Number} criteria  Object for where clause, string / number for id.
+   * @param {{}}               [options] Extra fetch options.
    *
    * @return {Promise<Object>|Promise<Error>} Server response as Object
    */
@@ -148,9 +148,9 @@ export class Rest {
   /**
    * Create a new instance for resource.
    *
-   * @type {string} resource  The resource to create
-   * @type {{}}     body      The data to post (as Object)
-   * @type {{}}     [options] Extra fetch options.
+   * @param {string} resource  The resource to create
+   * @param {{}}     body      The data to post (as Object)
+   * @param {{}}     [options] Extra fetch options.
    *
    * @return {Promise<Object>|Promise<Error>} Server response as Object
    */

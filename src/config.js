@@ -7,22 +7,22 @@ import {Rest} from './rest';
 export class Config {
   /**
    * Collection of configures endpionts
-   * @type {Object} Key: endpoint name, value: Rest client
+   * @param {Object} Key: endpoint name, value: Rest client
    */
   endpoints       = {};
 
   /**
    * Current default endpoint if set
-   * @type {[Rest]} Default Rest client
+   * @param {[Rest]} Default Rest client
    */
   defaultEndpoint = null;
 
   /**
    * Register a new endpoint.
    *
-   * @type {string}          name              The name of the new endpoint.
-   * @type {function|string} [configureMethod] Configure method or endpoint.
-   * @type {{}}              [defaults]        New defaults for the HttpClient
+   * @param {string}          name              The name of the new endpoint.
+   * @param {function|string} [configureMethod] Configure method or endpoint.
+   * @param {{}}              [defaults]        New defaults for the HttpClient
    *
    * @see http://aurelia.io/docs.html#/aurelia/fetch-client/latest/doc/api/class/HttpClientConfiguration
    * @return {Config}
@@ -57,7 +57,7 @@ export class Config {
   /**
    * Get a previously registered endpoint. Returns null when not found.
    *
-   * @type {string} [name] Endpoint bame. Returns default endpoint when not set.
+   * @param {string} [name] Endpoint bame. Returns default endpoint when not set.
    *
    * @return {Rest|null}
    */
@@ -72,7 +72,7 @@ export class Config {
   /**
    * Check if an endpoint has been registered.
    *
-   * @type {string} name The endpoint name
+   * @param {string} name The endpoint name
    *
    * @return {boolean}
    */
@@ -83,7 +83,7 @@ export class Config {
   /**
    * Set a previously registered endpoint as the default.
    *
-   * @type {string} name The endpoint name
+   * @param {string} name The endpoint name
    *
    * @return {Config}
    */
