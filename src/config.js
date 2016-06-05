@@ -1,8 +1,20 @@
 import {HttpClient} from 'aurelia-fetch-client';
 import {Rest} from './rest';
 
+/**
+ * Config class. Configures and stores endpoints
+ */
 export class Config {
+  /**
+   * Collection of configures endpionts
+   * @param {Object} Key: endpoint name, value: Rest client
+   */
   endpoints       = {};
+
+  /**
+   * Current default endpoint if set
+   * @param {[Rest]} Default Rest client
+   */
   defaultEndpoint = null;
 
   /**
@@ -45,7 +57,7 @@ export class Config {
   /**
    * Get a previously registered endpoint. Returns null when not found.
    *
-   * @param {string} [name] Returns default endpoint when not set.
+   * @param {string} [name] Endpoint bame. Returns default endpoint when not set.
    *
    * @return {Rest|null}
    */
@@ -60,7 +72,7 @@ export class Config {
   /**
    * Check if an endpoint has been registered.
    *
-   * @param {string} name
+   * @param {string} name The endpoint name
    *
    * @return {boolean}
    */
@@ -71,7 +83,7 @@ export class Config {
   /**
    * Set a previously registered endpoint as the default.
    *
-   * @param {string} name
+   * @param {string} name The endpoint name
    *
    * @return {Config}
    */
