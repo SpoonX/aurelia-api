@@ -52,7 +52,7 @@ System.register(['qs', 'extend', 'aurelia-fetch-client', 'aurelia-dependency-inj
 
           var requestOptions = extend(true, { headers: {} }, this.defaults, options, { method: method, body: body });
 
-          var contentType = requestOptions.headers['Content-Type'];
+          var contentType = requestOptions.headers['Content-Type'] || requestOptions.headers['content-type'];
 
           if ((typeof body === 'undefined' ? 'undefined' : _typeof(body)) === 'object' && contentType) {
             requestOptions.body = contentType.toLowerCase() === 'application/json' ? JSON.stringify(body) : qs.stringify(body);

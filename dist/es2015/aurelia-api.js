@@ -21,7 +21,7 @@ export let Rest = class Rest {
   request(method, path, body, options = {}) {
     let requestOptions = extend(true, { headers: {} }, this.defaults, options, { method, body });
 
-    let contentType = requestOptions.headers['Content-Type'];
+    let contentType = requestOptions.headers['Content-Type'] || requestOptions.headers['content-type'];
 
     if (typeof body === 'object' && contentType) {
       requestOptions.body = contentType.toLowerCase() === 'application/json' ? JSON.stringify(body) : qs.stringify(body);
