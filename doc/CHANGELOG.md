@@ -1,3 +1,24 @@
+<a name"3.0.0-rc4"></a>
+### 3.0.0-rc4 (2016-06-09)
+
+
+#### Bug Fixes
+
+* **rest:** check for ['Content-Type'] and ['content-type'] ([8c87af2e](https://github.com/SpoonX/aurelia-api/commit/8c87af2e))
+
+
+#### Features
+
+* **project:** replace defaults, auto-convert objects for x-ww-form-urlencoded and json. allow  ([c68faffc](https://github.com/SpoonX/aurelia-api/commit/c68faffc))
+
+
+#### Breaking Changes
+
+* registerEndpoint - defaults will now completely replace standard deafults. Needed  to submit multipart/form-data.
+
+ ([c68faffc](https://github.com/SpoonX/aurelia-api/commit/c68faffc))
+
+
 <a name"3.0.0-rc3"></a>
 ### 3.0.0-rc3 (2016-06-02)
 
