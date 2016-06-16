@@ -34,6 +34,24 @@ The [changelog](doc/changelog.md) provides you with information about important 
 
 Run `jspm i aurelia-api`, or (for webpack) `npm i aurelia-api` from your project root.
 
+If install breaks your application, try resolving jspm forks: 
+
+```
+$ jspm inspect --forks
+$ jspm resolve --only registry:package-name@version
+```
+
+E.g. 
+
+```
+$ jspm inspect --forks
+     Installed Forks
+
+         npm:aurelia-dependency-injection 1.0.0-beta.1.2.3 1.0.0-beta.2.1.0
+         
+$ jspm resolve --only npm:aurelia-dependency-injection@1.0.0-beta.2.1.0
+```
+
 ## Usage
 
 ### Configuring
