@@ -54,7 +54,7 @@
     "qs": "^6.1.0"
   },
   "devDependencies": {
-    "aurelia-tools": "^0.1.20",
+    "aurelia-tools": "^0.2.1",
     "babel-dts-generator": "^0.6.0",
     "babel-eslint": "^6.0.2",
     "babel-plugin-syntax-flow": "^6.5.0",
