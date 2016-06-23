@@ -26,6 +26,7 @@
     "registry": "npm",
     "jspmPackage": true,
     "main": "aurelia-api",
+    "typings": "dist/aurelia-api.d.ts",
     "format": "amd",
     "directories": {
       "dist": "dist/amd"

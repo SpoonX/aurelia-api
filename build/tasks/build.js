@@ -37,7 +37,8 @@ gulp.task('copy-dts', function() {
       .pipe(gulp.dest(paths.output + 'es2015'))
       .pipe(gulp.dest(paths.output + 'commonjs'))
       .pipe(gulp.dest(paths.output + 'amd'))
-      .pipe(gulp.dest(paths.output + 'system'));
+      .pipe(gulp.dest(paths.output + 'system'))
+      .pipe(gulp.dest(paths.output));
 });
 
 gulp.task('remove-dts-folder', function() {
