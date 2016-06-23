@@ -1,0 +1,28 @@
+{
+  "name": "aurelia-api",
+  "version": "3.0.0-rc4",
+  "description": "A simple api wrapper around aurelia-fetch-client",
+  "keywords": [
+    "aurelia",
+    "plugin",
+    "fetch",
+    "fetch-client"
+  ],
+  "homepage": "http://aurelia-api.spoonx.org/",
+  "main": "dist/commonjs/aurelia-api.js",
+  "moduleType": "node",
+  "license": "MIT",
+  "authors": [
+    "RWOverdijk <wesley@spoonx.nl> (http://spoonx.nl/)"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/SpoonX/aurelia-api"
+  },
+  "dependencies": {
+    "aurelia-dependency-injection": "^1.0.0-beta.1.2.3",
+    "aurelia-fetch-client": "^1.0.0-beta.1.2.5",
+    "aurelia-path": "^1.0.0-beta.1.2.2",
+    "extend": "^3.0.0"
+  }
+}
