@@ -1,3 +1,12 @@
+<a name="3.0.0-rc5"></a>
+## [3.0.0-rc5](https://github.com/SpoonX/aurelia-api/compare/3.0.0-rc4...v3.0.0-rc5) (2016-07-01)
+
+
+### Features
+
+* **typings:** add typings.json to allow `typings i github:spoonx/aurelia-api` ([d0dd212](https://github.com/SpoonX/aurelia-api/commit/d0dd212))
+
+
 <a name"3.0.0-rc4"></a>
 ### 3.0.0-rc4 (2016-06-09)
 
