@@ -1,5 +1,6 @@
 import {HttpClient} from 'aurelia-fetch-client';
-import {Config, Rest} from '../src/aurelia-api';
+import {Config} from '../src/config';
+import {Rest} from '../src/rest';
 
 describe('Config', function() {
   describe('.registerEndpoint()', function() {
