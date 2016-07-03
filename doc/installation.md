@@ -44,9 +44,3 @@ or run
 ```sh
 typings i github:spoonx/aurelia-api
 ```
-
-Aurelia-api uses [extend](https://www.npmjs.com/package/extend). To get typings for extend run:
-
-```sh
-typings i dt~extend --global
-```
