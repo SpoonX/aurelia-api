@@ -1,89 +1,15 @@
-var _dec, _class3;
+var _dec, _class2;
 
-import qs from 'qs';
 import extend from 'extend';
 import { HttpClient } from 'aurelia-fetch-client';
 import { resolver } from 'aurelia-dependency-injection';
+import { buildQueryString } from 'aurelia-path';
 
-export let Rest = class Rest {
-  constructor(httpClient, endpoint) {
-    this.defaults = {
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json'
-      }
-    };
+export function configure(aurelia, configCallback) {
+  let config = aurelia.container.get(Config);
 
-    this.client = httpClient;
-    this.endpoint = endpoint;
-  }
-
-  request(method, path, body, options = {}) {
-    let requestOptions = extend(true, { headers: {} }, this.defaults, options, { method, body });
-
-    let contentType = requestOptions.headers['Content-Type'] || requestOptions.headers['content-type'];
-
-    if (typeof body === 'object' && contentType) {
-      requestOptions.body = contentType.toLowerCase() === 'application/json' ? JSON.stringify(body) : qs.stringify(body);
-    }
-
-    return this.client.fetch(path, requestOptions).then(response => {
-      if (response.status >= 200 && response.status < 400) {
-        return response.json().catch(error => null);
-      }
-
-      throw response;
-    });
-  }
-
-  find(resource, criteria, options) {
-    let requestPath = resource;
-
-    if (criteria) {
-      requestPath += typeof criteria !== 'object' ? `/${ criteria }` : '?' + qs.stringify(criteria);
-    }
-
-    return this.request('GET', requestPath, undefined, options);
-  }
-
-  post(resource, body, options) {
-    return this.request('POST', resource, body, options);
-  }
-
-  update(resource, criteria, body, options) {
-    let requestPath = resource;
-
-    if (criteria) {
-      requestPath += typeof criteria !== 'object' ? `/${ criteria }` : '?' + qs.stringify(criteria);
-    }
-
-    return this.request('PUT', requestPath, body, options);
-  }
-
-  patch(resource, criteria, body, options) {
-    let requestPath = resource;
-
-    if (criteria) {
-      requestPath += typeof criteria !== 'object' ? `/${ criteria }` : '?' + qs.stringify(criteria);
-    }
-
-    return this.request('PATCH', requestPath, body, options);
-  }
-
-  destroy(resource, criteria, options) {
-    let requestPath = resource;
-
-    if (criteria) {
-      requestPath += typeof criteria !== 'object' ? `/${ criteria }` : '?' + qs.stringify(criteria);
-    }
-
-    return this.request('DELETE', requestPath, undefined, options);
-  }
-
-  create(resource, body, options) {
-    return this.post(...arguments);
-  }
-};
+  configCallback(config);
+}
 
 export let Config = class Config {
   constructor() {
@@ -133,7 +59,7 @@ export let Config = class Config {
   }
 };
 
-export let Endpoint = (_dec = resolver(), _dec(_class3 = class Endpoint {
+export let Endpoint = (_dec = resolver(), _dec(_class2 = class Endpoint {
   constructor(key) {
     this._key = key;
   }
@@ -145,12 +71,64 @@ export let Endpoint = (_dec = resolver(), _dec(_class3 = class Endpoint {
   static of(key) {
     return new Endpoint(key);
   }
-}) || _class3);
+}) || _class2);
 
-function configure(aurelia, configCallback) {
-  let config = aurelia.container.get(Config);
+export let Rest = class Rest {
+  constructor(httpClient, endpoint) {
+    this.defaults = {
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      }
+    };
 
-  configCallback(config);
+    this.client = httpClient;
+    this.endpoint = endpoint;
+  }
+
+  request(method, path, body, options = {}) {
+    let requestOptions = extend(true, { headers: {} }, this.defaults, options, { method, body });
+
+    let contentType = requestOptions.headers['Content-Type'] || requestOptions.headers['content-type'];
+
+    if (typeof body === 'object' && contentType) {
+      requestOptions.body = contentType.toLowerCase() === 'application/json' ? JSON.stringify(body) : buildQueryString(body);
+    }
+
+    return this.client.fetch(path, requestOptions).then(response => {
+      if (response.status >= 200 && response.status < 400) {
+        return response.json().catch(error => null);
+      }
+
+      throw response;
+    });
+  }
+
+  find(resource, criteria, options) {
+    return this.request('GET', getRequestPath(resource, criteria), undefined, options);
+  }
+
+  post(resource, body, options) {
+    return this.request('POST', resource, body, options);
+  }
+
+  update(resource, criteria, body, options) {
+    return this.request('PUT', getRequestPath(resource, criteria), body, options);
+  }
+
+  patch(resource, criteria, body, options) {
+    return this.request('PATCH', getRequestPath(resource, criteria), body, options);
+  }
+
+  destroy(resource, criteria, options) {
+    return this.request('DELETE', getRequestPath(resource, criteria), undefined, options);
+  }
+
+  create(resource, body, options) {
+    return this.post(...arguments);
+  }
+};
+
+function getRequestPath(resource, criteria) {
+  return criteria !== undefined && criteria !== null ? resource + (typeof criteria !== 'object' ? `/${ criteria }` : '?' + buildQueryString(criteria)) : resource;
 }
-
-export { configure, Config, Rest, Endpoint };

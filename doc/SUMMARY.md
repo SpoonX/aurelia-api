@@ -1,6 +1,7 @@
 # Summary
 
 * [Introduction](README.md)
+* [Installation](installation.md)
 * [Quick start](Quick start.md)
 * [Configuration](configuration.md)
 * [Usage](usage.md)

@@ -1,5 +1,4 @@
 import {buildQueryString} from 'aurelia-path';
-import extend from 'extend';
 
 /**
  * Rest class. A simple rest client to fetch resources
@@ -35,7 +34,8 @@ export class Rest {
    * @return {Promise<Object>|Promise<Error>} Server response as Object
    */
   request(method, path, body, options = {}) {
-    let requestOptions = extend(true, {headers: {}}, this.defaults, options, {method, body});
+    let headers = Object.assign({}, (this.defaults || {}).headers, options.headers);
+    let requestOptions = Object.assign({}, this.defaults, options, {method, body, headers});
 
     let contentType = requestOptions.headers['Content-Type'] || requestOptions.headers['content-type'];
 

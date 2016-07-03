@@ -1,4 +1,6 @@
-import {Config, Rest, Endpoint} from '../src/aurelia-api';
+import {Config} from '../src/config';
+import {Rest} from '../src/rest';
+import {Endpoint} from '../src/endpoint';
 import {Container} from 'aurelia-dependency-injection';
 import {InjectTest} from './resources/inject-test';
 
