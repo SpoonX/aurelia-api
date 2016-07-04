@@ -34,7 +34,9 @@ The [changelog](doc/changelog.md) provides you with information about important 
 
 ### Aureli-Cli
 
-Run `npm i aurelia-api` from your project root and add `aurelia-api` to the `build/bundles/dependencies` section of `aurelia-project/aurelia.json`.
+Run `npm i aurelia-api --save` from your project root.
+
+Add `aurelia-api` to the `build/bundles/dependencies` section of `aurelia-project/aurelia.json`.
 
 ### Jspm
 
@@ -59,7 +61,9 @@ jspm resolve --only npm:aurelia-dependency-injection@1.0.0-beta.2.1.0
 
 ### Webpack
 
-Run `npm i aurelia-api` from your project root.
+Run `npm i aurelia-api --save` from your project root.
+
+Add `'aurelia-api'` in the `coreBundles.aurelia section` of your `webpack.config.js`.
 
 ### Typescript
 
