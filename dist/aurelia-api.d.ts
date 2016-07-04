@@ -1,13 +1,7 @@
-import extend from 'extend';
-import {
-  HttpClient
-} from 'aurelia-fetch-client';
-import {
-  resolver
-} from 'aurelia-dependency-injection';
-import {
-  buildQueryString
-} from 'aurelia-path';
+import {HttpClient} from 'aurelia-fetch-client';
+import {resolver} from 'aurelia-dependency-injection';
+import {buildQueryString} from 'aurelia-path';
+
 export declare function configure(aurelia?: any, configCallback?: any): any;
 
 /**
