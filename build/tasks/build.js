@@ -102,6 +102,25 @@ gulp.task('build-dts', function(){
     .pipe(gulp.dest(paths.output));
 });
 
+gulp.task('fixup-dts', function(){
+  var importsToAdd = [];
+  return gulp.src(paths.output + paths.packageName + '.d.ts')
+    .pipe(through2.obj(function(file, enc, callback) {
+      file.contents = new Buffer(tools.extractImports(file.contents.toString('utf8'), importsToAdd));
+      this.push(file);
+      return callback();
+    }))
+    .pipe(insert.transform(function(contents) {
+      importsToAdd = importsToAdd.filter(function(line) {
+        return !paths.importsToIgnoreForDts.some(function(plugin) {
+          return line.search(plugin) !== -1;
+        });
+      });
+      return tools.createImportBlock(importsToAdd) + contents;
+    }))
+    .pipe(gulp.dest(paths.output));
+});
+
 gulp.task('build', function(callback) {
   return runSequence(
     'clean',
@@ -109,6 +128,7 @@ gulp.task('build', function(callback) {
     compileToModules
       .map(function(moduleType) { return 'build-babel-' + moduleType })
       .concat(['build-dts']),
+   'fixup-dts',
     callback
   );
 });

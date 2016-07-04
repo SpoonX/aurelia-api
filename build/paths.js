@@ -22,6 +22,7 @@ var paths = {
   ignore: [],
   useTypeScriptForDTS: false,
   importsToAdd: [],
+  importsToIgnoreForDts: ['extend'],
   sort: false
 };
 
