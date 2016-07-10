@@ -96,7 +96,7 @@
     "karma-jspm": "^2.1.1",
     "merge2": "^1.0.2",
     "multer": "^1.1.0",
-    "object.assign": "^4.0.3",
+    "object.assign": "^4.0.4",
     "require-dir": "^0.3.0",
     "run-sequence": "^1.2.1",
     "snyk": "^1.8.4",
