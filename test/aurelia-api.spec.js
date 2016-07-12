@@ -1,25 +1,8 @@
-import {configure, Config, Rest, Endpoint} from '../src/aurelia-api';
+import {configure} from '../src/aurelia-api';
+import {Config} from '../src/config';
 import {Container} from 'aurelia-dependency-injection';
 
 describe('aurelia-api', function() {
-  describe('export', function() {
-    it('Should export configure', function() {
-      expect(configure).toBeDefined();
-    });
-
-    it('Should export Config', function() {
-      expect(Config).toBeDefined();
-    });
-
-    it('Should export Rest', function() {
-      expect(Rest).toBeDefined();
-    });
-
-    it('Should export Endpoint', function() {
-      expect(Endpoint).toBeDefined();
-    });
-  });
-
   describe('configure()', function() {
     it('Should call callback with a config function', function(done) {
       configure(aurelia(), function(config) {

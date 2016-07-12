@@ -1,37 +1,21 @@
-'use strict';
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.Rest = exports.Endpoint = exports.Config = undefined;
-
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
 
 var _dec, _class2;
 
-exports.configure = configure;
-
-var _extend = require('extend');
-
-var _extend2 = _interopRequireDefault(_extend);
-
-var _aureliaFetchClient = require('aurelia-fetch-client');
-
-var _aureliaDependencyInjection = require('aurelia-dependency-injection');
-
-var _aureliaPath = require('aurelia-path');
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 
+import extend from 'extend';
+import { HttpClient } from 'aurelia-fetch-client';
+import { resolver } from 'aurelia-dependency-injection';
+import { buildQueryString } from 'aurelia-path';
 
-function configure(aurelia, configCallback) {
+export function configure(aurelia, configCallback) {
   var config = aurelia.container.get(Config);
 
   configCallback(config);
 }
 
-var Config = exports.Config = function () {
+export var Config = function () {
   function Config() {
     
 
@@ -40,7 +24,7 @@ var Config = exports.Config = function () {
   }
 
   Config.prototype.registerEndpoint = function registerEndpoint(name, configureMethod, defaults) {
-    var newClient = new _aureliaFetchClient.HttpClient();
+    var newClient = new HttpClient();
     this.endpoints[name] = new Rest(newClient, name);
 
     if (defaults !== undefined) this.endpoints[name].defaults = defaults;
@@ -83,7 +67,7 @@ var Config = exports.Config = function () {
   return Config;
 }();
 
-var Endpoint = exports.Endpoint = (_dec = (0, _aureliaDependencyInjection.resolver)(), _dec(_class2 = function () {
+export var Endpoint = (_dec = resolver(), _dec(_class2 = function () {
   function Endpoint(key) {
     
 
@@ -101,7 +85,7 @@ var Endpoint = exports.Endpoint = (_dec = (0, _aureliaDependencyInjection.resolv
   return Endpoint;
 }()) || _class2);
 
-var Rest = exports.Rest = function () {
+export var Rest = function () {
   function Rest(httpClient, endpoint) {
     
 
@@ -119,12 +103,12 @@ var Rest = exports.Rest = function () {
   Rest.prototype.request = function request(method, path, body) {
     var options = arguments.length <= 3 || arguments[3] === undefined ? {} : arguments[3];
 
-    var requestOptions = (0, _extend2.default)(true, { headers: {} }, this.defaults, options, { method: method, body: body });
+    var requestOptions = extend(true, { headers: {} }, this.defaults, options, { method: method, body: body });
 
     var contentType = requestOptions.headers['Content-Type'] || requestOptions.headers['content-type'];
 
     if ((typeof body === 'undefined' ? 'undefined' : _typeof(body)) === 'object' && contentType) {
-      requestOptions.body = contentType.toLowerCase() === 'application/json' ? JSON.stringify(body) : (0, _aureliaPath.buildQueryString)(body);
+      requestOptions.body = contentType.toLowerCase() === 'application/json' ? JSON.stringify(body) : buildQueryString(body);
     }
 
     return this.client.fetch(path, requestOptions).then(function (response) {
@@ -166,5 +150,5 @@ var Rest = exports.Rest = function () {
 }();
 
 function getRequestPath(resource, criteria) {
-  return criteria !== undefined && criteria !== null ? resource + ((typeof criteria === 'undefined' ? 'undefined' : _typeof(criteria)) !== 'object' ? '/' + criteria : '?' + (0, _aureliaPath.buildQueryString)(criteria)) : resource;
+  return criteria !== undefined && criteria !== null ? resource + ((typeof criteria === 'undefined' ? 'undefined' : _typeof(criteria)) !== 'object' ? '/' + criteria : '?' + buildQueryString(criteria)) : resource;
 }

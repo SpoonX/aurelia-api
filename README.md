@@ -32,24 +32,53 @@ The [changelog](doc/changelog.md) provides you with information about important 
 
 ## Installation
 
-Run `jspm i aurelia-api`, or (for webpack) `npm i aurelia-api` from your project root.
+### Aureli-Cli
 
-If install breaks your application, try resolving jspm forks: 
+Run `npm i aurelia-api --save` from your project root.
 
+Add `aurelia-api` to the `build/bundles/dependencies` section of `aurelia-project/aurelia.json`.
+
+### Jspm
+
+Run `jspm i aurelia-api`
+
+If the installation results in having forks, try resolving them by running:
+
+```sh
+jspm inspect --forks
+jspm resolve --only registry:package-name@version
 ```
-$ jspm inspect --forks
-$ jspm resolve --only registry:package-name@version
+
+E.g.
+
+```sh
+jspm inspect --forks
+>     Installed Forks
+>         npm:aurelia-dependency-injection 1.0.0-beta.1.2.3 1.0.0-beta.2.1.0
+
+jspm resolve --only npm:aurelia-dependency-injection@1.0.0-beta.2.1.0
 ```
 
-E.g. 
+### Webpack
 
+Run `npm i aurelia-api --save` from your project root.
+
+Add `'aurelia-api'` in the `coreBundles.aurelia section` of your `webpack.config.js`.
+
+### Typescript
+
+Add to your `typings.json`
+
+```js
+"aurelia-api": "github:spoonx/aurelia-api",
 ```
-$ jspm inspect --forks
-     Installed Forks
 
-         npm:aurelia-dependency-injection 1.0.0-beta.1.2.3 1.0.0-beta.2.1.0
-         
-$ jspm resolve --only npm:aurelia-dependency-injection@1.0.0-beta.2.1.0
+and run `typings i`
+
+or run
+
+```sh
+typings i github:spoonx/aurelia-api
 ```
 
 ## Usage

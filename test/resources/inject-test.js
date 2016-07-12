@@ -1,5 +1,5 @@
 import {inject} from 'aurelia-dependency-injection';
-import {Endpoint} from '../../src/aurelia-api';
+import {Endpoint} from '../../src/endpoint';
 
 @inject(Endpoint.of('api'), Endpoint.of('jsonplaceholder'), Endpoint.of('form'))
 export class InjectTest {
