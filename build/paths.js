@@ -21,7 +21,7 @@ var paths = {
   ignore: [],
   useTypeScriptForDTS: false,
   importsToAdd: [],
-  importsToIgnoreForDts: [], // imports that are only used internally. no need to d.ts export them
+  importsToIgnoreForDts: ['extends'], // imports that are only used internally. no need to d.ts export them
   jsResources: [], // js files that should not be concated, but keep their path
   resources: appRoot + '{**/*.css,**/*.html}',
   sort: true,
