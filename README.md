@@ -76,7 +76,7 @@ Add `'aurelia-api'` in the `coreBundles.aurelia section` of your `webpack.config
 
 ### Typescript
 
-Add to your `typings.json`
+If needed, add to your `typings.json`
 
 ```js
 "aurelia-api": "github:spoonx/aurelia-api",
