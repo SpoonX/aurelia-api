@@ -36,7 +36,7 @@ The [changelog](doc/changelog.md) provides you with information about important 
 
 Run `npm i aurelia-api --save` from your project root.
 
-Aurelia-api makes use of `extends`. So, add following to the `build/bundles/dependencies` section of `aurelia-project/aurelia.json`.
+Aurelia-api makes use of `extends`. So, add following to the `build.bundles.dependencies` section of `aurelia-project/aurelia.json`.
 
 ```js
 "dependencies": [
@@ -50,6 +50,8 @@ Aurelia-api makes use of `extends`. So, add following to the `build/bundles/depe
 ### Jspm
 
 Run `jspm i aurelia-api`
+
+Add `aurelia-api` to the `bundles.dist.aurelia.includes` section of `build/bundles.js`.
 
 If the installation results in having forks, try resolving them by running:
 
@@ -76,7 +78,7 @@ Add `'aurelia-api'` in the `coreBundles.aurelia section` of your `webpack.config
 
 ### Typescript
 
-If needed, add to your `typings.json`
+Npm-based installations pick up the typings automatically. For Jspm-based installations, add to your `typings.json`:
 
 ```js
 "aurelia-api": "github:spoonx/aurelia-api",
