@@ -1,6 +1,6 @@
 {
   "name": "aurelia-api",
-  "version": "3.0.0-rc5",
+  "version": "3.0.0-rc6",
   "description": "A simple api wrapper around aurelia-fetch-client",
   "keywords": [
     "aurelia",
@@ -20,8 +20,8 @@
     "url": "https://github.com/SpoonX/aurelia-api"
   },
   "dependencies": {
-    "aurelia-dependency-injection": "^1.0.0-rc.1.0.0",
-    "aurelia-fetch-client": "^1.0.0-rc.1.0.0",
+    "aurelia-dependency-injection": "^1.0.0-rc.1.0.1",
+    "aurelia-fetch-client": "^1.0.0-rc.1.0.1",
     "aurelia-path": "^1.0.0-rc.1.0.0",
     "extend": "^3.0.0"
   }

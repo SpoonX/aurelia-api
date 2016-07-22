@@ -1,77 +1,9 @@
-var _dec, _class2;
+var _dec, _class3;
 
 import extend from 'extend';
+import { buildQueryString } from 'aurelia-path';
 import { HttpClient } from 'aurelia-fetch-client';
 import { resolver } from 'aurelia-dependency-injection';
-import { buildQueryString } from 'aurelia-path';
-
-export function configure(aurelia, configCallback) {
-  let config = aurelia.container.get(Config);
-
-  configCallback(config);
-}
-
-export let Config = class Config {
-  constructor() {
-    this.endpoints = {};
-    this.defaultEndpoint = null;
-  }
-
-  registerEndpoint(name, configureMethod, defaults) {
-    let newClient = new HttpClient();
-    this.endpoints[name] = new Rest(newClient, name);
-
-    if (defaults !== undefined) this.endpoints[name].defaults = defaults;
-
-    if (typeof configureMethod === 'function') {
-      newClient.configure(configureMethod);
-
-      return this;
-    }
-
-    if (typeof configureMethod !== 'string') {
-      return this;
-    }
-
-    newClient.configure(configure => {
-      configure.withBaseUrl(configureMethod);
-    });
-
-    return this;
-  }
-
-  getEndpoint(name) {
-    if (!name) {
-      return this.defaultEndpoint || null;
-    }
-
-    return this.endpoints[name] || null;
-  }
-
-  endpointExists(name) {
-    return !!this.endpoints[name];
-  }
-
-  setDefaultEndpoint(name) {
-    this.defaultEndpoint = this.getEndpoint(name);
-
-    return this;
-  }
-};
-
-export let Endpoint = (_dec = resolver(), _dec(_class2 = class Endpoint {
-  constructor(key) {
-    this._key = key;
-  }
-
-  get(container) {
-    return container.get(Config).getEndpoint(this._key);
-  }
-
-  static of(key) {
-    return new Endpoint(key);
-  }
-}) || _class2);
 
 export let Rest = class Rest {
   constructor(httpClient, endpoint) {
@@ -132,3 +64,71 @@ export let Rest = class Rest {
 function getRequestPath(resource, criteria) {
   return criteria !== undefined && criteria !== null ? resource + (typeof criteria !== 'object' ? `/${ criteria }` : '?' + buildQueryString(criteria)) : resource;
 }
+
+export let Config = class Config {
+  constructor() {
+    this.endpoints = {};
+    this.defaultEndpoint = null;
+  }
+
+  registerEndpoint(name, configureMethod, defaults) {
+    let newClient = new HttpClient();
+    this.endpoints[name] = new Rest(newClient, name);
+
+    if (defaults !== undefined) this.endpoints[name].defaults = defaults;
+
+    if (typeof configureMethod === 'function') {
+      newClient.configure(configureMethod);
+
+      return this;
+    }
+
+    if (typeof configureMethod !== 'string') {
+      return this;
+    }
+
+    newClient.configure(configure => {
+      configure.withBaseUrl(configureMethod);
+    });
+
+    return this;
+  }
+
+  getEndpoint(name) {
+    if (!name) {
+      return this.defaultEndpoint || null;
+    }
+
+    return this.endpoints[name] || null;
+  }
+
+  endpointExists(name) {
+    return !!this.endpoints[name];
+  }
+
+  setDefaultEndpoint(name) {
+    this.defaultEndpoint = this.getEndpoint(name);
+
+    return this;
+  }
+};
+
+export function configure(aurelia, configCallback) {
+  let config = aurelia.container.get(Config);
+
+  configCallback(config);
+}
+
+export let Endpoint = (_dec = resolver(), _dec(_class3 = class Endpoint {
+  constructor(key) {
+    this._key = key;
+  }
+
+  get(container) {
+    return container.get(Config).getEndpoint(this._key);
+  }
+
+  static of(key) {
+    return new Endpoint(key);
+  }
+}) || _class3);

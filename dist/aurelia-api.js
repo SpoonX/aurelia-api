@@ -1,144 +1,7 @@
 import extend from 'extend';
+import {buildQueryString} from 'aurelia-path';
 import {HttpClient} from 'aurelia-fetch-client';
 import {resolver} from 'aurelia-dependency-injection';
-import {buildQueryString} from 'aurelia-path';
-
-export function configure(aurelia, configCallback) {
-  let config = aurelia.container.get(Config);
-
-  configCallback(config);
-}
-
-/**
- * Config class. Configures and stores endpoints
- */
-export class Config {
-  /**
-   * Collection of configures endpionts
-   * @param {Object} Key: endpoint name, value: Rest client
-   */
-  endpoints       = {};
-
-  /**
-   * Current default endpoint if set
-   * @param {[Rest]} Default Rest client
-   */
-  defaultEndpoint = null;
-
-  /**
-   * Register a new endpoint.
-   *
-   * @param {string}          name              The name of the new endpoint.
-   * @param {function|string} [configureMethod] Configure method or endpoint.
-   * @param {{}}              [defaults]        New defaults for the HttpClient
-   *
-   * @see http://aurelia.io/docs.html#/aurelia/fetch-client/latest/doc/api/class/HttpClientConfiguration
-   * @return {Config}
-   */
-  registerEndpoint(name, configureMethod, defaults) {
-    let newClient        = new HttpClient();
-    this.endpoints[name] = new Rest(newClient, name);
-
-    // set custom defaults to Rest
-    if (defaults !== undefined) this.endpoints[name].defaults = defaults;
-
-    // Manual configure of client.
-    if (typeof configureMethod === 'function') {
-      newClient.configure(configureMethod);
-
-      return this;
-    }
-
-    // Base url is self.
-    if (typeof configureMethod !== 'string') {
-      return this;
-    }
-
-    // Base url is string. Configure.
-    newClient.configure(configure => {
-      configure.withBaseUrl(configureMethod);
-    });
-
-    return this;
-  }
-
-  /**
-   * Get a previously registered endpoint. Returns null when not found.
-   *
-   * @param {string} [name] Endpoint bame. Returns default endpoint when not set.
-   *
-   * @return {Rest|null}
-   */
-  getEndpoint(name) {
-    if (!name) {
-      return this.defaultEndpoint || null;
-    }
-
-    return this.endpoints[name] || null;
-  }
-
-  /**
-   * Check if an endpoint has been registered.
-   *
-   * @param {string} name The endpoint name
-   *
-   * @return {boolean}
-   */
-  endpointExists(name) {
-    return !!this.endpoints[name];
-  }
-
-  /**
-   * Set a previously registered endpoint as the default.
-   *
-   * @param {string} name The endpoint name
-   *
-   * @return {Config}
-   */
-  setDefaultEndpoint(name) {
-    this.defaultEndpoint = this.getEndpoint(name);
-
-    return this;
-  }
-}
-
-/**
- * Endpoint class. A resolver for endpoints which allows injection of the corresponding Rest client into a class
- */
-@resolver()
-export class Endpoint {
-
-  /**
-   * Construct the resolver with the specified key.
-   *
-   * @param {string} key
-   */
-  constructor(key) {
-    this._key = key;
-  }
-
-  /**
-   * Resolve for key.
-   *
-   * @param {Container} container
-   *
-   * @return {Rest}
-   */
-  get(container) {
-    return container.get(Config).getEndpoint(this._key);
-  }
-
-  /**
-   * Get a new resolver for `key`.
-   *
-   * @param {string} key  The endpoint name
-   *
-   * @return {Endpoint}  Resolves to the Rest client for this endpoint
-   */
-  static of(key) {
-    return new Endpoint(key);
-  }
-}
 
 /**
  * Rest class. A simple rest client to fetch resources
@@ -278,4 +141,141 @@ function getRequestPath(resource, criteria) {
   return (criteria !== undefined && criteria !== null
     ? resource + (typeof criteria !== 'object' ? `/${criteria}` : '?' + buildQueryString(criteria))
     : resource);
+}
+
+/**
+ * Config class. Configures and stores endpoints
+ */
+export class Config {
+  /**
+   * Collection of configures endpionts
+   * @param {Object} Key: endpoint name, value: Rest client
+   */
+  endpoints       = {};
+
+  /**
+   * Current default endpoint if set
+   * @param {[Rest]} Default Rest client
+   */
+  defaultEndpoint = null;
+
+  /**
+   * Register a new endpoint.
+   *
+   * @param {string}          name              The name of the new endpoint.
+   * @param {function|string} [configureMethod] Configure method or endpoint.
+   * @param {{}}              [defaults]        New defaults for the HttpClient
+   *
+   * @see http://aurelia.io/docs.html#/aurelia/fetch-client/latest/doc/api/class/HttpClientConfiguration
+   * @return {Config}
+   */
+  registerEndpoint(name, configureMethod, defaults) {
+    let newClient        = new HttpClient();
+    this.endpoints[name] = new Rest(newClient, name);
+
+    // set custom defaults to Rest
+    if (defaults !== undefined) this.endpoints[name].defaults = defaults;
+
+    // Manual configure of client.
+    if (typeof configureMethod === 'function') {
+      newClient.configure(configureMethod);
+
+      return this;
+    }
+
+    // Base url is self.
+    if (typeof configureMethod !== 'string') {
+      return this;
+    }
+
+    // Base url is string. Configure.
+    newClient.configure(configure => {
+      configure.withBaseUrl(configureMethod);
+    });
+
+    return this;
+  }
+
+  /**
+   * Get a previously registered endpoint. Returns null when not found.
+   *
+   * @param {string} [name] Endpoint bame. Returns default endpoint when not set.
+   *
+   * @return {Rest|null}
+   */
+  getEndpoint(name) {
+    if (!name) {
+      return this.defaultEndpoint || null;
+    }
+
+    return this.endpoints[name] || null;
+  }
+
+  /**
+   * Check if an endpoint has been registered.
+   *
+   * @param {string} name The endpoint name
+   *
+   * @return {boolean}
+   */
+  endpointExists(name) {
+    return !!this.endpoints[name];
+  }
+
+  /**
+   * Set a previously registered endpoint as the default.
+   *
+   * @param {string} name The endpoint name
+   *
+   * @return {Config}
+   */
+  setDefaultEndpoint(name) {
+    this.defaultEndpoint = this.getEndpoint(name);
+
+    return this;
+  }
+}
+
+export function configure(aurelia, configCallback) {
+  let config = aurelia.container.get(Config);
+
+  configCallback(config);
+}
+
+/**
+ * Endpoint class. A resolver for endpoints which allows injection of the corresponding Rest client into a class
+ */
+@resolver()
+export class Endpoint {
+
+  /**
+   * Construct the resolver with the specified key.
+   *
+   * @param {string} key
+   */
+  constructor(key) {
+    this._key = key;
+  }
+
+  /**
+   * Resolve for key.
+   *
+   * @param {Container} container
+   *
+   * @return {Rest}
+   */
+  get(container) {
+    return container.get(Config).getEndpoint(this._key);
+  }
+
+  /**
+   * Get a new resolver for `key`.
+   *
+   * @param {string} key  The endpoint name
+   *
+   * @return {Endpoint}  Resolves to the Rest client for this endpoint
+   */
+  static of(key) {
+    return new Endpoint(key);
+  }
 }

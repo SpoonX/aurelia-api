@@ -1,3 +1,16 @@
+<a name="3.0.0-rc6"></a>
+## [3.0.0-rc6](https://github.com/SpoonX/aurelia-api/compare/3.0.0-rc5...v3.0.0-rc6) (2016-07-22)
+
+
+### Bug Fixes
+
+* **build:** don't concat index.d.ts and exclude 'extends' in d.ts ([5306cfb](https://github.com/SpoonX/aurelia-api/commit/5306cfb))
+
+### Features
+
+* **project:** add gulp fixup-dts. removes unneeded/problematic external imports from d.ts ([5d1ce61](https://github.com/SpoonX/aurelia-api/commit/5d1ce61))
+
+
 <a name="3.0.0-rc5"></a>
 ## [3.0.0-rc5](https://github.com/SpoonX/aurelia-api/compare/3.0.0-rc4...v3.0.0-rc5) (2016-07-01)
 

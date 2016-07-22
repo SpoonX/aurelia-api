@@ -1,24 +1,25 @@
 'use strict';
 
-System.register(['extend', 'aurelia-fetch-client', 'aurelia-dependency-injection', 'aurelia-path'], function (_export, _context) {
+System.register(['extend', 'aurelia-path', 'aurelia-fetch-client', 'aurelia-dependency-injection'], function (_export, _context) {
   "use strict";
 
-  var extend, HttpClient, resolver, buildQueryString, _typeof, _dec, _class2, Config, Endpoint, Rest;
+  var extend, buildQueryString, HttpClient, resolver, _dec, _class3, _typeof, Rest, Config, Endpoint;
 
   
 
   function getRequestPath(resource, criteria) {
     return criteria !== undefined && criteria !== null ? resource + ((typeof criteria === 'undefined' ? 'undefined' : _typeof(criteria)) !== 'object' ? '/' + criteria : '?' + buildQueryString(criteria)) : resource;
   }
+
   return {
     setters: [function (_extend) {
       extend = _extend.default;
+    }, function (_aureliaPath) {
+      buildQueryString = _aureliaPath.buildQueryString;
     }, function (_aureliaFetchClient) {
       HttpClient = _aureliaFetchClient.HttpClient;
     }, function (_aureliaDependencyInjection) {
       resolver = _aureliaDependencyInjection.resolver;
-    }, function (_aureliaPath) {
-      buildQueryString = _aureliaPath.buildQueryString;
     }],
     execute: function () {
       _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) {
@@ -26,87 +27,6 @@ System.register(['extend', 'aurelia-fetch-client', 'aurelia-dependency-injection
       } : function (obj) {
         return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj;
       };
-      function configure(aurelia, configCallback) {
-        var config = aurelia.container.get(Config);
-
-        configCallback(config);
-      }
-
-      _export('configure', configure);
-
-      _export('Config', Config = function () {
-        function Config() {
-          
-
-          this.endpoints = {};
-          this.defaultEndpoint = null;
-        }
-
-        Config.prototype.registerEndpoint = function registerEndpoint(name, configureMethod, defaults) {
-          var newClient = new HttpClient();
-          this.endpoints[name] = new Rest(newClient, name);
-
-          if (defaults !== undefined) this.endpoints[name].defaults = defaults;
-
-          if (typeof configureMethod === 'function') {
-            newClient.configure(configureMethod);
-
-            return this;
-          }
-
-          if (typeof configureMethod !== 'string') {
-            return this;
-          }
-
-          newClient.configure(function (configure) {
-            configure.withBaseUrl(configureMethod);
-          });
-
-          return this;
-        };
-
-        Config.prototype.getEndpoint = function getEndpoint(name) {
-          if (!name) {
-            return this.defaultEndpoint || null;
-          }
-
-          return this.endpoints[name] || null;
-        };
-
-        Config.prototype.endpointExists = function endpointExists(name) {
-          return !!this.endpoints[name];
-        };
-
-        Config.prototype.setDefaultEndpoint = function setDefaultEndpoint(name) {
-          this.defaultEndpoint = this.getEndpoint(name);
-
-          return this;
-        };
-
-        return Config;
-      }());
-
-      _export('Config', Config);
-
-      _export('Endpoint', Endpoint = (_dec = resolver(), _dec(_class2 = function () {
-        function Endpoint(key) {
-          
-
-          this._key = key;
-        }
-
-        Endpoint.prototype.get = function get(container) {
-          return container.get(Config).getEndpoint(this._key);
-        };
-
-        Endpoint.of = function of(key) {
-          return new Endpoint(key);
-        };
-
-        return Endpoint;
-      }()) || _class2));
-
-      _export('Endpoint', Endpoint);
 
       _export('Rest', Rest = function () {
         function Rest(httpClient, endpoint) {
@@ -173,6 +93,88 @@ System.register(['extend', 'aurelia-fetch-client', 'aurelia-dependency-injection
       }());
 
       _export('Rest', Rest);
+
+      _export('Config', Config = function () {
+        function Config() {
+          
+
+          this.endpoints = {};
+          this.defaultEndpoint = null;
+        }
+
+        Config.prototype.registerEndpoint = function registerEndpoint(name, configureMethod, defaults) {
+          var newClient = new HttpClient();
+          this.endpoints[name] = new Rest(newClient, name);
+
+          if (defaults !== undefined) this.endpoints[name].defaults = defaults;
+
+          if (typeof configureMethod === 'function') {
+            newClient.configure(configureMethod);
+
+            return this;
+          }
+
+          if (typeof configureMethod !== 'string') {
+            return this;
+          }
+
+          newClient.configure(function (configure) {
+            configure.withBaseUrl(configureMethod);
+          });
+
+          return this;
+        };
+
+        Config.prototype.getEndpoint = function getEndpoint(name) {
+          if (!name) {
+            return this.defaultEndpoint || null;
+          }
+
+          return this.endpoints[name] || null;
+        };
+
+        Config.prototype.endpointExists = function endpointExists(name) {
+          return !!this.endpoints[name];
+        };
+
+        Config.prototype.setDefaultEndpoint = function setDefaultEndpoint(name) {
+          this.defaultEndpoint = this.getEndpoint(name);
+
+          return this;
+        };
+
+        return Config;
+      }());
+
+      _export('Config', Config);
+
+      function configure(aurelia, configCallback) {
+        var config = aurelia.container.get(Config);
+
+        configCallback(config);
+      }
+
+      _export('configure', configure);
+
+      _export('Endpoint', Endpoint = (_dec = resolver(), _dec(_class3 = function () {
+        function Endpoint(key) {
+          
+
+          this._key = key;
+        }
+
+        Endpoint.prototype.get = function get(container) {
+          return container.get(Config).getEndpoint(this._key);
+        };
+
+        Endpoint.of = function of(key) {
+          return new Endpoint(key);
+        };
+
+        return Endpoint;
+      }()) || _class3));
+
+      _export('Endpoint', Endpoint);
     }
   };
 });

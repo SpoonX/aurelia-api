@@ -1,89 +1,13 @@
-var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
+var _dec, _class3;
 
-var _dec, _class2;
+var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
 
 
 
 import extend from 'extend';
+import { buildQueryString } from 'aurelia-path';
 import { HttpClient } from 'aurelia-fetch-client';
 import { resolver } from 'aurelia-dependency-injection';
-import { buildQueryString } from 'aurelia-path';
-
-export function configure(aurelia, configCallback) {
-  var config = aurelia.container.get(Config);
-
-  configCallback(config);
-}
-
-export var Config = function () {
-  function Config() {
-    
-
-    this.endpoints = {};
-    this.defaultEndpoint = null;
-  }
-
-  Config.prototype.registerEndpoint = function registerEndpoint(name, configureMethod, defaults) {
-    var newClient = new HttpClient();
-    this.endpoints[name] = new Rest(newClient, name);
-
-    if (defaults !== undefined) this.endpoints[name].defaults = defaults;
-
-    if (typeof configureMethod === 'function') {
-      newClient.configure(configureMethod);
-
-      return this;
-    }
-
-    if (typeof configureMethod !== 'string') {
-      return this;
-    }
-
-    newClient.configure(function (configure) {
-      configure.withBaseUrl(configureMethod);
-    });
-
-    return this;
-  };
-
-  Config.prototype.getEndpoint = function getEndpoint(name) {
-    if (!name) {
-      return this.defaultEndpoint || null;
-    }
-
-    return this.endpoints[name] || null;
-  };
-
-  Config.prototype.endpointExists = function endpointExists(name) {
-    return !!this.endpoints[name];
-  };
-
-  Config.prototype.setDefaultEndpoint = function setDefaultEndpoint(name) {
-    this.defaultEndpoint = this.getEndpoint(name);
-
-    return this;
-  };
-
-  return Config;
-}();
-
-export var Endpoint = (_dec = resolver(), _dec(_class2 = function () {
-  function Endpoint(key) {
-    
-
-    this._key = key;
-  }
-
-  Endpoint.prototype.get = function get(container) {
-    return container.get(Config).getEndpoint(this._key);
-  };
-
-  Endpoint.of = function of(key) {
-    return new Endpoint(key);
-  };
-
-  return Endpoint;
-}()) || _class2);
 
 export var Rest = function () {
   function Rest(httpClient, endpoint) {
@@ -152,3 +76,79 @@ export var Rest = function () {
 function getRequestPath(resource, criteria) {
   return criteria !== undefined && criteria !== null ? resource + ((typeof criteria === 'undefined' ? 'undefined' : _typeof(criteria)) !== 'object' ? '/' + criteria : '?' + buildQueryString(criteria)) : resource;
 }
+
+export var Config = function () {
+  function Config() {
+    
+
+    this.endpoints = {};
+    this.defaultEndpoint = null;
+  }
+
+  Config.prototype.registerEndpoint = function registerEndpoint(name, configureMethod, defaults) {
+    var newClient = new HttpClient();
+    this.endpoints[name] = new Rest(newClient, name);
+
+    if (defaults !== undefined) this.endpoints[name].defaults = defaults;
+
+    if (typeof configureMethod === 'function') {
+      newClient.configure(configureMethod);
+
+      return this;
+    }
+
+    if (typeof configureMethod !== 'string') {
+      return this;
+    }
+
+    newClient.configure(function (configure) {
+      configure.withBaseUrl(configureMethod);
+    });
+
+    return this;
+  };
+
+  Config.prototype.getEndpoint = function getEndpoint(name) {
+    if (!name) {
+      return this.defaultEndpoint || null;
+    }
+
+    return this.endpoints[name] || null;
+  };
+
+  Config.prototype.endpointExists = function endpointExists(name) {
+    return !!this.endpoints[name];
+  };
+
+  Config.prototype.setDefaultEndpoint = function setDefaultEndpoint(name) {
+    this.defaultEndpoint = this.getEndpoint(name);
+
+    return this;
+  };
+
+  return Config;
+}();
+
+export function configure(aurelia, configCallback) {
+  var config = aurelia.container.get(Config);
+
+  configCallback(config);
+}
+
+export var Endpoint = (_dec = resolver(), _dec(_class3 = function () {
+  function Endpoint(key) {
+    
+
+    this._key = key;
+  }
+
+  Endpoint.prototype.get = function get(container) {
+    return container.get(Config).getEndpoint(this._key);
+  };
+
+  Endpoint.of = function of(key) {
+    return new Endpoint(key);
+  };
+
+  return Endpoint;
+}()) || _class3);
