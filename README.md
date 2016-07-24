@@ -36,12 +36,12 @@ The [changelog](doc/changelog.md) provides you with information about important 
 
 Run `npm i aurelia-api --save` from your project root.
 
-Aurelia-api makes use of `extends`. So, add following to the `build.bundles.dependencies` section of `aurelia-project/aurelia.json`.
+Aurelia-api makes use of `extend`. So, add following to the `build.bundles.dependencies` section of `aurelia-project/aurelia.json`.
 
 ```js
 "dependencies": [
   // ...
-  'extends',
+  'extend',
   'aurelia-api',
   // ...
 ],
