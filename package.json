@@ -100,7 +100,7 @@
     "object.assign": "^4.0.3",
     "require-dir": "^0.3.0",
     "run-sequence": "^1.2.1",
-    "snyk": "^1.8.4",
+    "snyk": "^1.17.4",
     "through2": "^2.0.1",
     "typedoc": "^0.4.4",
     "typescript": "^1.9.0-dev.20160622-1.0",
