@@ -55,6 +55,7 @@
     "extend": "^3.0.0"
   },
   "devDependencies": {
+    "gulp": "^3.9.1",
     "spoonx-tools": "github:doktordirk/spoonx-tools#initial"
   },
   "aurelia": {
