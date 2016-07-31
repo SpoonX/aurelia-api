@@ -39,19 +39,32 @@ describe('Rest', function() {
         injectTest.apiEndpoint.find('posts')
           .then(y => {
             expect(y.method).toBe('GET');
-          }),
-        injectTest.apiEndpoint.find('posts')
-          .then(y => {
             expect(y.path).toBe('/posts');
+          }),
+        injectTest.apiEndpoint.find('posts/')
+          .then(y => {
+            expect(y.method).toBe('GET');
+            expect(y.path).toBe('/posts/');
           }),
         injectTest.apiEndpoint.find('posts', 'id')
           .then(y => {
             expect(y.path).toBe('/posts/id');
             expect(JSON.stringify(y.query)).toBe('{}');
           }),
+        injectTest.apiEndpoint.find('posts/', 'id')
+          .then(y => {
+            expect(y.path).toBe('/posts/id/');
+            expect(JSON.stringify(y.query)).toBe('{}');
+          }),
         injectTest.apiEndpoint.find('posts', criteria)
           .then(y => {
             expect(y.path).toBe('/posts');
+            expect(y.query.user).toBe(criteria.user);
+            expect(y.query.comment).toBe(criteria.comment);
+          }),
+        injectTest.apiEndpoint.find('posts/', criteria)
+          .then(y => {
+            expect(y.path).toBe('/posts/');
             expect(y.query.user).toBe(criteria.user);
             expect(y.query.comment).toBe(criteria.comment);
           }),

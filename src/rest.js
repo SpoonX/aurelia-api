@@ -136,7 +136,11 @@ export class Rest {
 }
 
 function getRequestPath(resource, criteria) {
+  let [, path, trailingSlash] = resource.match(/(.+[^\/])(\/?)$/);
+
   return (criteria !== undefined && criteria !== null
-    ? resource + (typeof criteria !== 'object' ? `/${criteria}` : '?' + buildQueryString(criteria))
+    ? path + (typeof criteria !== 'object'
+            ? `/${criteria}${trailingSlash}`
+            : `${trailingSlash}?${buildQueryString(criteria)}`)
     : resource);
 }
