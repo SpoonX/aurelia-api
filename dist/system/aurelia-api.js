@@ -11,6 +11,14 @@ System.register(['extend', 'aurelia-path', 'aurelia-fetch-client', 'aurelia-depe
     return criteria !== undefined && criteria !== null ? resource + ((typeof criteria === 'undefined' ? 'undefined' : _typeof(criteria)) !== 'object' ? '/' + criteria : '?' + buildQueryString(criteria)) : resource;
   }
 
+  function configure(aurelia, configCallback) {
+    var config = aurelia.container.get(Config);
+
+    configCallback(config);
+  }
+
+  _export('configure', configure);
+
   return {
     setters: [function (_extend) {
       extend = _extend.default;
@@ -147,14 +155,6 @@ System.register(['extend', 'aurelia-path', 'aurelia-fetch-client', 'aurelia-depe
       }());
 
       _export('Config', Config);
-
-      function configure(aurelia, configCallback) {
-        var config = aurelia.container.get(Config);
-
-        configCallback(config);
-      }
-
-      _export('configure', configure);
 
       _export('Endpoint', Endpoint = (_dec = resolver(), _dec(_class3 = function () {
         function Endpoint(key) {
