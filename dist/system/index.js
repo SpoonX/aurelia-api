@@ -8,7 +8,7 @@ System.register(['./aurelia-api'], function (_export, _context) {
       var _exportObj = {};
 
       for (var _key in _aureliaApi) {
-        if (_key !== "default") _exportObj[_key] = _aureliaApi[_key];
+        if (_key !== "default" && _key !== "__esModule") _exportObj[_key] = _aureliaApi[_key];
       }
 
       _export(_exportObj);
