@@ -36,13 +36,15 @@ The [changelog](doc/changelog.md) provides you with information about important 
 
 Run `npm i aurelia-api --save` from your project root.
 
-Aurelia-api makes use of `extend`. So, add following to the `build.bundles.dependencies` section of `aurelia-project/aurelia.json`.
+Aurelia-api makes use of `aurelia-fetch-client` and `extend`. You might also need a (fetch)[https://github.com/github/fetch] polyfill, if targeting older browsers. So, add following to the `build.bundles.dependencies` section of `aurelia-project/aurelia.json`.
 
 ```js
 "dependencies": [
   // ...
-  'extend',
-  'aurelia-api',
+  "extend",
+  "aurelia-fetch-client"
+  "aurelia-api",
+  // "fetch",
   // ...
 ],
 ```
