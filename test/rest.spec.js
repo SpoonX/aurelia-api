@@ -91,6 +91,13 @@ describe('Rest', function() {
           expect(y.contentType).toMatch('application/json');
           done();
         });
+        
+      injectTest.apiEndpoint.update('posts/', null, body)
+        .then(y => {
+          expect(y.method).toBe('PUT');
+          expect(y.path).toBe('/posts/');
+          done();
+        });
     });
 
     it('Should update with body (as json), criteria and options.', function(done) {
@@ -106,6 +113,14 @@ describe('Rest', function() {
           expect(y.Authorization).toBe(options.headers['Authorization']);
           done();
         });
+
+      injectTest.apiEndpoint.update('posts/', criteria, body, options)
+        .then(y => {
+          expect(y.path).toBe('/posts/');
+          expect(y.query.user).toBe(criteria.user);
+          expect(y.query.comment).toBe(criteria.comment);
+          done();
+        });
     });
   });
 
@@ -118,6 +133,12 @@ describe('Rest', function() {
           expect(y.method).toBe('PATCH');
           expect(y.path).toBe('/post');
           expect(y.contentType).toMatch('application/json');
+          done();
+        });
+
+      injectTest.apiEndpoint.patch('post/', null, body)
+        .then(y => {
+          expect(y.path).toBe('/post/');
           done();
         });
     });
@@ -135,6 +156,14 @@ describe('Rest', function() {
           expect(y.Authorization).toBe(options.headers['Authorization']);
           done();
         });
+
+      injectTest.apiEndpoint.patch('post/', criteria, body, options)
+        .then(y => {
+          expect(y.path).toBe('/post/');
+          expect(y.query.user).toBe(criteria.user);
+          expect(y.query.comment).toBe(criteria.comment);
+          done();
+        });
     });
   });
 
@@ -150,6 +179,12 @@ describe('Rest', function() {
           expect(y.Authorization).toBe(options.headers['Authorization']);
           done();
         });
+      injectTest.apiEndpoint.destroy('posts/', 'id', options)
+        .then(y => {
+          expect(y.path).toBe('/posts/id/');
+          expect(JSON.stringify(y.query)).toBe('{}');
+          done();
+        });
     });
   });
 
@@ -162,6 +197,12 @@ describe('Rest', function() {
           expect(y.method).toBe('POST');
           expect(y.path).toBe('/posts');
           expect(y.contentType).toMatch('application/json');
+          done();
+        });
+
+      injectTest.apiEndpoint.create('posts/', body)
+        .then(y => {
+          expect(y.path).toBe('/posts/');
           done();
         });
     });
@@ -193,6 +234,13 @@ describe('Rest', function() {
           expect(y.Authorization).toBe(options.headers['Authorization']);
           done();
         });
+
+      injectTest.apiEndpoint.post('posts/', body, options)
+        .then(y => {
+          expect(JSON.stringify(y.body)).toBe(JSON.stringify(y.body));
+          expect(y.path).toBe('/posts/');
+          done();
+        });
     });
 
     it('Should post body (as FormData) and options.', function(done) {
@@ -207,6 +255,14 @@ describe('Rest', function() {
           expect(y.path).toBe('/uploads');
           expect(y.contentType).toMatch('multipart/form-data');
           expect(y.Authorization).toBe('Bearer aToken');
+          expect(y.body.message).toBe('some');
+          done();
+        });
+
+      injectTest.formEndpoint.post('uploads/', data, {headers: {'Authorization': 'Bearer aToken'}})
+        .then(y => {
+          expect(y.path).toBe('/uploads/');
+          expect(y.contentType).toMatch('multipart/form-data');
           expect(y.body.message).toBe('some');
           done();
         });
