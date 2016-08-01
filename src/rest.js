@@ -6,12 +6,22 @@ import extend from 'extend';
  */
 export class Rest {
 
+  /**
+   * Current defaults of this client
+   * @param {{}} defaults {headers: {'Accept': 'application/json', 'Content-Type': 'application/json'}}
+   */
   defaults = {
     headers: {
       'Accept': 'application/json',
       'Content-Type': 'application/json'
     }
   }
+
+  /**
+   * Current options of this client
+   * @param {{}} options {trailingSlash: false}
+   */
+  options = {trailingSlash: false};
 
   /**
    * Inject the httpClient to use for requests.
@@ -64,7 +74,7 @@ export class Rest {
    * @return {Promise<Object>|Promise<Error>} Server response as Object
    */
   find(resource, criteria, options) {
-    return this.request('GET', getRequestPath(resource, criteria), undefined, options);
+    return this.request('GET', getRequestPath(resource, criteria, this.trailingSlash), undefined, options);
   }
 
   /**
@@ -91,7 +101,7 @@ export class Rest {
    * @return {Promise<Object>|Promise<Error>} Server response as Object
    */
   update(resource, criteria, body, options) {
-    return this.request('PUT', getRequestPath(resource, criteria), body, options);
+    return this.request('PUT', getRequestPath(resource, criteria, this.trailingSlash), body, options);
   }
 
   /**
@@ -105,7 +115,7 @@ export class Rest {
    * @return {Promise<Object>|Promise<Error>} Server response as Object
    */
   patch(resource, criteria, body, options) {
-    return this.request('PATCH', getRequestPath(resource, criteria), body, options);
+    return this.request('PATCH', getRequestPath(resource, criteria, this.trailingSlash), body, options);
   }
 
   /**
@@ -118,7 +128,7 @@ export class Rest {
    * @return {Promise<Object>|Promise<Error>} Server response as Object
    */
   destroy(resource, criteria, options) {
-    return this.request('DELETE', getRequestPath(resource, criteria), undefined, options);
+    return this.request('DELETE', getRequestPath(resource, criteria, this.trailingSlash), undefined, options);
   }
 
   /**
@@ -131,12 +141,16 @@ export class Rest {
    * @return {Promise<Object>|Promise<Error>} Server response as Object
    */
   create(resource, body, options) {
-    return this.post(...arguments);
+    return this.post(getRequestPath(resource, null, this.trailingSlash), body, options);
   }
 }
 
-function getRequestPath(resource, criteria) {
-  return (criteria !== undefined && criteria !== null
-    ? resource + (typeof criteria !== 'object' ? `/${criteria}` : '?' + buildQueryString(criteria))
-    : resource);
+function getRequestPath(resource, criteria, trailingSlash) {
+  let slash = trailingSlash ? '/' : '';
+
+  let path = (criteria !== undefined && criteria !== null
+    ? resource + (typeof criteria !== 'object' ? `/${criteria}${slash}` : `${slash}?${buildQueryString(criteria)}`)
+    : `${resource}${slash}`);
+
+  return path.replace(/\/\//g, '/');
 }
