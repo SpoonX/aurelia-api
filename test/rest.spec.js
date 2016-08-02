@@ -11,6 +11,7 @@ let baseUrls  = {
 };
 
 config.registerEndpoint('api', baseUrls.api);
+config.registerEndpoint('api-slash', baseUrls.api, null, {trailingSlash: true});
 config.registerEndpoint('jsonplaceholder', baseUrls.jsonplaceholder);
 config.registerEndpoint('form', baseUrls.api, null);
 
@@ -39,19 +40,39 @@ describe('Rest', function() {
         injectTest.apiEndpoint.find('posts')
           .then(y => {
             expect(y.method).toBe('GET');
+            expect(y.path).toBe('/posts');
           }),
-        injectTest.apiEndpoint.find('posts')
+        injectTest.apiEndpoint.find('posts/')
           .then(y => {
             expect(y.path).toBe('/posts');
+          }),
+        injectTest.apiSlashEndpoint.find('posts')
+          .then(y => {
+            expect(y.path).toBe('/posts/');
+          }),
+        injectTest.apiSlashEndpoint.find('posts/')
+          .then(y => {
+            expect(y.path).toBe('/posts/');
           }),
         injectTest.apiEndpoint.find('posts', 'id')
           .then(y => {
             expect(y.path).toBe('/posts/id');
             expect(JSON.stringify(y.query)).toBe('{}');
           }),
+        injectTest.apiSlashEndpoint.find('posts', 'id')
+          .then(y => {
+            expect(y.path).toBe('/posts/id/');
+            expect(JSON.stringify(y.query)).toBe('{}');
+          }),
         injectTest.apiEndpoint.find('posts', criteria)
           .then(y => {
             expect(y.path).toBe('/posts');
+            expect(y.query.user).toBe(criteria.user);
+            expect(y.query.comment).toBe(criteria.comment);
+          }),
+        injectTest.apiSlashEndpoint.find('posts', criteria)
+          .then(y => {
+            expect(y.path).toBe('/posts/');
             expect(y.query.user).toBe(criteria.user);
             expect(y.query.comment).toBe(criteria.comment);
           }),
@@ -78,6 +99,13 @@ describe('Rest', function() {
           expect(y.contentType).toMatch('application/json');
           done();
         });
+
+      injectTest.apiSlashEndpoint.update('posts', null, body)
+        .then(y => {
+          expect(y.method).toBe('PUT');
+          expect(y.path).toBe('/posts/');
+          done();
+        });
     });
 
     it('Should update with body (as json), criteria and options.', function(done) {
@@ -93,6 +121,14 @@ describe('Rest', function() {
           expect(y.Authorization).toBe(options.headers['Authorization']);
           done();
         });
+
+      injectTest.apiSlashEndpoint.update('posts', criteria, body, options)
+        .then(y => {
+          expect(y.path).toBe('/posts/');
+          expect(y.query.user).toBe(criteria.user);
+          expect(y.query.comment).toBe(criteria.comment);
+          done();
+        });
     });
   });
 
@@ -105,6 +141,12 @@ describe('Rest', function() {
           expect(y.method).toBe('PATCH');
           expect(y.path).toBe('/post');
           expect(y.contentType).toMatch('application/json');
+          done();
+        });
+
+      injectTest.apiSlashEndpoint.patch('post', null, body)
+        .then(y => {
+          expect(y.path).toBe('/post/');
           done();
         });
     });
@@ -122,6 +164,14 @@ describe('Rest', function() {
           expect(y.Authorization).toBe(options.headers['Authorization']);
           done();
         });
+
+      injectTest.apiSlashEndpoint.patch('post', criteria, body, options)
+        .then(y => {
+          expect(y.path).toBe('/post/');
+          expect(y.query.user).toBe(criteria.user);
+          expect(y.query.comment).toBe(criteria.comment);
+          done();
+        });
     });
   });
 
@@ -137,6 +187,12 @@ describe('Rest', function() {
           expect(y.Authorization).toBe(options.headers['Authorization']);
           done();
         });
+      injectTest.apiSlashEndpoint.destroy('posts', 'id', options)
+        .then(y => {
+          expect(y.path).toBe('/posts/id/');
+          expect(JSON.stringify(y.query)).toBe('{}');
+          done();
+        });
     });
   });
 
@@ -149,6 +205,12 @@ describe('Rest', function() {
           expect(y.method).toBe('POST');
           expect(y.path).toBe('/posts');
           expect(y.contentType).toMatch('application/json');
+          done();
+        });
+
+      injectTest.apiSlashEndpoint.create('posts', body)
+        .then(y => {
+          expect(y.path).toBe('/posts/');
           done();
         });
     });
@@ -178,6 +240,13 @@ describe('Rest', function() {
           expect(y.path).toBe('/posts');
           expect(y.contentType).toMatch(options.headers['Content-Type']);
           expect(y.Authorization).toBe(options.headers['Authorization']);
+          done();
+        });
+
+      injectTest.apiSlashEndpoint.post('posts', body, options)
+        .then(y => {
+          expect(JSON.stringify(y.body)).toBe(JSON.stringify(y.body));
+          expect(y.path).toBe('/posts/');
           done();
         });
     });
