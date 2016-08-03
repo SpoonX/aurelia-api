@@ -1,3 +1,13 @@
+<a name="3.0.0-rc7"></a>
+## [3.0.0-rc7](https://github.com/SpoonX/aurelia-api/compare/3.0.0-rc6...v3.0.0-rc7) (2016-08-03)
+
+
+### Bug Fixes
+
+* **rest:** maintain trailing slash to resource parameter ([4ec39a3](https://github.com/SpoonX/aurelia-api/commit/4ec39a3))
+
+
+
 <a name="3.0.0-rc6"></a>
 ## [3.0.0-rc6](https://github.com/SpoonX/aurelia-api/compare/3.0.0-rc5...v3.0.0-rc6) (2016-07-22)
 

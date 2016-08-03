@@ -8,8 +8,25 @@ System.register(['extend', 'aurelia-path', 'aurelia-fetch-client', 'aurelia-depe
   
 
   function getRequestPath(resource, criteria) {
-    return criteria !== undefined && criteria !== null ? resource + ((typeof criteria === 'undefined' ? 'undefined' : _typeof(criteria)) !== 'object' ? '/' + criteria : '?' + buildQueryString(criteria)) : resource;
+    if ((typeof criteria === 'undefined' ? 'undefined' : _typeof(criteria)) === 'object' && criteria !== null) {
+      resource += '?' + buildQueryString(criteria);
+    } else if (criteria) {
+      if (resource.slice(-1) === '/') {
+        criteria += '/';
+      }
+      resource += '/' + criteria;
+    }
+
+    return resource.replace(/\/\//g, '/');
   }
+
+  function configure(aurelia, configCallback) {
+    var config = aurelia.container.get(Config);
+
+    configCallback(config);
+  }
+
+  _export('configure', configure);
 
   return {
     setters: [function (_extend) {
@@ -147,14 +164,6 @@ System.register(['extend', 'aurelia-path', 'aurelia-fetch-client', 'aurelia-depe
       }());
 
       _export('Config', Config);
-
-      function configure(aurelia, configCallback) {
-        var config = aurelia.container.get(Config);
-
-        configCallback(config);
-      }
-
-      _export('configure', configure);
 
       _export('Endpoint', Endpoint = (_dec = resolver(), _dec(_class3 = function () {
         function Endpoint(key) {

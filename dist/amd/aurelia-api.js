@@ -90,7 +90,16 @@ define(['exports', 'extend', 'aurelia-path', 'aurelia-fetch-client', 'aurelia-de
   }();
 
   function getRequestPath(resource, criteria) {
-    return criteria !== undefined && criteria !== null ? resource + ((typeof criteria === 'undefined' ? 'undefined' : _typeof(criteria)) !== 'object' ? '/' + criteria : '?' + (0, _aureliaPath.buildQueryString)(criteria)) : resource;
+    if ((typeof criteria === 'undefined' ? 'undefined' : _typeof(criteria)) === 'object' && criteria !== null) {
+      resource += '?' + (0, _aureliaPath.buildQueryString)(criteria);
+    } else if (criteria) {
+      if (resource.slice(-1) === '/') {
+        criteria += '/';
+      }
+      resource += '/' + criteria;
+    }
+
+    return resource.replace(/\/\//g, '/');
   }
 
   var Config = exports.Config = function () {

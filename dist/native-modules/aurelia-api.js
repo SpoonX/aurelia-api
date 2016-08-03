@@ -74,7 +74,16 @@ export var Rest = function () {
 }();
 
 function getRequestPath(resource, criteria) {
-  return criteria !== undefined && criteria !== null ? resource + ((typeof criteria === 'undefined' ? 'undefined' : _typeof(criteria)) !== 'object' ? '/' + criteria : '?' + buildQueryString(criteria)) : resource;
+  if ((typeof criteria === 'undefined' ? 'undefined' : _typeof(criteria)) === 'object' && criteria !== null) {
+    resource += '?' + buildQueryString(criteria);
+  } else if (criteria) {
+    if (resource.slice(-1) === '/') {
+      criteria += '/';
+    }
+    resource += '/' + criteria;
+  }
+
+  return resource.replace(/\/\//g, '/');
 }
 
 export var Config = function () {
