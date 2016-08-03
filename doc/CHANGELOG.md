@@ -1,3 +1,13 @@
+<a name="3.0.0-rc8"></a>
+## [3.0.0-rc8](https://github.com/SpoonX/aurelia-api/compare/3.0.0-rc7...v3.0.0-rc8) (2016-08-03)
+
+
+### Bug Fixes
+
+* **rest:** don't replace //, avoid adding them instead ([2ce671a](https://github.com/SpoonX/aurelia-api/commit/2ce671a))
+
+
+
 <a name="3.0.0-rc7"></a>
 ## [3.0.0-rc7](https://github.com/SpoonX/aurelia-api/compare/3.0.0-rc6...v3.0.0-rc7) (2016-08-03)
 
