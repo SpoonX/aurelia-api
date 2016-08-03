@@ -91,7 +91,7 @@ describe('Rest', function() {
           expect(y.contentType).toMatch('application/json');
           done();
         });
-        
+
       injectTest.apiEndpoint.update('posts/', null, body)
         .then(y => {
           expect(y.method).toBe('PUT');
