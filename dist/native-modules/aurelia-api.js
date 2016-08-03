@@ -77,13 +77,11 @@ function getRequestPath(resource, criteria) {
   if ((typeof criteria === 'undefined' ? 'undefined' : _typeof(criteria)) === 'object' && criteria !== null) {
     resource += '?' + buildQueryString(criteria);
   } else if (criteria) {
-    if (resource.slice(-1) === '/') {
-      criteria += '/';
-    }
-    resource += '/' + criteria;
+    var hasSlash = resource.slice(-1) === '/';
+    resource += '' + (hasSlash ? '' : '/') + criteria + (hasSlash ? '/' : '');
   }
 
-  return resource.replace(/\/\//g, '/');
+  return resource;
 }
 
 export var Config = function () {
