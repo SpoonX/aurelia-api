@@ -138,9 +138,16 @@ export class Rest {
 }
 
 function getRequestPath(resource, criteria) {
-  return (criteria !== undefined && criteria !== null
-    ? resource + (typeof criteria !== 'object' ? `/${criteria}` : '?' + buildQueryString(criteria))
-    : resource);
+  if (typeof criteria === 'object' && criteria !== null) {
+    resource += `?${buildQueryString(criteria)}`;
+  } else if (criteria) {
+    if (resource.slice(-1) === '/') {
+      criteria += '/';
+    }
+    resource += `/${criteria}`;
+  }
+
+  return resource.replace(/\/\//g, '/');
 }
 
 /**

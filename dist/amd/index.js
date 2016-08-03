@@ -5,7 +5,7 @@ define(['exports', './aurelia-api'], function (exports, _aureliaApi) {
     value: true
   });
   Object.keys(_aureliaApi).forEach(function (key) {
-    if (key === "default") return;
+    if (key === "default" || key === "__esModule") return;
     Object.defineProperty(exports, key, {
       enumerable: true,
       get: function () {
