@@ -139,11 +139,9 @@ function getRequestPath(resource, criteria) {
   if (typeof criteria === 'object' && criteria !== null) {
     resource += `?${buildQueryString(criteria)}`;
   } else if (criteria) {
-    if (resource.slice(-1) === '/') {
-      criteria += '/';
-    }
-    resource += `/${criteria}`;
+    let hasSlash = resource.slice(-1) === '/';
+    resource += `${hasSlash ? '' : '/'}${criteria}${hasSlash ? '/' : ''}`;
   }
 
-  return resource.replace(/\/\//g, '/');
+  return resource;
 }
