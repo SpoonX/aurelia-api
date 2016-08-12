@@ -12,12 +12,13 @@ describe('aurelia-api', function() {
       });
     });
 
-    it('Should call callback with a config instance', function(done) {
-      configure(aurelia(new Container()), function(config) {
+    it('Should call callback with a config instance', function() {
+      let container = new Container();
+      configure(aurelia(container), function(config) {
         expect(config instanceof Config).toBe(true);
-
-        done();
       });
+
+      expect(container.get(Config).configured).toBe(true);
     });
   });
 });

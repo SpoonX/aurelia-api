@@ -26,10 +26,11 @@ import {Rest} from 'aurelia-api';
 
 All methods will:
 
-* maintain trailing slashes of the resource parameter 
 * stringify the body, if it is an object and the `Content-Type` is set to `application/json` (the default).
 * convert the body to querystring format, if the body is an object and the `Content-Type` is set to any other value.
 * leave the body unchanged, if the `Content-Type` is not set or when the body is not an object.
+* return the server on error the response JSON parsed if possible and parseError is set true in the defaults or the options
+* maintain trailing slashes of the resource parameter
 
 All methods return a Promise with the server response parsed to an object if possible.
 

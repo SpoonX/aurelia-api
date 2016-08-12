@@ -6,11 +6,18 @@ import extend from 'extend';
  */
 export class Rest {
 
+  /**
+   * Fetch options for all requests
+   * See also https://developer.mozilla.org/en-US/docs/Web/API/Request/Request
+   * Accepts additional option parseError, which will be removed before fetching
+   * @param {{}} defaults The defaults object
+   */
   defaults = {
     headers: {
       'Accept': 'application/json',
       'Content-Type': 'application/json'
-    }
+    },
+    parseError: false
   }
 
   /**
@@ -37,6 +44,10 @@ export class Rest {
   request(method, path, body, options = {}) {
     let requestOptions = extend(true, {headers: {}}, this.defaults, options, {method, body});
 
+    // extract parseError option
+    let parseError = requestOptions.parseError;
+    delete requestOptions.parseError;
+
     let contentType = requestOptions.headers['Content-Type'] || requestOptions.headers['content-type'];
 
     if (typeof body === 'object' && contentType) {
@@ -50,7 +61,11 @@ export class Rest {
         return response.json().catch(error => null);
       }
 
-      throw response;
+      if (parseError) {
+        return response.json().catch(() => response).then(error => Promise.reject(error));
+      }
+
+      return Promise.reject(response);
     });
   }
 

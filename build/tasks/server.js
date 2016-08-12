@@ -23,6 +23,9 @@ app.post('/uploads', upload.single(), function(req, res) {
 });
 
 app.all('*', function(req, res) {
+  if (req.body && req.body.status) {
+    res.status(req.body.status)
+  }
   res.send({
     path: req.path,
     query: req.query,

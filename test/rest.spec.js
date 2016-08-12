@@ -24,6 +24,42 @@ let options = {
 };
 
 describe('Rest', function() {
+  describe('.request()', function() {
+    it('Should not reject with error on 301.', function(done) {
+      let injectTest = container.get(InjectTest);
+
+      injectTest.apiEndpoint.request('post', 'error', {status: 301})
+        .then(e => {
+          expect(e).toBeDefined();
+          expect(e.body.status).toBe(301);
+          done();
+        });
+    });
+
+    it('Should reject with error (as response) on 401.', function(done) {
+      let injectTest = container.get(InjectTest);
+
+      injectTest.apiEndpoint.request('post', 'error', {status: 401})
+        .catch(e => e.json())
+        .then(e => {
+          expect(e).toBeDefined();
+          expect(e.body.status).toBe(401);
+          done();
+        });
+    });
+
+    it('Should reject with error (as json) on 401.', function(done) {
+      let injectTest = container.get(InjectTest);
+
+      injectTest.apiEndpoint.request('post', 'error', {status: 401}, {parseError: true})
+        .catch(e => {
+          expect(e).toBeDefined();
+          expect(e.body.status).toBe(401);
+          done();
+        });
+    });
+  });
+
   describe('.find()', function() {
     it('Should find results for multiple endpoints.', function(done) {
       let injectTest = container.get(InjectTest);
