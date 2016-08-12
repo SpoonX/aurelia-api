@@ -104,7 +104,7 @@ describe('Config', function() {
 
     it('Should set defaults for all endpoints.', function() {
       let config = new Config;
-      
+
       let defaults = {parseError: true};
       config.setDefaults(defaults);
 

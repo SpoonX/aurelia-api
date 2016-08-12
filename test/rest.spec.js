@@ -13,6 +13,7 @@ let baseUrls  = {
 config.registerEndpoint('api', baseUrls.api);
 config.registerEndpoint('jsonplaceholder', baseUrls.jsonplaceholder);
 config.registerEndpoint('form', baseUrls.api, null);
+config.registerEndpoint('none', 'http://x.y.z');
 
 let criteria = {user: 'john', comment: 'last'};
 let body = {message: 'some'};
@@ -25,36 +26,58 @@ let options = {
 
 describe('Rest', function() {
   describe('.request()', function() {
-    it('Should not reject with error on 301.', function(done) {
+    it('Should not reject with error on 308.', function(done) {
       let injectTest = container.get(InjectTest);
 
-      injectTest.apiEndpoint.request('post', 'error', {status: 301})
+      injectTest.apiEndpoint.request('post', 'error', {data: 'some', status: 308})
         .then(e => {
           expect(e).toBeDefined();
-          expect(e.body.status).toBe(301);
+          expect(e.body.data).toBe('some');
           done();
         });
     });
 
-    it('Should reject with error (as response) on 401.', function(done) {
+    it('Should reject with error on 401 with parseError===false (default).', function(done) {
       let injectTest = container.get(InjectTest);
 
-      injectTest.apiEndpoint.request('post', 'error', {status: 401})
-        .catch(e => e.json())
-        .then(e => {
-          expect(e).toBeDefined();
-          expect(e.body.status).toBe(401);
+      injectTest.apiEndpoint.request('post', 'error', {status: 404})
+        .catch(e=> {
+          expect(e instanceof Response).toBe(true);
+          expect(e.status).toBe(404);
+          e.json().then(res => {
+            expect(res.error).toBe('resource not found');
+            done();
+          });
+        });
+    });
+
+    it('Should reject with TypeError on wrong address with parseError===false (default).', function(done) {
+      let injectTest = container.get(InjectTest);
+
+      injectTest.noEndpoint.request('get', 'error')
+        .catch(e => {
+          expect(e instanceof TypeError).toBe(true);
           done();
         });
     });
 
-    it('Should reject with error (as json) on 401.', function(done) {
+    it('Should reject with error on 401 with parseError===true.', function(done) {
       let injectTest = container.get(InjectTest);
 
-      injectTest.apiEndpoint.request('post', 'error', {status: 401}, {parseError: true})
+      injectTest.apiEndpoint.request('post', 'error', {status: 404}, {parseError: true})
         .catch(e => {
           expect(e).toBeDefined();
-          expect(e.body.status).toBe(401);
+          expect(e.error).toBe('resource not found');
+          done();
+        });
+    });
+
+    it('Should reject with TypeError on wrong address with parseError===true.', function(done) {
+      let injectTest = container.get(InjectTest);
+
+      injectTest.noEndpoint.request('get', 'error', null, {parseError: true})
+        .catch(e => {
+          expect(e instanceof TypeError).toBe(true);
           done();
         });
     });

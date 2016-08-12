@@ -8,25 +8,29 @@ import extend from 'extend';
 export class Config {
   /**
    * Collection of configures endpionts
-   * @param {Object} Key: endpoint name, value: Rest client
+   *
+   * @param {{}} Key: endpoint name, value: Rest client
    */
-  endpoints       = {};
+  endpoints = {};
 
   /**
    * Current default endpoint if set
-   * @param {[Rest]} defaultEndpoint The Rest client
+   *
+   * @param {Rest|null} defaultEndpoint The Rest client
    */
   defaultEndpoint = null;
 
   /**
    * Fetch request defaults applied to all endpoints
-   * @param {{}} defaults The defaults opject
+   *
+   * @param {{}|null} defaults The defaults opject
    */
   defaults = null;
 
   /**
    * The plugin's configured status. Set on plugin('aurelia-api', ...)
-   * @param {[Boolean]} configured The plugin's configured status
+   *
+   * @param {boolean} configured The plugin's configured status
    */
   configured = false;
 
@@ -46,10 +50,14 @@ export class Config {
     this.endpoints[name] = new Rest(newClient, name);
 
     // get global defaults
-    if (this.defaults) defaults = extend(true, {}, this.defaults, defaults);
+    if (this.defaults) {
+      defaults = extend(true, {}, this.defaults, defaults);
+    }
 
     // set custom defaults to Rest
-    if (defaults !== undefined) this.endpoints[name].defaults = defaults;
+    if (defaults !== undefined) {
+      this.endpoints[name].defaults = defaults;
+    }
 
     // Manual configure of client.
     if (typeof configureMethod === 'function') {
@@ -74,7 +82,7 @@ export class Config {
   /**
    * Get a previously registered endpoint. Returns null when not found.
    *
-   * @param {string} [name] Endpoint bame. Returns default endpoint when not set.
+   * @param {string} [name] The endpoint name. Returns default endpoint when not set.
    *
    * @return {Rest|null}
    */
@@ -115,7 +123,7 @@ export class Config {
    * Set defaults for all endpoints.
    * Can only be called at plugin configuration
    *
-   * @param {{}} defaults Default settings object
+   * @param {{}} defaults The defaults object
    *
    * @return {Config}
    * @chainable
