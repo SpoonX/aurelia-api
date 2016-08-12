@@ -92,6 +92,36 @@ describe('Config', function() {
       expect(config.getEndpoint() instanceof Rest).toBe(true);
     });
   });
+
+  describe('.setDefaults()', function() {
+    it('Should have standard default prior.', function() {
+      let config = new Config;
+
+      config.registerEndpoint('no-defaults', baseUrls.api);
+      expect(!config.defaults).toBe(true);
+      expect(JSON.stringify(config.getEndpoint('no-defaults').defaults)).toBe(JSON.stringify(defaultOptions));
+    });
+
+    it('Should set defaults for all endpoints.', function() {
+      let config = new Config;
+
+      let defaults = {parseError: true};
+      config.setDefaults(defaults);
+
+      config.registerEndpoint('with-defaults', baseUrls.api);
+      expect(config.defaults).toBe(defaults);
+      expect(JSON.stringify(config.getEndpoint('with-defaults').defaults)).toBe(JSON.stringify(defaults));
+    });
+
+    it('Should throw when calling after configuration.', function() {
+      let config = new Config;
+      config.configured = true;
+
+      let fail = () => config.setDefaults({parseError: true});
+
+      expect(fail).toThrow();
+    });
+  });
 });
 
 let baseUrls = {
@@ -103,7 +133,9 @@ let defaultOptions = {
   'headers': {
     'Accept': 'application/json',
     'Content-Type': 'application/json'
-  }};
+  },
+  parseError: false
+};
 
 let userOptions = {
   'headers': {

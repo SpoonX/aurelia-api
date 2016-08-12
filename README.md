@@ -135,7 +135,14 @@ export class MyClass {
 
 ## Quick Rest api overview
 
-All methods will, when the body is passed as an object, stringify the body if the `Content-Type` is set to `application/json` or convert the body to querystring format for all other set `Content-Type`s.
+All methods will:
+
+* stringify the body, if it is an object and the `Content-Type` is set to `application/json` (the default).
+* convert the body to querystring format, if the body is an object and the `Content-Type` is set to any other value.
+* leave the body unchanged, if the `Content-Type` is not set or when the body is not an object.
+* maintain trailing slashes of the resource parameter
+
+All methods return on success a Promise with the server response parsed to an object if possible. On error, they reject with the server response. If possible and parseError is set true, they reject with the JSON parsed server response.
 
 ````js
 endpoint
