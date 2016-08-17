@@ -47,7 +47,7 @@ var Rest = exports.Rest = function () {
 
     var contentType = requestOptions.headers['Content-Type'] || requestOptions.headers['content-type'];
 
-    if ((typeof body === 'undefined' ? 'undefined' : _typeof(body)) === 'object' && contentType) {
+    if (contentType) {
       requestOptions.body = contentType.toLowerCase() === 'application/json' ? JSON.stringify(body) : (0, _aureliaPath.buildQueryString)(body);
     }
 
