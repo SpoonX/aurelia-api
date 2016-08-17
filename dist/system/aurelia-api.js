@@ -65,7 +65,7 @@ System.register(['extend', 'aurelia-path', 'aurelia-fetch-client', 'aurelia-depe
 
           var contentType = requestOptions.headers['Content-Type'] || requestOptions.headers['content-type'];
 
-          if ((typeof body === 'undefined' ? 'undefined' : _typeof(body)) === 'object' && contentType) {
+          if (contentType) {
             requestOptions.body = contentType.toLowerCase() === 'application/json' ? JSON.stringify(body) : buildQueryString(body);
           }
 
