@@ -61,7 +61,7 @@
     "extend": "^3.0.0"
   },
   "devDependencies": {
-    "spoonx-tools": "github:doktordirk/spoonx-tools#initial"
+    "spoonx-tools": "^0.1.0"
   },
   "aurelia": {
     "build": {
