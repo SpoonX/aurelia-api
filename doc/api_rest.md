@@ -20,13 +20,19 @@ import {Rest} from 'aurelia-api';
 | ------ | ---------------------------------------------------- |
 | string | The endpoint for which the Rest client is registered |
 
+### .defaults
+
+| Type   | Description                                          |
+| ------ | ---------------------------------------------------- |
+| {}     |  The fetch client defaults to use for all request    |
+
 ----------
 
 ## Methods
 
 All methods will:
 
-* maintain trailing slashes of the resource parameter 
+* maintain trailing slashes of the resource parameter
 * stringify the body, if it is an object and the `Content-Type` is set to `application/json` (the default).
 * convert the body to querystring format, if the body is an object and the `Content-Type` is set to any other value.
 * leave the body unchanged, if the `Content-Type` is not set or when the body is not an object.
@@ -73,6 +79,7 @@ export class MyViewModel {
 ----------
 
 ### .find(resource, criteria[, options])
+### .findOne(resource, id, criteria[, options])
 
 Find one or multiple resources. (GET request)
 
@@ -81,7 +88,8 @@ Find one or multiple resources. (GET request)
 | Parameter | Type           | Description                                    |
 | --------- | -------------- | ---------------------------------------------- |
 | resource  | string         | The name of the resource you want.             |
-| criteria  | object/integer | A specific ID, or object of supported filters. |
+| id        | string/number  | A specific ID.                                 |
+| criteria  | object         | Object of supported filters.                   |
 | options   | object         | Additional options for the fetch               |
 
 #### Returns
@@ -156,6 +164,7 @@ export class MyViewModel {
 ----------
 
 ### .update(resource, criteria, body[, options])
+### .updateOne(resource, id, criteria, body[, options])
 
 Send a PUT request to supplied `resource`.
 
@@ -164,7 +173,8 @@ Send a PUT request to supplied `resource`.
 | Parameter | Type           | Description                                    |
 | --------- | -------------- | ---------------------------------------------- |
 | resource  | string         | The name of the resource you wish to update.   |
-| criteria  | object/integer | A specific ID, or object of supported filters. |
+| id        | string/number  | A specific ID.                                 |
+| criteria  | object         | Object of supported filters.                   |
 | body      | object         | The new values for the records.                |
 | options   | object         | Additional options for the fetch               |
 
@@ -192,6 +202,7 @@ export class MyViewModel {
 ----------
 
 ### .patch(resource, criteria, body[, options])
+### .patchOne(resource, id, criteria, body[, options])
 
 Send a PATCH request to supplied `resource`.
 
@@ -200,7 +211,8 @@ Send a PATCH request to supplied `resource`.
 | Parameter | Type           | Description                                    |
 | --------- | -------------- | ---------------------------------------------- |
 | resource  | string         | The name of the resource you wish to update.   |
-| criteria  | object/integer | A specific ID, or object of supported filters. |
+| id        | string/number  | A specific ID.                                 |
+| criteria  | object         | Object of supported filters.                   |
 | body      | object         | The new values for the records.                |
 | options   | object         | Additional options for the fetch               |
 
@@ -228,6 +240,7 @@ export class MyViewModel {
 ----------
 
 ### .destroy(resource, criteria[, options])
+### .destroyOne(resource, id, criteria[, options])
 
 Delete one or multiple resources. (DELETE request)
 
@@ -236,7 +249,8 @@ Delete one or multiple resources. (DELETE request)
 | Parameter | Type           | Description                                    |
 | --------- | -------------- | ---------------------------------------------- |
 | resource  | string         | The name of the resource you wish to use.      |
-| criteria  | object/integer | A specific ID, or object of supported filters. |
+| id        | string/number  | A specific ID.                                 |
+| criteria  | object         | Object of supported filters.                   |
 | options   | object         | Additional options for the fetch               |
 
 #### Returns

@@ -1,4 +1,4 @@
-import {buildQueryString} from 'aurelia-path';
+import {buildQueryString, join} from 'aurelia-path';
 import {HttpClient} from 'aurelia-fetch-client';
 import extend from 'extend';
 
@@ -69,8 +69,22 @@ export class Rest {
    *
    * @return {Promise<any>|Promise<Error>} Server response as Object
    */
-  find(resource: string, criteria?: {}, options?: {}): Promise<any|Error> {
+  find(resource: string, criteria?: {}|string|Number, options?: {}): Promise<any|Error> {
     return this.request('GET', getRequestPath(resource, criteria), undefined, options);
+  }
+
+  /**
+   * Find a resource.
+   *
+   * @param {string}           resource  Resource to find in
+   * @param {string|Number}    id        String / number for id to be added to the path.
+   * @param {{}}               criteria  Object for where clause
+   * @param {{}}               [options] Extra fetch options.
+   *
+   * @return {Promise<any>|Promise<Error>} Server response as Object
+   */
+  findOne(resource: string, id: string|Number, criteria?: {}, options?: {}): Promise<any|Error> {
+    return this.request('GET', getRequestPath(resource, id, criteria), undefined, options);
   }
 
   /**
@@ -101,6 +115,21 @@ export class Rest {
   }
 
   /**
+   * Update a resource.
+   *
+   * @param {string}           resource  Resource to update
+   * @param {string|Number}    id        String / number for id to be added to the path.
+   * @param {{}}               criteria  Object for where clause
+   * @param {object}           body      New data for provided criteria.
+   * @param {{}}               [options] Extra fetch options.
+   *
+   * @return {Promise<any>|Promise<Error>} Server response as Object
+   */
+  updateOne(resource: string, id: string|number, criteria?: {}, body?: {}, options?: {}): Promise<any|Error> {
+    return this.request('PUT', getRequestPath(resource, id, criteria), body, options);
+  }
+
+  /**
    * Patch a resource.
    *
    * @param {string}           resource  Resource to patch
@@ -112,6 +141,21 @@ export class Rest {
    */
   patch(resource: string, criteria?: {}|string|Number, body?: {}, options?: {}): Promise<any|Error> {
     return this.request('PATCH', getRequestPath(resource, criteria), body, options);
+  }
+
+  /**
+   * Patch a resource.
+   *
+   * @param {string}           resource  Resource to patch
+   * @param {string|Number}    id        String / number for id to be added to the path.
+   * @param {{}}               criteria  Object for where clause
+   * @param {object}           body      Data to patch for provided criteria.
+   * @param {{}}               [options] Extra fetch options.
+   *
+   * @return {Promise<any>|Promise<Error>} Server response as Object
+   */
+  patchOne(resource: string, id: string|Number, criteria?: {}, body?: {}, options?: {}): Promise<any|Error> {
+    return this.request('PATCH', getRequestPath(resource, id, criteria), body, options);
   }
 
   /**
@@ -128,6 +172,20 @@ export class Rest {
   }
 
   /**
+   * Delete a resource.
+   *
+   * @param {string}           resource  The resource to delete
+   * @param {string|Number}    id        String / number for id to be added to the path.
+   * @param {{}}               criteria  Object for where clause
+   * @param {{}}               [options] Extra fetch options.
+   *
+   * @return {Promise<any>|Promise<Error>} Server response as Object
+   */
+  destroyOne(resource: string, id: string|Number, criteria?: {}, options?: {}): Promise<any|Error> {
+    return this.request('DELETE', getRequestPath(resource, id, criteria), undefined, options);
+  }
+
+  /**
    * Create a new instance for resource.
    *
    * @param {string} resource  The resource to create
@@ -141,11 +199,18 @@ export class Rest {
   }
 }
 
-function getRequestPath(resource, criteria) {
+function getRequestPath(resource, idOrCriteria, criteria) {
+  let hasSlash = resource.slice(-1) === '/';
+
+  if (typeof idOrCriteria === 'string' || typeof idOrCriteria === 'number') {
+    resource = `${join(resource, idOrCriteria)}${hasSlash ? '/' : ''}`;
+  } else {
+    criteria = idOrCriteria;
+  }
+
   if (typeof criteria === 'object' && criteria !== null) {
     resource += `?${buildQueryString(criteria)}`;
   } else if (criteria) {
-    let hasSlash = resource.slice(-1) === '/';
     resource += `${hasSlash ? '' : '/'}${criteria}${hasSlash ? '/' : ''}`;
   }
 
