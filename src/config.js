@@ -7,13 +7,15 @@ import {Rest} from './rest';
 export class Config {
   /**
    * Collection of configures endpionts
+   *
    * @param {{}} Key: endpoint name, value: Rest client
    */
   endpoints: {} = {};
 
   /**
    * Current default endpoint if set
-   * @param {[Rest]} Default Rest client
+   *
+   * @param {Rest|null} defaultEndpoint The Rest client
    */
   defaultEndpoint: Rest = null;
 
@@ -26,6 +28,7 @@ export class Config {
    *
    * @see http://aurelia.io/docs.html#/aurelia/fetch-client/latest/doc/api/class/HttpClientConfiguration
    * @return {Config}
+   * @chainable
    */
   registerEndpoint(name: string, configureMethod?: string|Function, defaults?: {}): Config {
     let newClient        = new HttpClient();
@@ -59,7 +62,7 @@ export class Config {
   /**
    * Get a previously registered endpoint. Returns null when not found.
    *
-   * @param {string} [name] Endpoint bame. Returns default endpoint when not set.
+   * @param {string} [name] The endpoint name. Returns default endpoint when not set.
    *
    * @return {Rest|null}
    */
@@ -88,6 +91,7 @@ export class Config {
    * @param {string} name The endpoint name
    *
    * @return {Config}
+   * @chainable
    */
   setDefaultEndpoint(name: string): Config {
     this.defaultEndpoint = this.getEndpoint(name);
