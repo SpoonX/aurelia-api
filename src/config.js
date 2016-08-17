@@ -7,32 +7,34 @@ import {Rest} from './rest';
 export class Config {
   /**
    * Collection of configures endpionts
-   * @param {Object} Key: endpoint name, value: Rest client
+   * @param {{}} Key: endpoint name, value: Rest client
    */
-  endpoints       = {};
+  endpoints: {} = {};
 
   /**
    * Current default endpoint if set
    * @param {[Rest]} Default Rest client
    */
-  defaultEndpoint = null;
+  defaultEndpoint: Rest = null;
 
   /**
    * Register a new endpoint.
    *
    * @param {string}          name              The name of the new endpoint.
-   * @param {function|string} [configureMethod] Configure method or endpoint.
+   * @param {function|string} [configureMethod] Endpoint url or configure method for client.configure().
    * @param {{}}              [defaults]        New defaults for the HttpClient
    *
    * @see http://aurelia.io/docs.html#/aurelia/fetch-client/latest/doc/api/class/HttpClientConfiguration
    * @return {Config}
    */
-  registerEndpoint(name, configureMethod, defaults) {
+  registerEndpoint(name: string, configureMethod?: string|Function, defaults?: {}): Config {
     let newClient        = new HttpClient();
     this.endpoints[name] = new Rest(newClient, name);
 
     // set custom defaults to Rest
-    if (defaults !== undefined) this.endpoints[name].defaults = defaults;
+    if (defaults !== undefined) {
+      this.endpoints[name].defaults = defaults;
+    }
 
     // Manual configure of client.
     if (typeof configureMethod === 'function') {
@@ -41,7 +43,7 @@ export class Config {
       return this;
     }
 
-    // Base url is self.
+    // Base url is self / current host.
     if (typeof configureMethod !== 'string') {
       return this;
     }
@@ -61,7 +63,7 @@ export class Config {
    *
    * @return {Rest|null}
    */
-  getEndpoint(name) {
+  getEndpoint(name: string): Rest {
     if (!name) {
       return this.defaultEndpoint || null;
     }
@@ -76,7 +78,7 @@ export class Config {
    *
    * @return {boolean}
    */
-  endpointExists(name) {
+  endpointExists(name: string): boolean {
     return !!this.endpoints[name];
   }
 
@@ -87,7 +89,7 @@ export class Config {
    *
    * @return {Config}
    */
-  setDefaultEndpoint(name) {
+  setDefaultEndpoint(name: string): Config {
     this.defaultEndpoint = this.getEndpoint(name);
 
     return this;

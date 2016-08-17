@@ -1,4 +1,5 @@
 import {buildQueryString} from 'aurelia-path';
+import {HttpClient} from 'aurelia-fetch-client';
 import extend from 'extend';
 
 /**
@@ -6,7 +7,12 @@ import extend from 'extend';
  */
 export class Rest {
 
-  defaults = {
+  /**
+   * The defaults to apply to anc request
+   *
+   * @param {{}} defaults The fetch client options
+   */
+  defaults: {} = {
     headers: {
       'Accept': 'application/json',
       'Content-Type': 'application/json'
@@ -19,7 +25,7 @@ export class Rest {
    * @param {HttpClient} httpClient The httpClient to use
    * @param {string}     [endpoint] The endpoint name
    */
-  constructor(httpClient, endpoint) {
+  constructor(httpClient: HttpClient, endpoint: string) {
     this.client   = httpClient;
     this.endpoint = endpoint;
   }
@@ -32,10 +38,10 @@ export class Rest {
    * @param {{}}     [body]     The body to send if applicable
    * @param {{}}     [options]  Fetch options overwrites
    *
-   * @return {Promise<Object>|Promise<Error>} Server response as Object
+   * @return {Promise<any>|Promise<Error>} Server response as Object
    */
-  request(method, path, body, options = {}) {
-    let requestOptions = extend(true, {headers: {}}, this.defaults, options, {method, body});
+  request(method: string, path: string, body?: {}, options?: {}): Promise<any|Error> {
+    let requestOptions = extend(true, {headers: {}}, this.defaults, options || {}, {method, body});
 
     let contentType = requestOptions.headers['Content-Type'] || requestOptions.headers['content-type'];
 
@@ -61,9 +67,9 @@ export class Rest {
    * @param {{}|string|Number} criteria  Object for where clause, string / number for id.
    * @param {{}}               [options] Extra fetch options.
    *
-   * @return {Promise<Object>|Promise<Error>} Server response as Object
+   * @return {Promise<any>|Promise<Error>} Server response as Object
    */
-  find(resource, criteria, options) {
+  find(resource: string, criteria?: {}, options?: {}): Promise<any|Error> {
     return this.request('GET', getRequestPath(resource, criteria), undefined, options);
   }
 
@@ -74,9 +80,9 @@ export class Rest {
    * @param {{}}     body      The data to post (as Object)
    * @param {{}}     [options] Extra fetch options.
    *
-   * @return {Promise<Object>|Promise<Error>} Server response as Object
+   * @return {Promise<any>|Promise<Error>} Server response as Object
    */
-  post(resource, body, options) {
+  post(resource: string, body?: {}, options?: {}): Promise<any|Error> {
     return this.request('POST', resource, body, options);
   }
 
@@ -88,9 +94,9 @@ export class Rest {
    * @param {object}           body      New data for provided criteria.
    * @param {{}}               [options] Extra fetch options.
    *
-   * @return {Promise<Object>|Promise<Error>} Server response as Object
+   * @return {Promise<any>|Promise<Error>} Server response as Object
    */
-  update(resource, criteria, body, options) {
+  update(resource: string, criteria?: {}|string|Number, body?: {}, options?: {}): Promise<any|Error> {
     return this.request('PUT', getRequestPath(resource, criteria), body, options);
   }
 
@@ -102,9 +108,9 @@ export class Rest {
    * @param {object}           body      Data to patch for provided criteria.
    * @param {{}}               [options] Extra fetch options.
    *
-   * @return {Promise<Object>|Promise<Error>} Server response as Object
+   * @return {Promise<any>|Promise<Error>} Server response as Object
    */
-  patch(resource, criteria, body, options) {
+  patch(resource: string, criteria?: {}|string|Number, body?: {}, options?: {}): Promise<any|Error> {
     return this.request('PATCH', getRequestPath(resource, criteria), body, options);
   }
 
@@ -115,9 +121,9 @@ export class Rest {
    * @param {{}|string|Number} criteria  Object for where clause, string / number for id.
    * @param {{}}               [options] Extra fetch options.
    *
-   * @return {Promise<Object>|Promise<Error>} Server response as Object
+   * @return {Promise<any>|Promise<Error>} Server response as Object
    */
-  destroy(resource, criteria, options) {
+  destroy(resource: string, criteria?: {}|string|Number, options?: {}): Promise<any|Error> {
     return this.request('DELETE', getRequestPath(resource, criteria), undefined, options);
   }
 
@@ -128,9 +134,9 @@ export class Rest {
    * @param {{}}     body      The data to post (as Object)
    * @param {{}}     [options] Extra fetch options.
    *
-   * @return {Promise<Object>|Promise<Error>} Server response as Object
+   * @return {Promise<any>|Promise<Error>} Server response as Object
    */
-  create(resource, body, options) {
+  create(resource: string, body?: {}, options?: {}): Promise<any|Error> {
     return this.post(...arguments);
   }
 }
