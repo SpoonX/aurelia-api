@@ -102,13 +102,20 @@ You probably don't only want to retrieve data but send some also. The Rest clien
 
 ````js
 endpoint
-  .find(resource, criteria, options)          // GET
-  .post(resource, body, options)              // POST
-  .update(resource, criteria, body, options)  // PUT
-  .patch(resource, criteria, body, options)   // PATCH
-  .destroy(resource, criteria, options)       // DELETE
-  .create(resource, body, options)            // POST
-  .request(method, path, body, options)       // method
+  .client                                           // the httpClient instance
+  .endpoint                                         // name of the endpoint
+  .default                                          // The fetch client defaults
+  .find(resource, criteria, options)                // GET
+  .findOne(resource, id, criteria, options)         // GET
+  .post(resource, body, options) {                  // POST
+  .update(resource, criteria, body, options)        // PUT
+  .updateOne(resource, id, criteria, body, options) // PUT
+  .patch(resource, criteria, body, options)         // PATCH
+  .patchOne(resource, id, criteria, body, options)  // PATCH
+  .destroy(resource, criteria, options)             // DELETE
+  .destroyOne(resource, id, criteria, options)      // DELETE
+  .create(resource, body, options)                  // POST
+  .request(method, path, body, options)             // method
 ```
 
 The [Rest api](api_rest.md) has more information about those. Here is just another quick example:
@@ -119,7 +126,7 @@ import {Rest} from 'aurelia-api';
 @inject(Rest)
 export class MyViewModel {
   constructor (restClient) {
-    restClient.update('product', 17, {price: 4000})
+    restClient.update('product', 17, null, {price: 4000})
       .then(console.log)
       .catch(console.error);
   }

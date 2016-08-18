@@ -135,17 +135,29 @@ export class MyClass {
 
 ## Quick Rest api overview
 
-All methods will, when the body is passed as an object, stringify the body if the `Content-Type` is set to `application/json` or convert the body to querystring format for all other set `Content-Type`s.
+All methods will:
+
+* stringify the body, if it is an object and the `Content-Type` is set to `application/json` (the default).
+* convert the body to querystring format, if the body is an object and the `Content-Type` is set to any other value.
+* leave the body unchanged, if the `Content-Type` is not set or when the body is not an object.
+* maintain trailing slashes of the resource parameter
+
+All methods return on success a Promise with the server response parsed to an object if possible. On error, they reject with the server response. If possible and parseError is set true, they reject with the JSON parsed server response.
 
 ````js
 endpoint
-  .client                                     // the httpClient instance
-  .endpoint                                   // name of the endpoint
-  .find(resource, criteria, options)          // GET
-  .post(resource, body, options) {            // POST
-  .update(resource, criteria, body, options)  // PUT
-  .patch(resource, criteria, body, options)   // PATCH
-  .destroy(resource, criteria, options)       // DELETE
-  .create(resource, body, options)            // POST
-  .request(method, path, body, options)       // method
+  .client                                           // the httpClient instance
+  .endpoint                                         // name of the endpoint
+  .default                                          // The fetch client defaults
+  .find(resource, criteria, options)                // GET
+  .findOne(resource, id, criteria, options)         // GET
+  .post(resource, body, options) {                  // POST
+  .update(resource, criteria, body, options)        // PUT
+  .updateOne(resource, id, criteria, body, options) // PUT
+  .patch(resource, criteria, body, options)         // PATCH
+  .patchOne(resource, id, criteria, body, options)  // PATCH
+  .destroy(resource, criteria, options)             // DELETE
+  .destroyOne(resource, id, criteria, options)      // DELETE
+  .create(resource, body, options)                  // POST
+  .request(method, path, body, options)             // method
 ```
