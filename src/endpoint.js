@@ -8,6 +8,8 @@ import {Rest} from './rest';
 @resolver()
 export class Endpoint {
 
+  _key: string;
+
   /**
    * Construct the resolver with the specified key.
    *

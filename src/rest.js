@@ -8,7 +8,7 @@ import extend from 'extend';
 export class Rest {
 
   /**
-   * The defaults to apply to anc request
+   * The defaults to apply to any request
    *
    * @param {{}} defaults The fetch client options
    */
@@ -17,7 +17,22 @@ export class Rest {
       'Accept': 'application/json',
       'Content-Type': 'application/json'
     }
-  }
+  };
+
+  /**
+   * The client for the rest adapter
+   *
+   * @param {HttpClient} client The fetch client
+   *
+   */
+  client: HttpClient;
+
+  /**
+   * The name of the endpoint it was registered under
+   *
+   * @param {string} endpoint The endpoint name
+   */
+  endpoint: string;
 
   /**
    * Inject the httpClient to use for requests.
@@ -199,7 +214,7 @@ export class Rest {
   }
 }
 
-function getRequestPath(resource, idOrCriteria, criteria) {
+function getRequestPath(resource: string, idOrCriteria: string|Number|{}, criteria?: {}) {
   let hasSlash = resource.slice(-1) === '/';
 
   if (typeof idOrCriteria === 'string' || typeof idOrCriteria === 'number') {
