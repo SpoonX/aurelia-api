@@ -218,7 +218,7 @@ function getRequestPath(resource: string, idOrCriteria: string|Number|{}, criter
   let hasSlash = resource.slice(-1) === '/';
 
   if (typeof idOrCriteria === 'string' || typeof idOrCriteria === 'number') {
-    resource = `${join(resource, idOrCriteria)}${hasSlash ? '/' : ''}`;
+    resource = `${join(resource, String(idOrCriteria))}${hasSlash ? '/' : ''}`;
   } else {
     criteria = idOrCriteria;
   }
