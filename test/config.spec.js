@@ -92,6 +92,18 @@ describe('Config', function() {
       expect(config.getEndpoint() instanceof Rest).toBe(true);
     });
   });
+
+  describe('.setDefaultBaseUrl()', function() {
+    it('Should set the default baseUrl.', function() {
+      let config = new Config;
+
+      config.registerEndpoint('api', baseUrls.github);
+      expect(config.endpoints.api.client.baseUrl).toEqual(baseUrls.github);
+      config.setDefaultBaseUrl(baseUrls.api);
+      config.registerEndpoint('api');
+      expect(config.endpoints.api.client.baseUrl).toEqual(baseUrls.api);
+    });
+  });
 });
 
 let baseUrls = {

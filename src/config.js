@@ -19,6 +19,14 @@ export class Config {
    */
   defaultEndpoint: Rest = null;
 
+
+   /**
+    * Current default baseUrl if set
+    *
+    * @ param {string|null} defaultBaseUrl The Rest client
+    */
+  defaultBaseUrl: string = null;
+
   /**
    * Register a new endpoint.
    *
@@ -47,7 +55,15 @@ export class Config {
     }
 
     // Base url is self / current host.
-    if (typeof configureMethod !== 'string') {
+    if (typeof configureMethod !== 'string' && !this.defaultBaseUrl) {
+      return this;
+    }
+
+    if (this.defaultBaseUrl && typeof configureMethod !== 'string' && typeof configureMethod !== 'function') {
+      newClient.configure(configure => {
+        configure.withBaseUrl(this.defaultBaseUrl);
+      });
+
       return this;
     }
 
@@ -95,6 +111,20 @@ export class Config {
    */
   setDefaultEndpoint(name: string): Config {
     this.defaultEndpoint = this.getEndpoint(name);
+
+    return this;
+  }
+
+  /**
+   * Set a base url for all endpoints
+   *
+   * @param {string} baseUrl The url for endpoints to append
+   *
+   * @return {Config}
+   * @chainable
+   */
+  setDefaultBaseUrl(baseUrl: string): Config {
+    this.defaultBaseUrl = baseUrl;
 
     return this;
   }
