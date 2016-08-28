@@ -45,6 +45,9 @@ aurelia.use
       .registerEndpoint('auth', 'https://auth.myapi.org/')
       .setDefaultEndpoint('auth');
   });
+  
+  // 8: Set Default BaseUrl
+    config.setDefaultBaseUrl('https://myapi.org/');
 ```
 
 Here's a more detailed explanation for every method of registering used:
@@ -78,3 +81,7 @@ This method allows you to set the default endpoint to use. This means, that when
 ## 7: Chain
 
 All methods return `this`, allowing you to chain the calls.
+
+## 8: Set default base URL
+
+All endpoints registered after this call will have the passed in URL prepended by default, rather than the current host. 
