@@ -84,4 +84,4 @@ All methods return `this`, allowing you to chain the calls.
 
 ## 8: Set default base URL
 
-All endpoints registered after this call will have the passed in URL prepended by default, rather than the current host. 
+All endpoints registered after this call will use this default base URL, rather than the current host URL. 
