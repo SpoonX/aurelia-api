@@ -19,6 +19,8 @@ var _aureliaPath = require('aurelia-path');
 
 var _aureliaFetchClient = require('aurelia-fetch-client');
 
+var _aureliaFramework = require('aurelia-framework');
+
 var _aureliaDependencyInjection = require('aurelia-dependency-injection');
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
@@ -40,14 +42,12 @@ var Rest = exports.Rest = function () {
     this.endpoint = endpoint;
   }
 
-  Rest.prototype.request = function request(method, path, body) {
-    var options = arguments.length <= 3 || arguments[3] === undefined ? {} : arguments[3];
-
-    var requestOptions = (0, _extend2.default)(true, { headers: {} }, this.defaults, options, { method: method, body: body });
+  Rest.prototype.request = function request(method, path, body, options) {
+    var requestOptions = (0, _extend2.default)(true, { headers: {} }, this.defaults, options || {}, { method: method, body: body });
 
     var contentType = requestOptions.headers['Content-Type'] || requestOptions.headers['content-type'];
 
-    if ((typeof body === 'undefined' ? 'undefined' : _typeof(body)) === 'object' && contentType) {
+    if ((typeof body === 'undefined' ? 'undefined' : _typeof(body)) === 'object' && body !== null && contentType) {
       requestOptions.body = contentType.toLowerCase() === 'application/json' ? JSON.stringify(body) : (0, _aureliaPath.buildQueryString)(body);
     }
 
@@ -66,6 +66,10 @@ var Rest = exports.Rest = function () {
     return this.request('GET', getRequestPath(resource, criteria), undefined, options);
   };
 
+  Rest.prototype.findOne = function findOne(resource, id, criteria, options) {
+    return this.request('GET', getRequestPath(resource, id, criteria), undefined, options);
+  };
+
   Rest.prototype.post = function post(resource, body, options) {
     return this.request('POST', resource, body, options);
   };
@@ -74,12 +78,24 @@ var Rest = exports.Rest = function () {
     return this.request('PUT', getRequestPath(resource, criteria), body, options);
   };
 
+  Rest.prototype.updateOne = function updateOne(resource, id, criteria, body, options) {
+    return this.request('PUT', getRequestPath(resource, id, criteria), body, options);
+  };
+
   Rest.prototype.patch = function patch(resource, criteria, body, options) {
     return this.request('PATCH', getRequestPath(resource, criteria), body, options);
   };
 
+  Rest.prototype.patchOne = function patchOne(resource, id, criteria, body, options) {
+    return this.request('PATCH', getRequestPath(resource, id, criteria), body, options);
+  };
+
   Rest.prototype.destroy = function destroy(resource, criteria, options) {
     return this.request('DELETE', getRequestPath(resource, criteria), undefined, options);
+  };
+
+  Rest.prototype.destroyOne = function destroyOne(resource, id, criteria, options) {
+    return this.request('DELETE', getRequestPath(resource, id, criteria), undefined, options);
   };
 
   Rest.prototype.create = function create(resource, body, options) {
@@ -89,11 +105,18 @@ var Rest = exports.Rest = function () {
   return Rest;
 }();
 
-function getRequestPath(resource, criteria) {
+function getRequestPath(resource, idOrCriteria, criteria) {
+  var hasSlash = resource.slice(-1) === '/';
+
+  if (typeof idOrCriteria === 'string' || typeof idOrCriteria === 'number') {
+    resource = '' + (0, _aureliaPath.join)(resource, String(idOrCriteria)) + (hasSlash ? '/' : '');
+  } else {
+    criteria = idOrCriteria;
+  }
+
   if ((typeof criteria === 'undefined' ? 'undefined' : _typeof(criteria)) === 'object' && criteria !== null) {
     resource += '?' + (0, _aureliaPath.buildQueryString)(criteria);
   } else if (criteria) {
-    var hasSlash = resource.slice(-1) === '/';
     resource += '' + (hasSlash ? '' : '/') + criteria + (hasSlash ? '/' : '');
   }
 
@@ -106,13 +129,18 @@ var Config = exports.Config = function () {
 
     this.endpoints = {};
     this.defaultEndpoint = null;
+    this.defaultBaseUrl = null;
   }
 
   Config.prototype.registerEndpoint = function registerEndpoint(name, configureMethod, defaults) {
+    var _this = this;
+
     var newClient = new _aureliaFetchClient.HttpClient();
     this.endpoints[name] = new Rest(newClient, name);
 
-    if (defaults !== undefined) this.endpoints[name].defaults = defaults;
+    if (defaults !== undefined) {
+      this.endpoints[name].defaults = defaults;
+    }
 
     if (typeof configureMethod === 'function') {
       newClient.configure(configureMethod);
@@ -120,7 +148,15 @@ var Config = exports.Config = function () {
       return this;
     }
 
-    if (typeof configureMethod !== 'string') {
+    if (typeof configureMethod !== 'string' && !this.defaultBaseUrl) {
+      return this;
+    }
+
+    if (this.defaultBaseUrl && typeof configureMethod !== 'string' && typeof configureMethod !== 'function') {
+      newClient.configure(function (configure) {
+        configure.withBaseUrl(_this.defaultBaseUrl);
+      });
+
       return this;
     }
 
@@ -145,6 +181,12 @@ var Config = exports.Config = function () {
 
   Config.prototype.setDefaultEndpoint = function setDefaultEndpoint(name) {
     this.defaultEndpoint = this.getEndpoint(name);
+
+    return this;
+  };
+
+  Config.prototype.setDefaultBaseUrl = function setDefaultBaseUrl(baseUrl) {
+    this.defaultBaseUrl = baseUrl;
 
     return this;
   };
