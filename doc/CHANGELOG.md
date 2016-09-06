@@ -1,3 +1,20 @@
+<a name="3.0.0-rc9"></a>
+# [3.0.0-rc9](https://github.com/SpoonX/aurelia-api/compare/3.0.0-rc8...v3.0.0-rc9) (2016-09-06)
+
+
+### Bug Fixes
+
+* **rest:** convert number to string before joining path ([34e8ba1](https://github.com/SpoonX/aurelia-api/commit/34e8ba1))
+* **rest:** don't set body when body===null ([6b061b1](https://github.com/SpoonX/aurelia-api/commit/6b061b1))
+
+
+### Features
+
+* **project:** proper types ([320b798](https://github.com/SpoonX/aurelia-api/commit/320b798))
+* **rest:** add findOne, updateOne,..  methods to allow for path/id?filter=some ([b6beffb](https://github.com/SpoonX/aurelia-api/commit/b6beffb))
+
+
+
 <a name="3.0.0-rc8"></a>
 ## [3.0.0-rc8](https://github.com/SpoonX/aurelia-api/compare/3.0.0-rc7...v3.0.0-rc8) (2016-08-03)
 
