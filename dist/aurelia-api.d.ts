@@ -1,12 +1,34 @@
-import {buildQueryString} from 'aurelia-path';
+import {buildQueryString,join} from 'aurelia-path';
 import {HttpClient} from 'aurelia-fetch-client';
-import {resolver} from 'aurelia-dependency-injection';
+import {Aurelia} from 'aurelia-framework';
+import {Container,resolver} from 'aurelia-dependency-injection';
 
 /**
  * Rest class. A simple rest client to fetch resources
  */
 export declare class Rest {
-  defaults: any;
+  
+  /**
+     * The defaults to apply to any request
+     *
+     * @param {{}} defaults The fetch client options
+     */
+  defaults: {};
+  
+  /**
+     * The client for the rest adapter
+     *
+     * @param {HttpClient} client The fetch client
+     *
+     */
+  client: HttpClient;
+  
+  /**
+     * The name of the endpoint it was registered under
+     *
+     * @param {string} endpoint The endpoint name
+     */
+  endpoint: string;
   
   /**
      * Inject the httpClient to use for requests.
@@ -14,7 +36,7 @@ export declare class Rest {
      * @param {HttpClient} httpClient The httpClient to use
      * @param {string}     [endpoint] The endpoint name
      */
-  constructor(httpClient?: any, endpoint?: any);
+  constructor(httpClient: HttpClient, endpoint: string);
   
   /**
      * Make a request to the server.
@@ -24,9 +46,9 @@ export declare class Rest {
      * @param {{}}     [body]     The body to send if applicable
      * @param {{}}     [options]  Fetch options overwrites
      *
-     * @return {Promise<Object>|Promise<Error>} Server response as Object
+     * @return {Promise<any>|Promise<Error>} Server response as Object
      */
-  request(method?: any, path?: any, body?: any, options?: any): any;
+  request(method: string, path: string, body?: {}, options?: {}): Promise<any | Error>;
   
   /**
      * Find a resource.
@@ -35,9 +57,21 @@ export declare class Rest {
      * @param {{}|string|Number} criteria  Object for where clause, string / number for id.
      * @param {{}}               [options] Extra fetch options.
      *
-     * @return {Promise<Object>|Promise<Error>} Server response as Object
+     * @return {Promise<any>|Promise<Error>} Server response as Object
      */
-  find(resource?: any, criteria?: any, options?: any): any;
+  find(resource: string, criteria?: {} | string | Number, options?: {}): Promise<any | Error>;
+  
+  /**
+     * Find a resource.
+     *
+     * @param {string}           resource  Resource to find in
+     * @param {string|Number}    id        String / number for id to be added to the path.
+     * @param {{}}               criteria  Object for where clause
+     * @param {{}}               [options] Extra fetch options.
+     *
+     * @return {Promise<any>|Promise<Error>} Server response as Object
+     */
+  findOne(resource: string, id: string | Number, criteria?: {}, options?: {}): Promise<any | Error>;
   
   /**
      * Create a new instance for resource.
@@ -46,9 +80,9 @@ export declare class Rest {
      * @param {{}}     body      The data to post (as Object)
      * @param {{}}     [options] Extra fetch options.
      *
-     * @return {Promise<Object>|Promise<Error>} Server response as Object
+     * @return {Promise<any>|Promise<Error>} Server response as Object
      */
-  post(resource?: any, body?: any, options?: any): any;
+  post(resource: string, body?: {}, options?: {}): Promise<any | Error>;
   
   /**
      * Update a resource.
@@ -58,9 +92,22 @@ export declare class Rest {
      * @param {object}           body      New data for provided criteria.
      * @param {{}}               [options] Extra fetch options.
      *
-     * @return {Promise<Object>|Promise<Error>} Server response as Object
+     * @return {Promise<any>|Promise<Error>} Server response as Object
      */
-  update(resource?: any, criteria?: any, body?: any, options?: any): any;
+  update(resource: string, criteria?: {} | string | Number, body?: {}, options?: {}): Promise<any | Error>;
+  
+  /**
+     * Update a resource.
+     *
+     * @param {string}           resource  Resource to update
+     * @param {string|Number}    id        String / number for id to be added to the path.
+     * @param {{}}               criteria  Object for where clause
+     * @param {object}           body      New data for provided criteria.
+     * @param {{}}               [options] Extra fetch options.
+     *
+     * @return {Promise<any>|Promise<Error>} Server response as Object
+     */
+  updateOne(resource: string, id: string | number, criteria?: {}, body?: {}, options?: {}): Promise<any | Error>;
   
   /**
      * Patch a resource.
@@ -70,9 +117,22 @@ export declare class Rest {
      * @param {object}           body      Data to patch for provided criteria.
      * @param {{}}               [options] Extra fetch options.
      *
-     * @return {Promise<Object>|Promise<Error>} Server response as Object
+     * @return {Promise<any>|Promise<Error>} Server response as Object
      */
-  patch(resource?: any, criteria?: any, body?: any, options?: any): any;
+  patch(resource: string, criteria?: {} | string | Number, body?: {}, options?: {}): Promise<any | Error>;
+  
+  /**
+     * Patch a resource.
+     *
+     * @param {string}           resource  Resource to patch
+     * @param {string|Number}    id        String / number for id to be added to the path.
+     * @param {{}}               criteria  Object for where clause
+     * @param {object}           body      Data to patch for provided criteria.
+     * @param {{}}               [options] Extra fetch options.
+     *
+     * @return {Promise<any>|Promise<Error>} Server response as Object
+     */
+  patchOne(resource: string, id: string | Number, criteria?: {}, body?: {}, options?: {}): Promise<any | Error>;
   
   /**
      * Delete a resource.
@@ -81,9 +141,21 @@ export declare class Rest {
      * @param {{}|string|Number} criteria  Object for where clause, string / number for id.
      * @param {{}}               [options] Extra fetch options.
      *
-     * @return {Promise<Object>|Promise<Error>} Server response as Object
+     * @return {Promise<any>|Promise<Error>} Server response as Object
      */
-  destroy(resource?: any, criteria?: any, options?: any): any;
+  destroy(resource: string, criteria?: {} | string | Number, options?: {}): Promise<any | Error>;
+  
+  /**
+     * Delete a resource.
+     *
+     * @param {string}           resource  The resource to delete
+     * @param {string|Number}    id        String / number for id to be added to the path.
+     * @param {{}}               criteria  Object for where clause
+     * @param {{}}               [options] Extra fetch options.
+     *
+     * @return {Promise<any>|Promise<Error>} Server response as Object
+     */
+  destroyOne(resource: string, id: string | Number, criteria?: {}, options?: {}): Promise<any | Error>;
   
   /**
      * Create a new instance for resource.
@@ -92,9 +164,9 @@ export declare class Rest {
      * @param {{}}     body      The data to post (as Object)
      * @param {{}}     [options] Extra fetch options.
      *
-     * @return {Promise<Object>|Promise<Error>} Server response as Object
+     * @return {Promise<any>|Promise<Error>} Server response as Object
      */
-  create(resource?: any, body?: any, options?: any): any;
+  create(resource: string, body?: {}, options?: {}): Promise<any | Error>;
 }
 
 /**
@@ -104,36 +176,46 @@ export declare class Config {
   
   /**
      * Collection of configures endpionts
-     * @param {Object} Key: endpoint name, value: Rest client
+     *
+     * @param {{}} Key: endpoint name, value: Rest client
      */
-  endpoints: any;
+  endpoints: {};
   
   /**
      * Current default endpoint if set
-     * @param {[Rest]} Default Rest client
+     *
+     * @param {Rest|null} defaultEndpoint The Rest client
      */
-  defaultEndpoint: any;
+  defaultEndpoint: Rest;
+  
+  /**
+      * Current default baseUrl if set
+      *
+      * @ param {string|null} defaultBaseUrl The Rest client
+      */
+  defaultBaseUrl: string;
   
   /**
      * Register a new endpoint.
      *
      * @param {string}          name              The name of the new endpoint.
-     * @param {function|string} [configureMethod] Configure method or endpoint.
+     * @param {function|string} [configureMethod] Endpoint url or configure method for client.configure().
      * @param {{}}              [defaults]        New defaults for the HttpClient
      *
      * @see http://aurelia.io/docs.html#/aurelia/fetch-client/latest/doc/api/class/HttpClientConfiguration
      * @return {Config}
+     * @chainable
      */
-  registerEndpoint(name?: any, configureMethod?: any, defaults?: any): any;
+  registerEndpoint(name: string, configureMethod?: string | Function, defaults?: {}): Config;
   
   /**
      * Get a previously registered endpoint. Returns null when not found.
      *
-     * @param {string} [name] Endpoint bame. Returns default endpoint when not set.
+     * @param {string} [name] The endpoint name. Returns default endpoint when not set.
      *
      * @return {Rest|null}
      */
-  getEndpoint(name?: any): any;
+  getEndpoint(name: string): Rest;
   
   /**
      * Check if an endpoint has been registered.
@@ -142,7 +224,7 @@ export declare class Config {
      *
      * @return {boolean}
      */
-  endpointExists(name?: any): any;
+  endpointExists(name: string): boolean;
   
   /**
      * Set a previously registered endpoint as the default.
@@ -150,10 +232,21 @@ export declare class Config {
      * @param {string} name The endpoint name
      *
      * @return {Config}
+     * @chainable
      */
-  setDefaultEndpoint(name?: any): any;
+  setDefaultEndpoint(name: string): Config;
+  
+  /**
+     * Set a base url for all endpoints
+     *
+     * @param {string} baseUrl The url for endpoints to append
+     *
+     * @return {Config}
+     * @chainable
+     */
+  setDefaultBaseUrl(baseUrl: string): Config;
 }
-export declare function configure(aurelia?: any, configCallback?: any): any;
+export declare function configure(aurelia: Aurelia, configCallback: Function): void;
 
 /**
  * Endpoint class. A resolver for endpoints which allows injection of the corresponding Rest client into a class
@@ -165,7 +258,7 @@ export declare class Endpoint {
      *
      * @param {string} key
      */
-  constructor(key?: any);
+  constructor(key: string);
   
   /**
      * Resolve for key.
@@ -174,7 +267,7 @@ export declare class Endpoint {
      *
      * @return {Rest}
      */
-  get(container?: any): any;
+  get(container: Container): Rest;
   
   /**
      * Get a new resolver for `key`.
@@ -183,5 +276,5 @@ export declare class Endpoint {
      *
      * @return {Endpoint}  Resolves to the Rest client for this endpoint
      */
-  static of(key?: any): any;
+  static of(key: string): Endpoint;
 }
