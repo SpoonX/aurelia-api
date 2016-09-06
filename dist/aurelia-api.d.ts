@@ -17,6 +17,11 @@ export declare class Rest {
   constructor(httpClient?: any, endpoint?: any);
   
   /**
+   * The HttpClient instance for requests
+   */
+  client: HttpClient;
+  
+  /**
      * Make a request to the server.
      *
      * @param {string} method     The fetch method
