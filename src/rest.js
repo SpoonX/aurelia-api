@@ -61,7 +61,7 @@ export class Rest {
     let contentType = requestOptions.headers['Content-Type'] || requestOptions.headers['content-type'];
 
     if (typeof body === 'object' && body !== null && contentType) {
-      requestOptions.body = contentType.toLowerCase() === 'application/json'
+      requestOptions.body = /^application\/json/.test(contentType.toLowerCase())
                           ? JSON.stringify(body)
                           : buildQueryString(body);
     }
