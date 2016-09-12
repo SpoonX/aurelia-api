@@ -15,6 +15,7 @@ defaults = {
 
 Ways to register your endpoints in `main.js`:
 
+## Configuration with a function
 ```js
 aurelia.use
   /* Your other plugins and init code */
@@ -48,6 +49,30 @@ aurelia.use
   
   // 8: Set Default BaseUrl
     config.setDefaultBaseUrl('https://myapi.org/');
+```
+
+
+## Configuration with an object
+
+```js
+aurelia.use
+  /* Your other plugins and init code */
+  .plugin('aurelia-api', {
+    endpoints: [
+      // 1: Current host
+      {name: 'api'},
+      // 2: Specific host
+      {name: 'api', endpoint: 'https://myapi.org/'},
+      // 3: With different endpoint defaults
+      {name: 'weather', endpoint: 'https://weatherapi.io/', config: {headers: {x: 'foo'}}},
+      // 4: Without endpoint defaults
+      {name: 'weather', endpoint: 'https://weatherapi.io/', config: null};
+    ],
+    // 6: Set default endppoint. alternatively, add default: true above
+    defaultEndpoint: 'api',
+    // 8: Set Default BaseUrl
+    defaultBaseUrl: 'https://myapi.org/'
+  })
 ```
 
 Here's a more detailed explanation for every method of registering used:

@@ -128,4 +128,33 @@ export class Config {
 
     return this;
   }
+
+
+  /**
+   * Configure with an object
+   *
+   * @param {{}} config The configuration obejct
+   *
+   * @return {Config}
+   * @chainable
+   */
+  configure(config: {}): Config {
+    if (config.defaultBaseUrl) {
+      this.defaultBaseUrl = config.defaultBaseUrl;
+    }
+
+    config.endpoints.forEach(endpoint => {
+      this.registerEndpoint(endpoint.name, endpoint.endpoint, endpoint.config);
+
+      if (endpoint.default) {
+        this.setDefaultEndpoint(endpoint.name);
+      }
+    });
+
+    if (config.defaultEndpoint) {
+      this.setDefaultEndpoint(config.defaultEndpoint);
+    }
+
+    return this;
+  }
 }
