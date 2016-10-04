@@ -230,10 +230,32 @@ function getRequestPath(resource: string, idOrCriteria?: string|number|{}, crite
   }
 
   if (typeof criteria === 'object' && criteria !== null) {
-    resource += `?${buildQueryString(criteria)}`;
+    resource += `?${buildQueryString(copyAndTransform(criteria))}`;
   } else if (criteria) {
     resource += `${hasSlash ? '' : '/'}${criteria}${hasSlash ? '/' : ''}`;
   }
 
   return resource;
+}
+
+function copyAndTransform(obj) {
+  let res = {};
+  let keys = Object.keys(obj);
+
+  for (let i = 0; i < keys.length; ++i) {
+    let k = keys[i];
+    let v = obj[k];
+
+    if (typeof v === 'object') {
+      if (Object.keys(v).length === 0) {
+        v = v.toString();
+      } else {
+        v = copyAndTransform(v);
+      }
+    }
+
+    res[k] = v;
+  }
+
+  return res;
 }
