@@ -11,7 +11,7 @@ System.config({
     "aurelia-fetch-client": "npm:aurelia-fetch-client@1.0.0-rc.1.0.1",
     "aurelia-framework": "npm:aurelia-framework@1.0.1",
     "aurelia-path": "npm:aurelia-path@1.0.0",
-    "aurelia-polyfills": "npm:aurelia-polyfills@1.0.0-rc.1.0.0",
+    "aurelia-polyfills": "npm:aurelia-polyfills@1.0.0",
     "extend": "npm:extend@3.0.0",
     "fetch": "github:github/fetch@1.0.0",
     "npm:aurelia-binding@1.0.1": {
@@ -42,7 +42,7 @@ System.config({
     "npm:aurelia-metadata@1.0.0": {
       "aurelia-pal": "npm:aurelia-pal@1.0.0"
     },
-    "npm:aurelia-polyfills@1.0.0-rc.1.0.0": {
+    "npm:aurelia-polyfills@1.0.0": {
       "aurelia-pal": "npm:aurelia-pal@1.0.0"
     },
     "npm:aurelia-task-queue@1.0.0": {
