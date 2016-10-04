@@ -6,40 +6,40 @@ import {Rest} from './rest';
  */
 export class Config {
   /**
-   * Collection of configures endpionts
+   * Collection of configures endpoints
    *
-   * @param {{}} Key: endpoint name, value: Rest client
+   * @param {{}} Key: endpoint name; value: Rest client
    */
-  endpoints: {} = {};
+  endpoints: {[key: string]: Rest} = {};
 
   /**
    * Current default endpoint if set
    *
-   * @param {Rest|null} defaultEndpoint The Rest client
+   * @param {Rest} defaultEndpoint The Rest client
    */
-  defaultEndpoint: Rest = null;
-
+  defaultEndpoint: Rest;
 
    /**
     * Current default baseUrl if set
     *
-    * @ param {string|null} defaultBaseUrl The Rest client
+    * @param {string} defaultBaseUrl The Rest client
     */
-  defaultBaseUrl: string = null;
+  defaultBaseUrl: string;
 
   /**
    * Register a new endpoint.
    *
    * @param {string}          name              The name of the new endpoint.
-   * @param {function|string} [configureMethod] Endpoint url or configure method for client.configure().
+   * @param {Function|string} [configureMethod] Endpoint url or configure method for client.configure().
    * @param {{}}              [defaults]        New defaults for the HttpClient
    *
    * @see http://aurelia.io/docs.html#/aurelia/fetch-client/latest/doc/api/class/HttpClientConfiguration
-   * @return {Config}
+   * @return {Config} this Fluent interface
    * @chainable
    */
   registerEndpoint(name: string, configureMethod?: string|Function, defaults?: {}): Config {
-    let newClient        = new HttpClient();
+    let newClient = new HttpClient();
+
     this.endpoints[name] = new Rest(newClient, name);
 
     // set custom defaults to Rest
@@ -106,7 +106,7 @@ export class Config {
    *
    * @param {string} name The endpoint name
    *
-   * @return {Config}
+   * @return {Config} this Fluent interface
    * @chainable
    */
   setDefaultEndpoint(name: string): Config {
@@ -120,7 +120,7 @@ export class Config {
    *
    * @param {string} baseUrl The url for endpoints to append
    *
-   * @return {Config}
+   * @return {Config} this Fluent interface
    * @chainable
    */
   setDefaultBaseUrl(baseUrl: string): Config {
@@ -129,16 +129,15 @@ export class Config {
     return this;
   }
 
-
   /**
    * Configure with an object
    *
-   * @param {{}} config The configuration obejct
+   * @param {{}} config The configuration object
    *
-   * @return {Config}
+   * @return {Config} this Fluent interface
    * @chainable
    */
-  configure(config: {}): Config {
+  configure(config: {defaultEndpoint: string, defaultBaseUrl: string, endpoints: Array<{name: string, endpoint: string, config: {}, default: boolean}>}): Config {
     if (config.defaultBaseUrl) {
       this.defaultBaseUrl = config.defaultBaseUrl;
     }
