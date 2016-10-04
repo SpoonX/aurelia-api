@@ -1,9 +1,9 @@
 'use strict';
 
-System.register(['extend', 'aurelia-path', 'aurelia-fetch-client', 'aurelia-framework', 'aurelia-dependency-injection'], function (_export, _context) {
+System.register(['extend', 'aurelia-path', 'aurelia-fetch-client', 'aurelia-dependency-injection'], function (_export, _context) {
   "use strict";
 
-  var extend, buildQueryString, join, HttpClient, Aurelia, Container, resolver, _dec, _class3, _typeof, Rest, Config, Endpoint;
+  var extend, buildQueryString, join, HttpClient, Container, resolver, _dec, _class3, _typeof, Rest, Config, Endpoint;
 
   
 
@@ -25,10 +25,16 @@ System.register(['extend', 'aurelia-path', 'aurelia-fetch-client', 'aurelia-fram
     return resource;
   }
 
-  function configure(aurelia, configCallback) {
-    var config = aurelia.container.get(Config);
+  function configure(frameworkConfig, configOrConfigure) {
+    var config = frameworkConfig.container.get(Config);
 
-    configCallback(config);
+    if (typeof configOrConfigure === 'function') {
+      configOrConfigure(config);
+
+      return;
+    }
+
+    config.configure(configOrConfigure);
   }
 
   _export('configure', configure);
@@ -41,8 +47,6 @@ System.register(['extend', 'aurelia-path', 'aurelia-fetch-client', 'aurelia-fram
       join = _aureliaPath.join;
     }, function (_aureliaFetchClient) {
       HttpClient = _aureliaFetchClient.HttpClient;
-    }, function (_aureliaFramework) {
-      Aurelia = _aureliaFramework.Aurelia;
     }, function (_aureliaDependencyInjection) {
       Container = _aureliaDependencyInjection.Container;
       resolver = _aureliaDependencyInjection.resolver;
@@ -71,7 +75,6 @@ System.register(['extend', 'aurelia-path', 'aurelia-fetch-client', 'aurelia-fram
 
         Rest.prototype.request = function request(method, path, body, options) {
           var requestOptions = extend(true, { headers: {} }, this.defaults, options || {}, { method: method, body: body });
-
           var contentType = requestOptions.headers['Content-Type'] || requestOptions.headers['content-type'];
 
           if ((typeof body === 'undefined' ? 'undefined' : _typeof(body)) === 'object' && body !== null && contentType) {
@@ -80,7 +83,7 @@ System.register(['extend', 'aurelia-path', 'aurelia-fetch-client', 'aurelia-fram
 
           return this.client.fetch(path, requestOptions).then(function (response) {
             if (response.status >= 200 && response.status < 400) {
-              return response.json().catch(function (error) {
+              return response.json().catch(function () {
                 return null;
               });
             }
@@ -126,7 +129,7 @@ System.register(['extend', 'aurelia-path', 'aurelia-fetch-client', 'aurelia-fram
         };
 
         Rest.prototype.create = function create(resource, body, options) {
-          return this.post.apply(this, arguments);
+          return this.post(resource, body, options);
         };
 
         return Rest;
@@ -139,14 +142,13 @@ System.register(['extend', 'aurelia-path', 'aurelia-fetch-client', 'aurelia-fram
           
 
           this.endpoints = {};
-          this.defaultEndpoint = null;
-          this.defaultBaseUrl = null;
         }
 
         Config.prototype.registerEndpoint = function registerEndpoint(name, configureMethod, defaults) {
           var _this = this;
 
           var newClient = new HttpClient();
+
           this.endpoints[name] = new Rest(newClient, name);
 
           if (defaults !== undefined) {
@@ -198,6 +200,28 @@ System.register(['extend', 'aurelia-path', 'aurelia-fetch-client', 'aurelia-fram
 
         Config.prototype.setDefaultBaseUrl = function setDefaultBaseUrl(baseUrl) {
           this.defaultBaseUrl = baseUrl;
+
+          return this;
+        };
+
+        Config.prototype.configure = function configure(config) {
+          var _this2 = this;
+
+          if (config.defaultBaseUrl) {
+            this.defaultBaseUrl = config.defaultBaseUrl;
+          }
+
+          config.endpoints.forEach(function (endpoint) {
+            _this2.registerEndpoint(endpoint.name, endpoint.endpoint, endpoint.config);
+
+            if (endpoint.default) {
+              _this2.setDefaultEndpoint(endpoint.name);
+            }
+          });
+
+          if (config.defaultEndpoint) {
+            this.setDefaultEndpoint(config.defaultEndpoint);
+          }
 
           return this;
         };

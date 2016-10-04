@@ -1,3 +1,13 @@
+<a name="3.0.0"></a>
+# [3.0.0](https://github.com/SpoonX/aurelia-api/compare/3.0.0-rc9...v3.0.0) (2016-10-04)
+
+
+### Features
+
+* **configure:** allow configuration with an object ([6266e3e](https://github.com/SpoonX/aurelia-api/commit/6266e3e))
+
+
+
 <a name="3.0.0-rc9"></a>
 # [3.0.0-rc9](https://github.com/SpoonX/aurelia-api/compare/3.0.0-rc8...v3.0.0-rc9) (2016-09-06)
 

@@ -3,7 +3,6 @@ var _dec, _class3;
 import extend from 'extend';
 import { buildQueryString, join } from 'aurelia-path';
 import { HttpClient } from 'aurelia-fetch-client';
-import { Aurelia } from 'aurelia-framework';
 import { Container, resolver } from 'aurelia-dependency-injection';
 
 export let Rest = class Rest {
@@ -21,7 +20,6 @@ export let Rest = class Rest {
 
   request(method, path, body, options) {
     let requestOptions = extend(true, { headers: {} }, this.defaults, options || {}, { method, body });
-
     let contentType = requestOptions.headers['Content-Type'] || requestOptions.headers['content-type'];
 
     if (typeof body === 'object' && body !== null && contentType) {
@@ -30,7 +28,7 @@ export let Rest = class Rest {
 
     return this.client.fetch(path, requestOptions).then(response => {
       if (response.status >= 200 && response.status < 400) {
-        return response.json().catch(error => null);
+        return response.json().catch(() => null);
       }
 
       throw response;
@@ -74,7 +72,7 @@ export let Rest = class Rest {
   }
 
   create(resource, body, options) {
-    return this.post(...arguments);
+    return this.post(resource, body, options);
   }
 };
 
@@ -99,12 +97,11 @@ function getRequestPath(resource, idOrCriteria, criteria) {
 export let Config = class Config {
   constructor() {
     this.endpoints = {};
-    this.defaultEndpoint = null;
-    this.defaultBaseUrl = null;
   }
 
   registerEndpoint(name, configureMethod, defaults) {
     let newClient = new HttpClient();
+
     this.endpoints[name] = new Rest(newClient, name);
 
     if (defaults !== undefined) {
@@ -159,12 +156,38 @@ export let Config = class Config {
 
     return this;
   }
+
+  configure(config) {
+    if (config.defaultBaseUrl) {
+      this.defaultBaseUrl = config.defaultBaseUrl;
+    }
+
+    config.endpoints.forEach(endpoint => {
+      this.registerEndpoint(endpoint.name, endpoint.endpoint, endpoint.config);
+
+      if (endpoint.default) {
+        this.setDefaultEndpoint(endpoint.name);
+      }
+    });
+
+    if (config.defaultEndpoint) {
+      this.setDefaultEndpoint(config.defaultEndpoint);
+    }
+
+    return this;
+  }
 };
 
-export function configure(aurelia, configCallback) {
-  let config = aurelia.container.get(Config);
+export function configure(frameworkConfig, configOrConfigure) {
+  let config = frameworkConfig.container.get(Config);
 
-  configCallback(config);
+  if (typeof configOrConfigure === 'function') {
+    configOrConfigure(config);
+
+    return;
+  }
+
+  config.configure(configOrConfigure);
 }
 
 export let Endpoint = (_dec = resolver(), _dec(_class3 = class Endpoint {
