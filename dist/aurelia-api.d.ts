@@ -1,6 +1,5 @@
 import {buildQueryString,join} from 'aurelia-path';
 import {HttpClient} from 'aurelia-fetch-client';
-import {Aurelia} from 'aurelia-framework';
 import {Container,resolver} from 'aurelia-dependency-injection';
 
 /**
@@ -11,7 +10,7 @@ export declare class Rest {
   /**
      * The defaults to apply to any request
      *
-     * @param {{}} defaults The fetch client options
+     * @param {{}} defaults The default fetch request options
      */
   defaults: {};
   
@@ -34,53 +33,53 @@ export declare class Rest {
      * Inject the httpClient to use for requests.
      *
      * @param {HttpClient} httpClient The httpClient to use
-     * @param {string}     [endpoint] The endpoint name
+     * @param {string}     endpoint   The endpoint name
      */
   constructor(httpClient: HttpClient, endpoint: string);
   
   /**
      * Make a request to the server.
      *
-     * @param {string} method     The fetch method
-     * @param {string} path       Path to the resource
-     * @param {{}}     [body]     The body to send if applicable
-     * @param {{}}     [options]  Fetch options overwrites
+     * @param {string}          method     The fetch method
+     * @param {string}          path       Path to the resource
+     * @param {{}}              [body]     The body to send if applicable
+     * @param {{}}              [options]  Fetch request options overwrites
      *
-     * @return {Promise<any>|Promise<Error>} Server response as Object
+     * @return {Promise<*>|Promise<Error>} Server response as Object
      */
   request(method: string, path: string, body?: {}, options?: {}): Promise<any | Error>;
   
   /**
      * Find a resource.
      *
-     * @param {string}           resource  Resource to find in
-     * @param {{}|string|Number} criteria  Object for where clause, string / number for id.
-     * @param {{}}               [options] Extra fetch options.
+     * @param {string}                    resource  Resource to find in
+     * @param {{}|string|number}          criteria  Object for where clause, string / number for id.
+     * @param {{}}                        [options] Extra request options.
      *
-     * @return {Promise<any>|Promise<Error>} Server response as Object
+     * @return {Promise<*>|Promise<Error>} Server response as Object
      */
-  find(resource: string, criteria?: {} | string | Number, options?: {}): Promise<any | Error>;
+  find(resource: string, criteria?: {} | string | number, options?: {}): Promise<any | Error>;
   
   /**
      * Find a resource.
      *
-     * @param {string}           resource  Resource to find in
-     * @param {string|Number}    id        String / number for id to be added to the path.
-     * @param {{}}               criteria  Object for where clause
-     * @param {{}}               [options] Extra fetch options.
+     * @param {string}           resource    Resource to find in
+     * @param {string|number}    id          String / number for id to be added to the path.
+     * @param {{}}               [criteria]  Object for where clause
+     * @param {{}}               [options]   Extra request options.
      *
-     * @return {Promise<any>|Promise<Error>} Server response as Object
+     * @return {Promise<*>|Promise<Error>} Server response as Object
      */
-  findOne(resource: string, id: string | Number, criteria?: {}, options?: {}): Promise<any | Error>;
+  findOne(resource: string, id: string | number, criteria?: {}, options?: {}): Promise<any | Error>;
   
   /**
      * Create a new instance for resource.
      *
-     * @param {string} resource  Resource to create
-     * @param {{}}     body      The data to post (as Object)
-     * @param {{}}     [options] Extra fetch options.
+     * @param {string}           resource  Resource to create
+     * @param {{}}               [body]    The data to post (as Object)
+     * @param {{}}               [options] Extra request options.
      *
-     * @return {Promise<any>|Promise<Error>} Server response as Object
+     * @return {Promise<*>|Promise<Error>} Server response as Object
      */
   post(resource: string, body?: {}, options?: {}): Promise<any | Error>;
   
@@ -88,83 +87,83 @@ export declare class Rest {
      * Update a resource.
      *
      * @param {string}           resource  Resource to update
-     * @param {{}|string|Number} criteria  Object for where clause, string / number for id.
-     * @param {object}           body      New data for provided criteria.
-     * @param {{}}               [options] Extra fetch options.
+     * @param {{}|string|number} criteria  Object for where clause, string / number for id.
+     * @param {{}}               [body]    New data for provided criteria.
+     * @param {{}}               [options] Extra request options.
      *
-     * @return {Promise<any>|Promise<Error>} Server response as Object
+     * @return {Promise<*>|Promise<Error>} Server response as Object
      */
-  update(resource: string, criteria?: {} | string | Number, body?: {}, options?: {}): Promise<any | Error>;
+  update(resource: string, criteria?: {} | string | number, body?: {}, options?: {}): Promise<any | Error>;
   
   /**
      * Update a resource.
      *
-     * @param {string}           resource  Resource to update
-     * @param {string|Number}    id        String / number for id to be added to the path.
-     * @param {{}}               criteria  Object for where clause
-     * @param {object}           body      New data for provided criteria.
-     * @param {{}}               [options] Extra fetch options.
+     * @param {string}           resource   Resource to update
+     * @param {string|number}    id         String / number for id to be added to the path.
+     * @param {{}}               [criteria] Object for where clause
+     * @param {{}}               [body]     New data for provided criteria.
+     * @param {{}}               [options]  Extra request options.
      *
-     * @return {Promise<any>|Promise<Error>} Server response as Object
+     * @return {Promise<*>|Promise<Error>} Server response as Object
      */
   updateOne(resource: string, id: string | number, criteria?: {}, body?: {}, options?: {}): Promise<any | Error>;
   
   /**
      * Patch a resource.
+    *
+     * @param {string}           resource   Resource to patch
+     * @param {{}|string|number} [criteria] Object for where clause, string / number for id.
+     * @param {{}}               [body]     Data to patch for provided criteria.
+     * @param {{}}               [options]  Extra request options.
      *
-     * @param {string}           resource  Resource to patch
-     * @param {{}|string|Number} criteria  Object for where clause, string / number for id.
-     * @param {object}           body      Data to patch for provided criteria.
-     * @param {{}}               [options] Extra fetch options.
-     *
-     * @return {Promise<any>|Promise<Error>} Server response as Object
+     * @return {Promise<*>|Promise<Error>} Server response as Object
      */
-  patch(resource: string, criteria?: {} | string | Number, body?: {}, options?: {}): Promise<any | Error>;
+  patch(resource: string, criteria?: {} | string | number, body?: {}, options?: {}): Promise<any | Error>;
   
   /**
      * Patch a resource.
      *
-     * @param {string}           resource  Resource to patch
-     * @param {string|Number}    id        String / number for id to be added to the path.
-     * @param {{}}               criteria  Object for where clause
-     * @param {object}           body      Data to patch for provided criteria.
-     * @param {{}}               [options] Extra fetch options.
+     * @param {string}           resource   Resource to patch
+     * @param {string|number}    id         String / number for id to be added to the path.
+     * @param {{}}               [criteria] Object for where clause
+     * @param {{}}               [body]     Data to patch for provided criteria.
+     * @param {{}}               [options]  Extra request options.
      *
-     * @return {Promise<any>|Promise<Error>} Server response as Object
+     * @return {Promise<*>|Promise<Error>} Server response as Object
      */
-  patchOne(resource: string, id: string | Number, criteria?: {}, body?: {}, options?: {}): Promise<any | Error>;
+  patchOne(resource: string, id: string | number, criteria?: {}, body?: {}, options?: {}): Promise<any | Error>;
   
   /**
      * Delete a resource.
      *
-     * @param {string}           resource  The resource to delete
-     * @param {{}|string|Number} criteria  Object for where clause, string / number for id.
-     * @param {{}}               [options] Extra fetch options.
+     * @param {string}           resource   The resource to delete
+     * @param {{}|string|number} [criteria] Object for where clause, string / number for id.
+     * @param {{}}               [options]  Extra request options.
      *
-     * @return {Promise<any>|Promise<Error>} Server response as Object
+     * @return {Promise<*>|Promise<Error>} Server response as Object
      */
-  destroy(resource: string, criteria?: {} | string | Number, options?: {}): Promise<any | Error>;
+  destroy(resource: string, criteria?: {} | string | number, options?: {}): Promise<any | Error>;
   
   /**
      * Delete a resource.
      *
-     * @param {string}           resource  The resource to delete
-     * @param {string|Number}    id        String / number for id to be added to the path.
-     * @param {{}}               criteria  Object for where clause
-     * @param {{}}               [options] Extra fetch options.
+     * @param {string}           resource   The resource to delete
+     * @param {string|number}    id         String / number for id to be added to the path.
+     * @param {{}}               [criteria] Object for where clause
+     * @param {{}}               [options]  Extra request options.
      *
-     * @return {Promise<any>|Promise<Error>} Server response as Object
+     * @return {Promise<*>|Promise<Error>} Server response as Object
      */
-  destroyOne(resource: string, id: string | Number, criteria?: {}, options?: {}): Promise<any | Error>;
+  destroyOne(resource: string, id: string | number, criteria?: {}, options?: {}): Promise<any | Error>;
   
   /**
      * Create a new instance for resource.
      *
-     * @param {string} resource  The resource to create
-     * @param {{}}     body      The data to post (as Object)
-     * @param {{}}     [options] Extra fetch options.
+     * @param {string}           resource  The resource to create
+     * @param {{}}               [body]    The data to post (as Object)
+     * @param {{}}               [options] Extra request options.
      *
-     * @return {Promise<any>|Promise<Error>} Server response as Object
+     * @return {Promise<*>} Server response as Object
      */
   create(resource: string, body?: {}, options?: {}): Promise<any | Error>;
 }
@@ -175,23 +174,23 @@ export declare class Rest {
 export declare class Config {
   
   /**
-     * Collection of configures endpionts
+     * Collection of configures endpoints
      *
-     * @param {{}} Key: endpoint name, value: Rest client
+     * @param {{}} Key: endpoint name; value: Rest client
      */
-  endpoints: {};
+  endpoints: { [key: string]: Rest };
   
   /**
      * Current default endpoint if set
      *
-     * @param {Rest|null} defaultEndpoint The Rest client
+     * @param {Rest} defaultEndpoint The Rest client
      */
   defaultEndpoint: Rest;
   
   /**
       * Current default baseUrl if set
       *
-      * @ param {string|null} defaultBaseUrl The Rest client
+      * @param {string} defaultBaseUrl The Rest client
       */
   defaultBaseUrl: string;
   
@@ -199,11 +198,11 @@ export declare class Config {
      * Register a new endpoint.
      *
      * @param {string}          name              The name of the new endpoint.
-     * @param {function|string} [configureMethod] Endpoint url or configure method for client.configure().
+     * @param {Function|string} [configureMethod] Endpoint url or configure method for client.configure().
      * @param {{}}              [defaults]        New defaults for the HttpClient
      *
      * @see http://aurelia.io/docs.html#/aurelia/fetch-client/latest/doc/api/class/HttpClientConfiguration
-     * @return {Config}
+     * @return {Config} this Fluent interface
      * @chainable
      */
   registerEndpoint(name: string, configureMethod?: string | Function, defaults?: {}): Config;
@@ -231,7 +230,7 @@ export declare class Config {
      *
      * @param {string} name The endpoint name
      *
-     * @return {Config}
+     * @return {Config} this Fluent interface
      * @chainable
      */
   setDefaultEndpoint(name: string): Config;
@@ -241,12 +240,30 @@ export declare class Config {
      *
      * @param {string} baseUrl The url for endpoints to append
      *
-     * @return {Config}
+     * @return {Config} this Fluent interface
      * @chainable
      */
   setDefaultBaseUrl(baseUrl: string): Config;
+  
+  /**
+     * Configure with an object
+     *
+     * @param {{}} config The configuration object
+     *
+     * @return {Config} this Fluent interface
+     * @chainable
+     */
+  configure(config: { defaultEndpoint: string, defaultBaseUrl: string, endpoints: Array<{ name: string, endpoint: string, config: {}, default: boolean }> }): Config;
 }
-export declare function configure(aurelia: Aurelia, configCallback: Function): void;
+
+/**
+ * Plugin configure
+ *
+ * @export
+ * @param {{ container: Container}} frameworkConfig
+ * @param {({defaultEndpoint: string, defaultBaseUrl: string, endpoints: Array<{name: string, endpoint: string, config: RequestInit, default: boolean}>} | function(config: Config): void)} configOrConfigure
+ */
+export declare function configure(frameworkConfig: { container: Container }, configOrConfigure: { defaultEndpoint: string, defaultBaseUrl: string, endpoints: Array<{ name: string, endpoint: string, config: RequestInit, default: boolean }> } | ((config: Config) => void)): any;
 
 /**
  * Endpoint class. A resolver for endpoints which allows injection of the corresponding Rest client into a class
