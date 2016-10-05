@@ -20,10 +20,6 @@ Aurelia-api is a module wrapped around aurelia-fetch-client that allows you to:
 * Add interceptors
 * And more
 
-## Important note
-
-We've simplified installation and usage! This plugin should now be installed using `jspm i aurelia-api` or (for webpack) `npm i aurelia-api --save`. Make sure you update all references to `spoonx/aurelia-api` and remove the `spoonx/` prefix (don't forget your config.js, package.json, imports and bundles).
-
 ## Documentation
 
 You can find usage examples and the documentation at [aurelia-api-doc](http://aurelia-api.spoonx.org/).
@@ -144,14 +140,14 @@ All methods will:
 
 All methods return on success a Promise with the server response parsed to an object if possible. On error, they reject with the server response. If possible and parseError is set true, they reject with the JSON parsed server response.
 
-````js
+```js
 endpoint
   .client                                           // the httpClient instance
   .endpoint                                         // name of the endpoint
   .default                                          // The fetch client defaults
   .find(resource, criteria, options)                // GET
   .findOne(resource, id, criteria, options)         // GET
-  .post(resource, body, options) {                  // POST
+  .post(resource, body, options)                    // POST
   .update(resource, criteria, body, options)        // PUT
   .updateOne(resource, id, criteria, body, options) // PUT
   .patch(resource, criteria, body, options)         // PATCH
@@ -161,3 +157,7 @@ endpoint
   .create(resource, body, options)                  // POST
   .request(method, path, body, options)             // method
 ```
+
+## Note
+
+Some month ago, we've simplified installation and usage! This plugin should now be installed using `jspm i aurelia-api` or (for webpack) `npm i aurelia-api --save`. Make sure you update all references to `spoonx/aurelia-api` and remove the `spoonx/` prefix (don't forget your config.js, package.json, imports and bundles).
