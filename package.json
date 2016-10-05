@@ -1,6 +1,6 @@
 {
   "name": "aurelia-api",
-  "version": "3.0.0-rc9",
+  "version": "3.0.0",
   "description": "A simple api wrapper around aurelia-fetch-client",
   "keywords": [
     "aurelia",
@@ -35,29 +35,29 @@
       "dist": "dist/amd"
     },
     "dependencies": {
-      "aurelia-dependency-injection": "^1.0.0-rc.1.0.0",
-      "aurelia-fetch-client": "^1.0.0-rc.1.0.0",
-      "aurelia-framework": "^1.0.0-rc.1.0.0",
-      "aurelia-path": "^1.0.0-rc.1.0.0",
+      "aurelia-dependency-injection": "^1.0.0",
+      "aurelia-fetch-client": "^1.0.0",
+      "aurelia-framework": "^1.0.0",
+      "aurelia-path": "^1.0.0",
       "extend": "^3.0.0"
     },
     "peerDependencies": {
-      "aurelia-dependency-injection": "^1.0.0-rc.1.0.0",
-      "aurelia-fetch-client": "^1.0.0-rc.1.0.0",
-      "aurelia-framework": "^1.0.0-rc.1.0.0",
-      "aurelia-path": "^1.0.0-rc.1.0.0",
+      "aurelia-dependency-injection": "^1.0.0",
+      "aurelia-fetch-client": "^1.0.0",
+      "aurelia-framework": "^1.0.0",
+      "aurelia-path": "^1.0.0",
       "extend": "^3.0.0"
     },
     "devDependencies": {
-      "aurelia-polyfills": "^1.0.0-rc.1.0.0",
+      "aurelia-polyfills": "^1.0.0",
       "fetch": "github:github/fetch@^1.0.0"
     }
   },
   "dependencies": {
-    "aurelia-dependency-injection": "^1.0.0-rc.1.0.0",
-    "aurelia-fetch-client": "^1.0.0-rc.1.0.0",
-    "aurelia-framework": "^1.0.0-rc.1.0.0",
-    "aurelia-path": "^1.0.0-rc.1.0.0",
+    "aurelia-dependency-injection": "^1.0.0",
+    "aurelia-fetch-client": "^1.0.0",
+    "aurelia-framework": "^1.0.0",
+    "aurelia-path": "^1.0.0",
     "extend": "^3.0.0"
   },
   "devDependencies": {
