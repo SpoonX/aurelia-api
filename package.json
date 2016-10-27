@@ -38,14 +38,14 @@
       "aurelia-dependency-injection": "^1.0.0",
       "aurelia-fetch-client": "^1.0.0",
       "aurelia-framework": "^1.0.0",
-      "aurelia-path": "^1.0.0",
+      "aurelia-path": "^1.1.1",
       "extend": "^3.0.0"
     },
     "peerDependencies": {
       "aurelia-dependency-injection": "^1.0.0",
       "aurelia-fetch-client": "^1.0.0",
       "aurelia-framework": "^1.0.0",
-      "aurelia-path": "^1.0.0",
+      "aurelia-path": "^1.1.1",
       "extend": "^3.0.0"
     },
     "devDependencies": {
@@ -57,7 +57,7 @@
     "aurelia-dependency-injection": "^1.0.0",
     "aurelia-fetch-client": "^1.0.0",
     "aurelia-framework": "^1.0.0",
-    "aurelia-path": "^1.0.0",
+    "aurelia-path": "^1.1.1",
     "extend": "^3.0.0"
   },
   "devDependencies": {
