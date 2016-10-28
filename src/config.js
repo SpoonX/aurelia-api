@@ -1,6 +1,10 @@
 import {HttpClient} from 'aurelia-fetch-client';
 import {Rest} from './rest';
 
+interface RestOptions {
+  useTraditionalUriTemplates?: boolean;
+}
+
 /**
  * Config class. Configures and stores endpoints
  */
@@ -32,13 +36,13 @@ export class Config {
    * @param {string}          name              The name of the new endpoint.
    * @param {Function|string} [configureMethod] Endpoint url or configure method for client.configure().
    * @param {{}}              [defaults]        New defaults for the HttpClient
-   * @param {{}}              [restOptions]     Options to pass when constructing the Rest instance.
+   * @param {RestOptions}     [restOptions]     Options to pass when constructing the Rest instance.
    *
    * @see http://aurelia.io/docs.html#/aurelia/fetch-client/latest/doc/api/class/HttpClientConfiguration
    * @return {Config} this Fluent interface
    * @chainable
    */
-  registerEndpoint(name: string, configureMethod?: string|Function, defaults?: {}, restOptions?: {useTraditionalUriTemplates?: boolean}): Config {
+  registerEndpoint(name: string, configureMethod?: string|Function, defaults?: {}, restOptions?: RestOptions): Config {
     let newClient = new HttpClient();
     let useTraditionalUriTemplates;
 
