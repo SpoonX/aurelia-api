@@ -1,7 +1,17 @@
 import {HttpClient} from 'aurelia-fetch-client';
 import {Rest} from './rest';
 
+/**
+ * Represents the options to use when constructing a `Rest` instance.
+ */
 interface RestOptions {
+  /**
+   * `true` to use the traditional URI template standard (RFC6570) when building
+   * query strings from criteria objects, `false` otherwise. Default is `false`.
+   * NOTE: maps to `useTraditionalUriTemplates` parameter on `Rest` constructor.
+   * 
+   * @type {boolean}
+   */
   useTraditionalUriTemplates?: boolean;
 }
 
