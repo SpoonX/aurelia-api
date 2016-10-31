@@ -65,7 +65,9 @@
     "extend": "^3.0.0"
   },
   "devDependencies": {
-    "spoonx-tools": "^0.4.0"
+    "spoonx-tools": "^0.4.0",
+    "multer": "^1.2.0"
+
   },
   "aurelia": {
     "build": {
