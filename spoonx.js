@@ -56,7 +56,8 @@ module.exports = {
      */
      concat: true,
 
-    /* default options overwrites for karma
+    /* options overwrites for karma. defaults are in ./node_modules/spoonx-tools/karma.conf.js
+     *
      * karma: {browsers: ['Chrome']}
      */
   }
