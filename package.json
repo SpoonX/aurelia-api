@@ -24,7 +24,11 @@
     "url": "https://github.com/SpoonX/aurelia-api"
   },
   "scripts": {
-    "test": "./node_modules/.bin/gulp test"
+    "test": "gulp test",
+    "build": "gulp build",
+    "preversion": "npm test",
+    "version": "npm run build && gulp prepare-package && git add -A dist doc/CHANGELOG.md bower.json",
+    "postpublish": "git push upstream master && git push upstream --tags"
   },
   "jspm": {
     "registry": "npm",
@@ -61,7 +65,8 @@
     "extend": "^3.0.0"
   },
   "devDependencies": {
-    "spoonx-tools": "^0.3.0"
+    "multer": "^1.2.0",
+    "spoonx-tools": "^1.0.0-0"
   },
   "aurelia": {
     "build": {
