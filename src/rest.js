@@ -77,13 +77,13 @@ export class Rest {
    * Find a resource.
    *
    * @param {string}                    resource  Resource to find in
-   * @param {{}|string|number}          criteria  Object for where clause, string / number for id.
+   * @param {{}|string|number}          idOrCriteria  Object for where clause, string / number for id.
    * @param {{}}                        [options] Extra request options.
    *
    * @return {Promise<*>|Promise<Error>} Server response as Object
    */
-  find(resource: string, criteria?: {}|string|number, options?: {}): Promise<any|Error> {
-    return this.request('GET', getRequestPath(resource, criteria), undefined, options);
+  find(resource: string, idOrCriteria?: {}|string|number, options?: {}): Promise<any|Error> {
+    return this.request('GET', getRequestPath(resource, idOrCriteria), undefined, options);
   }
 
   /**
@@ -117,14 +117,14 @@ export class Rest {
    * Update a resource.
    *
    * @param {string}           resource  Resource to update
-   * @param {{}|string|number} criteria  Object for where clause, string / number for id.
-   * @param {{}}               [body]    New data for provided criteria.
+   * @param {{}|string|number} idOrCriteria  Object for where clause, string / number for id.
+   * @param {{}}               [body]    New data for provided idOrCriteria.
    * @param {{}}               [options] Extra request options.
    *
    * @return {Promise<*>|Promise<Error>} Server response as Object
    */
-  update(resource: string, criteria?: {}|string|number, body?: {}, options?: {}): Promise<any|Error> {
-    return this.request('PUT', getRequestPath(resource, criteria), body, options);
+  update(resource: string, idOrCriteria?: {}|string|number, body?: {}, options?: {}): Promise<any|Error> {
+    return this.request('PUT', getRequestPath(resource, idOrCriteria), body, options);
   }
 
   /**
@@ -146,14 +146,14 @@ export class Rest {
    * Patch a resource.
   *
    * @param {string}           resource   Resource to patch
-   * @param {{}|string|number} [criteria] Object for where clause, string / number for id.
-   * @param {{}}               [body]     Data to patch for provided criteria.
+   * @param {{}|string|number} [idOrCriteria] Object for where clause, string / number for id.
+   * @param {{}}               [body]     Data to patch for provided idOrCriteria.
    * @param {{}}               [options]  Extra request options.
    *
    * @return {Promise<*>|Promise<Error>} Server response as Object
    */
-  patch(resource: string, criteria?: {}|string|number, body?: {}, options?: {}): Promise<any|Error> {
-    return this.request('PATCH', getRequestPath(resource, criteria), body, options);
+  patch(resource: string, idOrCriteria?: {}|string|number, body?: {}, options?: {}): Promise<any|Error> {
+    return this.request('PATCH', getRequestPath(resource, idOrCriteria), body, options);
   }
 
   /**
@@ -175,13 +175,13 @@ export class Rest {
    * Delete a resource.
    *
    * @param {string}           resource   The resource to delete
-   * @param {{}|string|number} [criteria] Object for where clause, string / number for id.
+   * @param {{}|string|number} [idOrCriteria] Object for where clause, string / number for id.
    * @param {{}}               [options]  Extra request options.
    *
    * @return {Promise<*>|Promise<Error>} Server response as Object
    */
-  destroy(resource: string, criteria?: {}|string|number, options?: {}): Promise<any|Error> {
-    return this.request('DELETE', getRequestPath(resource, criteria), undefined, options);
+  destroy(resource: string, idOrCriteria?: {}|string|number, options?: {}): Promise<any|Error> {
+    return this.request('DELETE', getRequestPath(resource, idOrCriteria), undefined, options);
   }
 
   /**
