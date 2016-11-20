@@ -145,14 +145,14 @@ endpoint
   .client                                           // the httpClient instance
   .endpoint                                         // name of the endpoint
   .default                                          // The fetch client defaults
-  .find(resource, criteria, options)                // GET
+  .find(resource, idOrCriteria, options)            // GET
   .findOne(resource, id, criteria, options)         // GET
   .post(resource, body, options)                    // POST
-  .update(resource, criteria, body, options)        // PUT
+  .update(resource, idOrCriteria, body, options)    // PUT
   .updateOne(resource, id, criteria, body, options) // PUT
-  .patch(resource, criteria, body, options)         // PATCH
+  .patch(resource, idOrCriteria, body, options)     // PATCH
   .patchOne(resource, id, criteria, body, options)  // PATCH
-  .destroy(resource, criteria, options)             // DELETE
+  .destroy(resource, idOrCriteria, options)         // DELETE
   .destroyOne(resource, id, criteria, options)      // DELETE
   .create(resource, body, options)                  // POST
   .request(method, path, body, options)             // method
