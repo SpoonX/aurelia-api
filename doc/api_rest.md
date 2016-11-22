@@ -78,7 +78,7 @@ export class MyViewModel {
 
 ----------
 
-### .find(resource, criteria[, options])
+### .find(resource, idOrCriteria[, options])
 ### .findOne(resource, id, criteria[, options])
 
 Find one or multiple resources. (GET request)
@@ -163,7 +163,7 @@ export class MyViewModel {
 
 ----------
 
-### .update(resource, criteria, body[, options])
+### .update(resource, idOrCriteria, body[, options])
 ### .updateOne(resource, id, criteria, body[, options])
 
 Send a PUT request to supplied `resource`.
@@ -201,7 +201,7 @@ export class MyViewModel {
 
 ----------
 
-### .patch(resource, criteria, body[, options])
+### .patch(resource, idOrCriteria, body[, options])
 ### .patchOne(resource, id, criteria, body[, options])
 
 Send a PATCH request to supplied `resource`.
@@ -239,7 +239,7 @@ export class MyViewModel {
 
 ----------
 
-### .destroy(resource, criteria[, options])
+### .destroy(resource, idOrCriteria[, options])
 ### .destroyOne(resource, id, criteria[, options])
 
 Delete one or multiple resources. (DELETE request)
