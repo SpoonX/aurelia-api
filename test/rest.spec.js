@@ -15,6 +15,7 @@ config.registerEndpoint('jsonplaceholder', baseUrls.jsonplaceholder);
 config.registerEndpoint('form', baseUrls.api, null);
 
 let criteria = {user: 'john', comment: 'last'};
+let criteriaWithArray = {sort: ['first', 'last']};
 let body = {message: 'some'};
 let options = {
   headers: {
@@ -27,6 +28,7 @@ describe('Rest', function() {
   describe('.find()', function() {
     it('Should find results for multiple endpoints.', function(done) {
       let injectTest = container.get(InjectTest);
+      injectTest.apiEndpoint.useTraditionalUriTemplates = false;
 
       expect(injectTest.apiEndpoint instanceof Rest).toBe(true);
       expect(injectTest.jsonplaceholderEndpoint instanceof Rest).toBe(true);
@@ -85,16 +87,38 @@ describe('Rest', function() {
             expect(y.path).toBe('/posts');
             expect(y.contentType).toBe(options.headers['Content-Type']);
             expect(y.Authorization).toBe(options.headers['Authorization']);
+          }),
+        injectTest.apiEndpoint.find('posts', criteriaWithArray)
+          .then(y => {
+            expect(y.path).toBe('/posts');
+            expect(y.query.sort[0]).toBe(criteriaWithArray.sort[0]);
+            expect(y.query.sort[1]).toBe(criteriaWithArray.sort[1]);
+            expect(y.originalUrl).toBe(encodeURI(`/posts?sort[]=${criteriaWithArray.sort[0]}&sort[]=${criteriaWithArray.sort[1]}`));
           })
       ]).then(x => {
         done();
       });
+    });
+    it('Should find with RFC6570 queries.', function(done) {
+      let injectTest = container.get(InjectTest);
+      injectTest.apiEndpoint.useTraditionalUriTemplates = true;
+
+      Promise.all([
+        injectTest.apiEndpoint.find('posts', criteriaWithArray)
+          .then(y => {
+            expect(y.path).toBe('/posts');
+            expect(y.query.sort[0]).toBe(criteriaWithArray.sort[0]);
+            expect(y.query.sort[1]).toBe(criteriaWithArray.sort[1]);
+            expect(y.originalUrl).toBe(`/posts?sort=${criteriaWithArray.sort[0]}&sort=${criteriaWithArray.sort[1]}`)
+          })
+      ]).then(x => done());
     });
   });
 
   describe('.findOne()', function() {
     it('Should find with id, criteria and options.', function(done) {
       let injectTest = container.get(InjectTest);
+      injectTest.apiEndpoint.useTraditionalUriTemplates = false;
 
       Promise.all([
         injectTest.apiEndpoint.findOne('posts', 'id', criteria, options)
@@ -114,10 +138,33 @@ describe('Rest', function() {
             expect(y.query.comment).toBe(criteria.comment);
             expect(y.contentType).toMatch(options.headers['Content-Type']);
             expect(y.Authorization).toBe(options.headers['Authorization']);
+          }),
+        injectTest.apiEndpoint.findOne('posts/', 'id', criteriaWithArray)
+          .then(y => {
+            expect(y.method).toBe('GET');
+            expect(y.path).toBe('/posts/id/');
+            expect(y.query.sort[0]).toBe(criteriaWithArray.sort[0]);
+            expect(y.query.sort[1]).toBe(criteriaWithArray.sort[1]);
+            expect(y.originalUrl).toBe(encodeURI(`/posts/id/?sort[]=${criteriaWithArray.sort[0]}&sort[]=${criteriaWithArray.sort[1]}`));
           })
       ]).then(x => {
         done();
       });
+    });
+    it('Should findOne with RFC6570 queries.', function(done) {
+      let injectTest = container.get(InjectTest);
+      injectTest.apiEndpoint.useTraditionalUriTemplates = true;
+
+      Promise.all([
+        injectTest.apiEndpoint.findOne('posts/', 'id', criteriaWithArray)
+          .then(y => {
+            expect(y.method).toBe('GET');
+            expect(y.path).toBe('/posts/id/');
+            expect(y.query.sort[0]).toBe(criteriaWithArray.sort[0]);
+            expect(y.query.sort[1]).toBe(criteriaWithArray.sort[1]);
+            expect(y.originalUrl).toBe(`/posts/id/?sort=${criteriaWithArray.sort[0]}&sort=${criteriaWithArray.sort[1]}`);
+          })
+      ]).then(x => done());
     });
   });
 
@@ -144,6 +191,7 @@ describe('Rest', function() {
 
     it('Should update with body (as json), criteria and options.', function(done) {
       let injectTest = container.get(InjectTest);
+      injectTest.apiEndpoint.useTraditionalUriTemplates = false;
 
       Promise.all([
         injectTest.apiEndpoint.update('posts', criteria, body, options)
@@ -160,16 +208,39 @@ describe('Rest', function() {
             expect(y.path).toBe('/posts/');
             expect(y.query.user).toBe(criteria.user);
             expect(y.query.comment).toBe(criteria.comment);
+          }),
+        injectTest.apiEndpoint.update('posts/', criteriaWithArray, body, options)
+          .then(y => {
+            expect(y.path).toBe('/posts/');
+            expect(y.query.sort[0]).toBe(criteriaWithArray.sort[0]);
+            expect(y.query.sort[1]).toBe(criteriaWithArray.sort[1]);
+            expect(y.originalUrl).toBe(encodeURI(`/posts/?sort[]=${criteriaWithArray.sort[0]}&sort[]=${criteriaWithArray.sort[1]}`));
           })
       ]).then(x => {
         done();
       });
+    });
+
+    it('Should update with RFC6570 queries.', function(done) {
+      let injectTest = container.get(InjectTest);
+      injectTest.apiEndpoint.useTraditionalUriTemplates = true;
+
+      Promise.all([
+        injectTest.apiEndpoint.update('posts/', criteriaWithArray, body, options)
+          .then(y => {
+            expect(y.path).toBe('/posts/');
+            expect(y.query.sort[0]).toBe(criteriaWithArray.sort[0]);
+            expect(y.query.sort[1]).toBe(criteriaWithArray.sort[1]);
+            expect(y.originalUrl).toBe(`/posts/?sort=${criteriaWithArray.sort[0]}&sort=${criteriaWithArray.sort[1]}`);
+          })
+      ]).then(x => done());
     });
   });
 
   describe('.updateOne()', function() {
     it('Should update with body (as json), criteria and options.', function(done) {
       let injectTest = container.get(InjectTest);
+      injectTest.apiEndpoint.useTraditionalUriTemplates = false;
 
       Promise.all([
         injectTest.apiEndpoint.updateOne('posts', 'id', criteria, body, options)
@@ -189,16 +260,41 @@ describe('Rest', function() {
             expect(y.query.comment).toBe(criteria.comment);
             expect(y.contentType).toMatch(options.headers['Content-Type']);
             expect(y.Authorization).toBe(options.headers['Authorization']);
+          }),
+        injectTest.apiEndpoint.updateOne('posts/', 'id', criteriaWithArray, body)
+          .then(y => {
+            expect(y.method).toBe('PUT');
+            expect(y.path).toBe('/posts/id/');
+            expect(y.query.sort[0]).toBe(criteriaWithArray.sort[0]);
+            expect(y.query.sort[1]).toBe(criteriaWithArray.sort[1]);
+            expect(y.originalUrl).toBe(encodeURI(`/posts/id/?sort[]=${criteriaWithArray.sort[0]}&sort[]=${criteriaWithArray.sort[1]}`));
           })
       ]).then(x => {
         done();
       });
+    });
+
+    it('Should updateOne with RFC6570 queries.', function(done) {
+      let injectTest = container.get(InjectTest);
+      injectTest.apiEndpoint.useTraditionalUriTemplates = true;
+
+      Promise.all([
+        injectTest.apiEndpoint.updateOne('posts/', 'id', criteriaWithArray, body)
+          .then(y => {
+            expect(y.method).toBe('PUT');
+            expect(y.path).toBe('/posts/id/');
+            expect(y.query.sort[0]).toBe(criteriaWithArray.sort[0]);
+            expect(y.query.sort[1]).toBe(criteriaWithArray.sort[1]);
+            expect(y.originalUrl).toBe(`/posts/id/?sort=${criteriaWithArray.sort[0]}&sort=${criteriaWithArray.sort[1]}`);
+          })
+      ]).then(x => done());
     });
   });
 
   describe('.patch()', function() {
     it('Should patch with body (as json).', function(done) {
       let injectTest = container.get(InjectTest);
+      injectTest.apiEndpoint.useTraditionalUriTemplates = false;
 
       Promise.all([
         injectTest.apiEndpoint.patch('post', null, body)
@@ -210,6 +306,13 @@ describe('Rest', function() {
         injectTest.apiEndpoint.patch('post/', null, body)
           .then(y => {
             expect(y.path).toBe('/post/');
+          }),
+        injectTest.apiEndpoint.patch('post/', criteriaWithArray, body)
+          .then(y => {
+            expect(y.path).toBe('/post/');
+            expect(y.query.sort[0]).toBe(criteriaWithArray.sort[0]);
+            expect(y.query.sort[1]).toBe(criteriaWithArray.sort[1]);
+            expect(y.originalUrl).toBe(encodeURI(`/post/?sort[]=${criteriaWithArray.sort[0]}&sort[]=${criteriaWithArray.sort[1]}`));
           })
       ]).then(x => {
         done();
@@ -218,6 +321,7 @@ describe('Rest', function() {
 
     it('Should patch with body (as json), criteria and options.', function(done) {
       let injectTest = container.get(InjectTest);
+      injectTest.apiEndpoint.useTraditionalUriTemplates = false;
 
       Promise.all([
         injectTest.apiEndpoint.patch('post', criteria, body, options)
@@ -237,16 +341,41 @@ describe('Rest', function() {
             expect(y.query.comment).toBe(criteria.comment);
             expect(y.contentType).toMatch(options.headers['Content-Type']);
             expect(y.Authorization).toBe(options.headers['Authorization']);
+          }),
+        injectTest.apiEndpoint.patch('post/', criteriaWithArray, body)
+          .then(y => {
+            expect(y.method).toBe('PATCH');
+            expect(y.path).toBe('/post/');
+            expect(y.query.sort[0]).toBe(criteriaWithArray.sort[0]);
+            expect(y.query.sort[1]).toBe(criteriaWithArray.sort[1]);
+            expect(y.originalUrl).toBe(encodeURI(`/post/?sort[]=${criteriaWithArray.sort[0]}&sort[]=${criteriaWithArray.sort[1]}`));
           })
       ]).then(x => {
         done();
       });
+    });
+
+    it('Should patch with RFC6570 queries.', function(done) {
+      let injectTest = container.get(InjectTest);
+      injectTest.apiEndpoint.useTraditionalUriTemplates = true;
+
+      Promise.all([
+        injectTest.apiEndpoint.patch('post/', criteriaWithArray, body)
+          .then(y => {
+            expect(y.method).toBe('PATCH');
+            expect(y.path).toBe('/post/');
+            expect(y.query.sort[0]).toBe(criteriaWithArray.sort[0]);
+            expect(y.query.sort[1]).toBe(criteriaWithArray.sort[1]);
+            expect(y.originalUrl).toBe(`/post/?sort=${criteriaWithArray.sort[0]}&sort=${criteriaWithArray.sort[1]}`);
+          })
+      ]).then(x => done());
     });
   });
 
   describe('.patchOne()', function() {
     it('Should patch with body (as json), id, criteria and options.', function(done) {
       let injectTest = container.get(InjectTest);
+      injectTest.apiEndpoint.useTraditionalUriTemplates = false;
 
       Promise.all([
         injectTest.apiEndpoint.patchOne('post', 'id', criteria, body, options)
@@ -266,16 +395,41 @@ describe('Rest', function() {
             expect(y.query.comment).toBe(criteria.comment);
             expect(y.contentType).toMatch(options.headers['Content-Type']);
             expect(y.Authorization).toBe(options.headers['Authorization']);
+          }),
+        injectTest.apiEndpoint.patchOne('post/', 'id', criteriaWithArray, body)
+          .then(y => {
+            expect(y.method).toBe('PATCH');
+            expect(y.path).toBe('/post/id/');
+            expect(y.query.sort[0]).toBe(criteriaWithArray.sort[0]);
+            expect(y.query.sort[1]).toBe(criteriaWithArray.sort[1]);
+            expect(y.originalUrl).toBe(encodeURI(`/post/id/?sort[]=${criteriaWithArray.sort[0]}&sort[]=${criteriaWithArray.sort[1]}`));
           })
       ]).then(x => {
         done();
       });
+    });
+
+    it('Should patchOne with RFC6570 queries.', function(done) {
+      let injectTest = container.get(InjectTest);
+      injectTest.apiEndpoint.useTraditionalUriTemplates = true;
+
+      Promise.all([
+        injectTest.apiEndpoint.patchOne('post/', 'id', criteriaWithArray, body)
+          .then(y => {
+            expect(y.method).toBe('PATCH');
+            expect(y.path).toBe('/post/id/');
+            expect(y.query.sort[0]).toBe(criteriaWithArray.sort[0]);
+            expect(y.query.sort[1]).toBe(criteriaWithArray.sort[1]);
+            expect(y.originalUrl).toBe(`/post/id/?sort=${criteriaWithArray.sort[0]}&sort=${criteriaWithArray.sort[1]}`);
+          })
+      ]).then(x => done());
     });
   });
 
   describe('.destroy()', function() {
     it('Should destroy with criteria and options.', function(done) {
       let injectTest = container.get(InjectTest);
+      injectTest.apiEndpoint.useTraditionalUriTemplates = false;
 
       Promise.all([
         injectTest.apiEndpoint.destroy('posts', criteria, options)
@@ -293,16 +447,41 @@ describe('Rest', function() {
             expect(y.query.user).toBe(criteria.user);
             expect(y.query.comment).toBe(criteria.comment);
             expect(y.Authorization).toBe(options.headers['Authorization']);
+          }),
+        injectTest.apiEndpoint.destroy('posts/', criteriaWithArray)
+          .then(y => {
+            expect(y.method).toBe('DELETE');
+            expect(y.path).toBe('/posts/');
+            expect(y.query.sort[0]).toBe(criteriaWithArray.sort[0]);
+            expect(y.query.sort[1]).toBe(criteriaWithArray.sort[1]);
+            expect(y.originalUrl).toBe(encodeURI(`/posts/?sort[]=${criteriaWithArray.sort[0]}&sort[]=${criteriaWithArray.sort[1]}`));
           })
       ]).then(x => {
         done();
       });
+    });
+
+    it('Should destroy with RFC6570 queries.', function(done) {
+      let injectTest = container.get(InjectTest);
+      injectTest.apiEndpoint.useTraditionalUriTemplates = true;
+
+      Promise.all([
+        injectTest.apiEndpoint.destroy('posts/', criteriaWithArray)
+          .then(y => {
+            expect(y.method).toBe('DELETE');
+            expect(y.path).toBe('/posts/');
+            expect(y.query.sort[0]).toBe(criteriaWithArray.sort[0]);
+            expect(y.query.sort[1]).toBe(criteriaWithArray.sort[1]);
+            expect(y.originalUrl).toBe(`/posts/?sort=${criteriaWithArray.sort[0]}&sort=${criteriaWithArray.sort[1]}`);
+          })
+      ]).then(x => done());
     });
   });
 
   describe('.destroyOne()', function() {
     it('Should destroy with id, criteria and options.', function(done) {
       let injectTest = container.get(InjectTest);
+      injectTest.apiEndpoint.useTraditionalUriTemplates = false;
 
       Promise.all([
         injectTest.apiEndpoint.destroyOne('posts', 'id', criteria, options)
@@ -320,10 +499,34 @@ describe('Rest', function() {
             expect(y.query.user).toBe(criteria.user);
             expect(y.query.comment).toBe(criteria.comment);
             expect(y.Authorization).toBe(options.headers['Authorization']);
+          }),
+        injectTest.apiEndpoint.destroyOne('posts/', 'id', criteriaWithArray)
+          .then(y => {
+            expect(y.method).toBe('DELETE');
+            expect(y.path).toBe('/posts/id/');
+            expect(y.query.sort[0]).toBe(criteriaWithArray.sort[0]);
+            expect(y.query.sort[1]).toBe(criteriaWithArray.sort[1]);
+            expect(y.originalUrl).toBe(encodeURI(`/posts/id/?sort[]=${criteriaWithArray.sort[0]}&sort[]=${criteriaWithArray.sort[1]}`));
           })
       ]).then(x => {
         done();
       });
+    });
+
+    it('Should destroyOne with RFC6570 queries.', function(done) {
+      let injectTest = container.get(InjectTest);
+      injectTest.apiEndpoint.useTraditionalUriTemplates = true;
+
+      Promise.all([
+        injectTest.apiEndpoint.destroyOne('posts/', 'id', criteriaWithArray)
+          .then(y => {
+            expect(y.method).toBe('DELETE');
+            expect(y.path).toBe('/posts/id/');
+            expect(y.query.sort[0]).toBe(criteriaWithArray.sort[0]);
+            expect(y.query.sort[1]).toBe(criteriaWithArray.sort[1]);
+            expect(y.originalUrl).toBe(`/posts/id/?sort=${criteriaWithArray.sort[0]}&sort=${criteriaWithArray.sort[1]}`);
+          })
+      ]).then(x => done());
     });
   });
 

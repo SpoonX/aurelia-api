@@ -10,7 +10,7 @@ System.config({
     "aurelia-dependency-injection": "npm:aurelia-dependency-injection@1.0.0",
     "aurelia-fetch-client": "npm:aurelia-fetch-client@1.0.0-rc.1.0.1",
     "aurelia-framework": "npm:aurelia-framework@1.0.1",
-    "aurelia-path": "npm:aurelia-path@1.0.0",
+    "aurelia-path": "npm:aurelia-path@1.1.1",
     "aurelia-polyfills": "npm:aurelia-polyfills@1.0.0",
     "extend": "npm:extend@3.0.0",
     "fetch": "github:github/fetch@1.0.0",
@@ -31,13 +31,13 @@ System.config({
       "aurelia-logging": "npm:aurelia-logging@1.0.0",
       "aurelia-metadata": "npm:aurelia-metadata@1.0.0",
       "aurelia-pal": "npm:aurelia-pal@1.0.0",
-      "aurelia-path": "npm:aurelia-path@1.0.0",
+      "aurelia-path": "npm:aurelia-path@1.1.1",
       "aurelia-task-queue": "npm:aurelia-task-queue@1.0.0",
       "aurelia-templating": "npm:aurelia-templating@1.0.0"
     },
     "npm:aurelia-loader@1.0.0": {
       "aurelia-metadata": "npm:aurelia-metadata@1.0.0",
-      "aurelia-path": "npm:aurelia-path@1.0.0"
+      "aurelia-path": "npm:aurelia-path@1.1.1"
     },
     "npm:aurelia-metadata@1.0.0": {
       "aurelia-pal": "npm:aurelia-pal@1.0.0"
@@ -55,7 +55,7 @@ System.config({
       "aurelia-logging": "npm:aurelia-logging@1.0.0",
       "aurelia-metadata": "npm:aurelia-metadata@1.0.0",
       "aurelia-pal": "npm:aurelia-pal@1.0.0",
-      "aurelia-path": "npm:aurelia-path@1.0.0",
+      "aurelia-path": "npm:aurelia-path@1.1.1",
       "aurelia-task-queue": "npm:aurelia-task-queue@1.0.0"
     }
   }
