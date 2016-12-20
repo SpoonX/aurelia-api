@@ -6,7 +6,7 @@ import { HttpClient } from 'aurelia-fetch-client';
 import { Container, resolver } from 'aurelia-dependency-injection';
 
 export let Rest = class Rest {
-  constructor(httpClient, endpoint) {
+  constructor(httpClient, endpoint, useTraditionalUriTemplates) {
     this.defaults = {
       headers: {
         'Accept': 'application/json',
@@ -16,6 +16,7 @@ export let Rest = class Rest {
 
     this.client = httpClient;
     this.endpoint = endpoint;
+    this.useTraditionalUriTemplates = !!useTraditionalUriTemplates;
   }
 
   request(method, path, body, options) {
@@ -35,40 +36,40 @@ export let Rest = class Rest {
     });
   }
 
-  find(resource, criteria, options) {
-    return this.request('GET', getRequestPath(resource, criteria), undefined, options);
+  find(resource, idOrCriteria, options) {
+    return this.request('GET', getRequestPath(resource, this.useTraditionalUriTemplates, idOrCriteria), undefined, options);
   }
 
   findOne(resource, id, criteria, options) {
-    return this.request('GET', getRequestPath(resource, id, criteria), undefined, options);
+    return this.request('GET', getRequestPath(resource, this.useTraditionalUriTemplates, id, criteria), undefined, options);
   }
 
   post(resource, body, options) {
     return this.request('POST', resource, body, options);
   }
 
-  update(resource, criteria, body, options) {
-    return this.request('PUT', getRequestPath(resource, criteria), body, options);
+  update(resource, idOrCriteria, body, options) {
+    return this.request('PUT', getRequestPath(resource, this.useTraditionalUriTemplates, idOrCriteria), body, options);
   }
 
   updateOne(resource, id, criteria, body, options) {
-    return this.request('PUT', getRequestPath(resource, id, criteria), body, options);
+    return this.request('PUT', getRequestPath(resource, this.useTraditionalUriTemplates, id, criteria), body, options);
   }
 
-  patch(resource, criteria, body, options) {
-    return this.request('PATCH', getRequestPath(resource, criteria), body, options);
+  patch(resource, idOrCriteria, body, options) {
+    return this.request('PATCH', getRequestPath(resource, this.useTraditionalUriTemplates, idOrCriteria), body, options);
   }
 
   patchOne(resource, id, criteria, body, options) {
-    return this.request('PATCH', getRequestPath(resource, id, criteria), body, options);
+    return this.request('PATCH', getRequestPath(resource, this.useTraditionalUriTemplates, id, criteria), body, options);
   }
 
-  destroy(resource, criteria, options) {
-    return this.request('DELETE', getRequestPath(resource, criteria), undefined, options);
+  destroy(resource, idOrCriteria, options) {
+    return this.request('DELETE', getRequestPath(resource, this.useTraditionalUriTemplates, idOrCriteria), undefined, options);
   }
 
   destroyOne(resource, id, criteria, options) {
-    return this.request('DELETE', getRequestPath(resource, id, criteria), undefined, options);
+    return this.request('DELETE', getRequestPath(resource, this.useTraditionalUriTemplates, id, criteria), undefined, options);
   }
 
   create(resource, body, options) {
@@ -76,7 +77,7 @@ export let Rest = class Rest {
   }
 };
 
-function getRequestPath(resource, idOrCriteria, criteria) {
+function getRequestPath(resource, traditional, idOrCriteria, criteria) {
   let hasSlash = resource.slice(-1) === '/';
 
   if (typeof idOrCriteria === 'string' || typeof idOrCriteria === 'number') {
@@ -86,7 +87,7 @@ function getRequestPath(resource, idOrCriteria, criteria) {
   }
 
   if (typeof criteria === 'object' && criteria !== null) {
-    resource += `?${ buildQueryString(criteria) }`;
+    resource += `?${ buildQueryString(criteria, traditional) }`;
   } else if (criteria) {
     resource += `${ hasSlash ? '' : '/' }${ criteria }${ hasSlash ? '/' : '' }`;
   }
@@ -99,10 +100,14 @@ export let Config = class Config {
     this.endpoints = {};
   }
 
-  registerEndpoint(name, configureMethod, defaults) {
+  registerEndpoint(name, configureMethod, defaults, restOptions) {
     let newClient = new HttpClient();
+    let useTraditionalUriTemplates;
 
-    this.endpoints[name] = new Rest(newClient, name);
+    if (restOptions !== undefined) {
+      useTraditionalUriTemplates = restOptions.useTraditionalUriTemplates;
+    }
+    this.endpoints[name] = new Rest(newClient, name, useTraditionalUriTemplates);
 
     if (defaults !== undefined) {
       this.endpoints[name].defaults = defaults;

@@ -3,6 +3,21 @@ import {HttpClient} from 'aurelia-fetch-client';
 import {Container,resolver} from 'aurelia-dependency-injection';
 
 /**
+ * Represents the options to use when constructing a `Rest` instance.
+ */
+export declare interface RestOptions {
+  
+  /**
+     * `true` to use the traditional URI template standard (RFC6570) when building
+     * query strings from criteria objects, `false` otherwise. Default is `false`.
+     * NOTE: maps to `useTraditionalUriTemplates` parameter on `Rest` constructor.
+     *
+     * @type {boolean}
+     */
+  useTraditionalUriTemplates?: boolean;
+}
+
+/**
  * Rest class. A simple rest client to fetch resources
  */
 export declare class Rest {
@@ -30,12 +45,24 @@ export declare class Rest {
   endpoint: string;
   
   /**
+     * true to use the traditional URI template standard (RFC6570) when building
+     * query strings from criteria objects, false otherwise. Default is false.
+     *
+     * @param {boolean} useTraditionalUriTemplates The flag that enables RFC6570 URI templates.
+     */
+  useTraditionalUriTemplates: boolean;
+  
+  /**
      * Inject the httpClient to use for requests.
      *
-     * @param {HttpClient} httpClient The httpClient to use
-     * @param {string}     endpoint   The endpoint name
+     * @param {HttpClient} httpClient                    The httpClient to use
+     * @param {string}     endpoint                      The endpoint name
+     * @param {boolean}    [useTraditionalUriTemplates]  true to use the traditional URI
+     *                                                   template standard (RFC6570) when building
+     *                                                   query strings from criteria objects, false
+     *                                                   otherwise. Default is false.
      */
-  constructor(httpClient: HttpClient, endpoint: string);
+  constructor(httpClient: HttpClient, endpoint: string, useTraditionalUriTemplates?: boolean);
   
   /**
      * Make a request to the server.
@@ -53,12 +80,12 @@ export declare class Rest {
      * Find a resource.
      *
      * @param {string}                    resource  Resource to find in
-     * @param {{}|string|number}          criteria  Object for where clause, string / number for id.
+     * @param {string|number|{}}          idOrCriteria  Object for where clause, string / number for id.
      * @param {{}}                        [options] Extra request options.
      *
      * @return {Promise<*>|Promise<Error>} Server response as Object
      */
-  find(resource: string, criteria?: {} | string | number, options?: {}): Promise<any | Error>;
+  find(resource: string, idOrCriteria?: string | number | {}, options?: {}): Promise<any | Error>;
   
   /**
      * Find a resource.
@@ -87,13 +114,13 @@ export declare class Rest {
      * Update a resource.
      *
      * @param {string}           resource  Resource to update
-     * @param {{}|string|number} criteria  Object for where clause, string / number for id.
-     * @param {{}}               [body]    New data for provided criteria.
+     * @param {string|number|{}} idOrCriteria  Object for where clause, string / number for id.
+     * @param {{}}               [body]    New data for provided idOrCriteria.
      * @param {{}}               [options] Extra request options.
      *
      * @return {Promise<*>|Promise<Error>} Server response as Object
      */
-  update(resource: string, criteria?: {} | string | number, body?: {}, options?: {}): Promise<any | Error>;
+  update(resource: string, idOrCriteria?: string | number | {}, body?: {}, options?: {}): Promise<any | Error>;
   
   /**
      * Update a resource.
@@ -112,13 +139,13 @@ export declare class Rest {
      * Patch a resource.
     *
      * @param {string}           resource   Resource to patch
-     * @param {{}|string|number} [criteria] Object for where clause, string / number for id.
-     * @param {{}}               [body]     Data to patch for provided criteria.
+     * @param {string|number|{}} [idOrCriteria] Object for where clause, string / number for id.
+     * @param {{}}               [body]     Data to patch for provided idOrCriteria.
      * @param {{}}               [options]  Extra request options.
      *
      * @return {Promise<*>|Promise<Error>} Server response as Object
      */
-  patch(resource: string, criteria?: {} | string | number, body?: {}, options?: {}): Promise<any | Error>;
+  patch(resource: string, idOrCriteria?: string | number | {}, body?: {}, options?: {}): Promise<any | Error>;
   
   /**
      * Patch a resource.
@@ -137,12 +164,12 @@ export declare class Rest {
      * Delete a resource.
      *
      * @param {string}           resource   The resource to delete
-     * @param {{}|string|number} [criteria] Object for where clause, string / number for id.
+     * @param {string|number|{}} [idOrCriteria] Object for where clause, string / number for id.
      * @param {{}}               [options]  Extra request options.
      *
      * @return {Promise<*>|Promise<Error>} Server response as Object
      */
-  destroy(resource: string, criteria?: {} | string | number, options?: {}): Promise<any | Error>;
+  destroy(resource: string, idOrCriteria?: string | number | {}, options?: {}): Promise<any | Error>;
   
   /**
      * Delete a resource.
@@ -168,6 +195,9 @@ export declare class Rest {
   create(resource: string, body?: {}, options?: {}): Promise<any | Error>;
 }
 
+/**
+ * Config class. Configures and stores endpoints
+ */
 /**
  * Config class. Configures and stores endpoints
  */
@@ -200,12 +230,13 @@ export declare class Config {
      * @param {string}          name              The name of the new endpoint.
      * @param {Function|string} [configureMethod] Endpoint url or configure method for client.configure().
      * @param {{}}              [defaults]        New defaults for the HttpClient
+     * @param {RestOptions}     [restOptions]     Options to pass when constructing the Rest instance.
      *
      * @see http://aurelia.io/docs.html#/aurelia/fetch-client/latest/doc/api/class/HttpClientConfiguration
      * @return {Config} this Fluent interface
      * @chainable
      */
-  registerEndpoint(name: string, configureMethod?: string | Function, defaults?: {}): Config;
+  registerEndpoint(name: string, configureMethod?: string | Function, defaults?: {}, restOptions?: RestOptions): Config;
   
   /**
      * Get a previously registered endpoint. Returns null when not found.

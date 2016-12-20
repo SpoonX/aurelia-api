@@ -1,3 +1,16 @@
+<a name="3.1.0"></a>
+# [3.1.0](https://github.com/SpoonX/aurelia-api/compare/v3.0.0...v3.1.0) (2016-12-20)
+
+
+### Features
+
+* **configure:** Add comments to RestOptions interface ([46d91f3](https://github.com/SpoonX/aurelia-api/commit/46d91f3))
+* **configure:** Add restOptions param to registerEndpoint ([886e3e0](https://github.com/SpoonX/aurelia-api/commit/886e3e0))
+* **configure:** restOptions param now has RestOptions type ([e84a259](https://github.com/SpoonX/aurelia-api/commit/e84a259))
+* **rest:** add a flag to enable RFC6570 uri templates ([3cac6db](https://github.com/SpoonX/aurelia-api/commit/3cac6db))
+
+
+
 <a name="3.0.0"></a>
 # [3.0.0](https://github.com/SpoonX/aurelia-api/compare/3.0.0-rc9...v3.0.0) (2016-10-05)
 

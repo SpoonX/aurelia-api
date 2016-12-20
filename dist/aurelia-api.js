@@ -36,14 +36,27 @@ export class Rest {
   endpoint: string;
 
   /**
+   * true to use the traditional URI template standard (RFC6570) when building
+   * query strings from criteria objects, false otherwise. Default is false.
+   *
+   * @param {boolean} useTraditionalUriTemplates The flag that enables RFC6570 URI templates.
+   */
+  useTraditionalUriTemplates: boolean;
+
+  /**
    * Inject the httpClient to use for requests.
    *
-   * @param {HttpClient} httpClient The httpClient to use
-   * @param {string}     endpoint   The endpoint name
+   * @param {HttpClient} httpClient                    The httpClient to use
+   * @param {string}     endpoint                      The endpoint name
+   * @param {boolean}    [useTraditionalUriTemplates]  true to use the traditional URI
+   *                                                   template standard (RFC6570) when building
+   *                                                   query strings from criteria objects, false
+   *                                                   otherwise. Default is false.
    */
-  constructor(httpClient: HttpClient, endpoint: string) {
+  constructor(httpClient: HttpClient, endpoint: string, useTraditionalUriTemplates?: boolean) {
     this.client   = httpClient;
     this.endpoint = endpoint;
+    this.useTraditionalUriTemplates = !!useTraditionalUriTemplates;
   }
 
   /**
@@ -79,13 +92,13 @@ export class Rest {
    * Find a resource.
    *
    * @param {string}                    resource  Resource to find in
-   * @param {{}|string|number}          criteria  Object for where clause, string / number for id.
+   * @param {string|number|{}}          idOrCriteria  Object for where clause, string / number for id.
    * @param {{}}                        [options] Extra request options.
    *
    * @return {Promise<*>|Promise<Error>} Server response as Object
    */
-  find(resource: string, criteria?: {}|string|number, options?: {}): Promise<any|Error> {
-    return this.request('GET', getRequestPath(resource, criteria), undefined, options);
+  find(resource: string, idOrCriteria?: string|number|{}, options?: {}): Promise<any|Error> {
+    return this.request('GET', getRequestPath(resource, this.useTraditionalUriTemplates, idOrCriteria), undefined, options);
   }
 
   /**
@@ -99,7 +112,7 @@ export class Rest {
    * @return {Promise<*>|Promise<Error>} Server response as Object
    */
   findOne(resource: string, id: string|number, criteria?: {}, options?: {}): Promise<any|Error> {
-    return this.request('GET', getRequestPath(resource, id, criteria), undefined, options);
+    return this.request('GET', getRequestPath(resource, this.useTraditionalUriTemplates, id, criteria), undefined, options);
   }
 
   /**
@@ -119,14 +132,14 @@ export class Rest {
    * Update a resource.
    *
    * @param {string}           resource  Resource to update
-   * @param {{}|string|number} criteria  Object for where clause, string / number for id.
-   * @param {{}}               [body]    New data for provided criteria.
+   * @param {string|number|{}} idOrCriteria  Object for where clause, string / number for id.
+   * @param {{}}               [body]    New data for provided idOrCriteria.
    * @param {{}}               [options] Extra request options.
    *
    * @return {Promise<*>|Promise<Error>} Server response as Object
    */
-  update(resource: string, criteria?: {}|string|number, body?: {}, options?: {}): Promise<any|Error> {
-    return this.request('PUT', getRequestPath(resource, criteria), body, options);
+  update(resource: string, idOrCriteria?: string|number|{}, body?: {}, options?: {}): Promise<any|Error> {
+    return this.request('PUT', getRequestPath(resource, this.useTraditionalUriTemplates, idOrCriteria), body, options);
   }
 
   /**
@@ -141,21 +154,21 @@ export class Rest {
    * @return {Promise<*>|Promise<Error>} Server response as Object
    */
   updateOne(resource: string, id: string|number, criteria?: {}, body?: {}, options?: {}): Promise<any|Error> {
-    return this.request('PUT', getRequestPath(resource, id, criteria), body, options);
+    return this.request('PUT', getRequestPath(resource, this.useTraditionalUriTemplates, id, criteria), body, options);
   }
 
   /**
    * Patch a resource.
   *
    * @param {string}           resource   Resource to patch
-   * @param {{}|string|number} [criteria] Object for where clause, string / number for id.
-   * @param {{}}               [body]     Data to patch for provided criteria.
+   * @param {string|number|{}} [idOrCriteria] Object for where clause, string / number for id.
+   * @param {{}}               [body]     Data to patch for provided idOrCriteria.
    * @param {{}}               [options]  Extra request options.
    *
    * @return {Promise<*>|Promise<Error>} Server response as Object
    */
-  patch(resource: string, criteria?: {}|string|number, body?: {}, options?: {}): Promise<any|Error> {
-    return this.request('PATCH', getRequestPath(resource, criteria), body, options);
+  patch(resource: string, idOrCriteria?: string|number|{}, body?: {}, options?: {}): Promise<any|Error> {
+    return this.request('PATCH', getRequestPath(resource, this.useTraditionalUriTemplates, idOrCriteria), body, options);
   }
 
   /**
@@ -170,20 +183,20 @@ export class Rest {
    * @return {Promise<*>|Promise<Error>} Server response as Object
    */
   patchOne(resource: string, id: string|number, criteria?: {}, body?: {}, options?: {}): Promise<any|Error> {
-    return this.request('PATCH', getRequestPath(resource, id, criteria), body, options);
+    return this.request('PATCH', getRequestPath(resource, this.useTraditionalUriTemplates, id, criteria), body, options);
   }
 
   /**
    * Delete a resource.
    *
    * @param {string}           resource   The resource to delete
-   * @param {{}|string|number} [criteria] Object for where clause, string / number for id.
+   * @param {string|number|{}} [idOrCriteria] Object for where clause, string / number for id.
    * @param {{}}               [options]  Extra request options.
    *
    * @return {Promise<*>|Promise<Error>} Server response as Object
    */
-  destroy(resource: string, criteria?: {}|string|number, options?: {}): Promise<any|Error> {
-    return this.request('DELETE', getRequestPath(resource, criteria), undefined, options);
+  destroy(resource: string, idOrCriteria?: string|number|{}, options?: {}): Promise<any|Error> {
+    return this.request('DELETE', getRequestPath(resource, this.useTraditionalUriTemplates, idOrCriteria), undefined, options);
   }
 
   /**
@@ -197,7 +210,7 @@ export class Rest {
    * @return {Promise<*>|Promise<Error>} Server response as Object
    */
   destroyOne(resource: string, id: string|number, criteria?: {}, options?: {}): Promise<any|Error> {
-    return this.request('DELETE', getRequestPath(resource, id, criteria), undefined, options);
+    return this.request('DELETE', getRequestPath(resource, this.useTraditionalUriTemplates, id, criteria), undefined, options);
   }
 
   /**
@@ -218,11 +231,12 @@ export class Rest {
  * getRequestPath
  *
  * @param {string} resource
+ * @param {boolean} traditional
  * @param {(string|number|{})} [idOrCriteria]
  * @param {{}} [criteria]
  * @returns {string}
  */
-function getRequestPath(resource: string, idOrCriteria?: string|number|{}, criteria?: {}) {
+function getRequestPath(resource: string, traditional: boolean, idOrCriteria?: string|number|{}, criteria?: {}) {
   let hasSlash = resource.slice(-1) === '/';
 
   if (typeof idOrCriteria === 'string' || typeof idOrCriteria === 'number') {
@@ -232,12 +246,26 @@ function getRequestPath(resource: string, idOrCriteria?: string|number|{}, crite
   }
 
   if (typeof criteria === 'object' && criteria !== null) {
-    resource += `?${buildQueryString(criteria)}`;
+    resource += `?${buildQueryString(criteria, traditional)}`;
   } else if (criteria) {
     resource += `${hasSlash ? '' : '/'}${criteria}${hasSlash ? '/' : ''}`;
   }
 
   return resource;
+}
+
+/**
+ * Represents the options to use when constructing a `Rest` instance.
+ */
+interface RestOptions {
+  /**
+   * `true` to use the traditional URI template standard (RFC6570) when building
+   * query strings from criteria objects, `false` otherwise. Default is `false`.
+   * NOTE: maps to `useTraditionalUriTemplates` parameter on `Rest` constructor.
+   *
+   * @type {boolean}
+   */
+  useTraditionalUriTemplates?: boolean;
 }
 
 /**
@@ -271,15 +299,20 @@ export class Config {
    * @param {string}          name              The name of the new endpoint.
    * @param {Function|string} [configureMethod] Endpoint url or configure method for client.configure().
    * @param {{}}              [defaults]        New defaults for the HttpClient
+   * @param {RestOptions}     [restOptions]     Options to pass when constructing the Rest instance.
    *
    * @see http://aurelia.io/docs.html#/aurelia/fetch-client/latest/doc/api/class/HttpClientConfiguration
    * @return {Config} this Fluent interface
    * @chainable
    */
-  registerEndpoint(name: string, configureMethod?: string|Function, defaults?: {}): Config {
+  registerEndpoint(name: string, configureMethod?: string|Function, defaults?: {}, restOptions?: RestOptions): Config {
     let newClient = new HttpClient();
+    let useTraditionalUriTemplates;
 
-    this.endpoints[name] = new Rest(newClient, name);
+    if (restOptions !== undefined) {
+      useTraditionalUriTemplates = restOptions.useTraditionalUriTemplates;
+    }
+    this.endpoints[name] = new Rest(newClient, name, useTraditionalUriTemplates);
 
     // set custom defaults to Rest
     if (defaults !== undefined) {

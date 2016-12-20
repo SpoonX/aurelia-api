@@ -1,18 +1,15 @@
 'use strict';
 
-System.register(['./aurelia-api'], function (_export, _context) {
-  "use strict";
+exports.__esModule = true;
 
-  return {
-    setters: [function (_aureliaApi) {
-      var _exportObj = {};
+var _aureliaApi = require('./aurelia-api');
 
-      for (var _key in _aureliaApi) {
-        if (_key !== "default" && _key !== "__esModule") _exportObj[_key] = _aureliaApi[_key];
-      }
-
-      _export(_exportObj);
-    }],
-    execute: function () {}
-  };
+Object.keys(_aureliaApi).forEach(function (key) {
+  if (key === "default" || key === "__esModule") return;
+  Object.defineProperty(exports, key, {
+    enumerable: true,
+    get: function get() {
+      return _aureliaApi[key];
+    }
+  });
 });
