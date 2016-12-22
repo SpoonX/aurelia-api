@@ -1,3 +1,8 @@
+<a name="3.1.1"></a>
+## [3.1.1](https://github.com/SpoonX/aurelia-api/compare/v3.1.0...v3.1.1) (2016-12-22)
+
+
+
 <a name="3.1.0"></a>
 # [3.1.0](https://github.com/SpoonX/aurelia-api/compare/v3.0.0...v3.1.0) (2016-12-20)
 

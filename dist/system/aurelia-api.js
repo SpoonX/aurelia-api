@@ -1,246 +1,260 @@
 'use strict';
 
-exports.__esModule = true;
-exports.Endpoint = exports.Config = exports.Rest = undefined;
+System.register(['extend', 'aurelia-path', 'aurelia-fetch-client', 'aurelia-dependency-injection'], function (_export, _context) {
+  "use strict";
 
-var _dec, _class3;
+  var extend, buildQueryString, join, HttpClient, Container, resolver, _dec, _class3, _typeof, Rest, Config, Endpoint;
 
-var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
+  
 
-exports.configure = configure;
+  function getRequestPath(resource, traditional, idOrCriteria, criteria) {
+    var hasSlash = resource.slice(-1) === '/';
 
-var _extend = require('extend');
+    if (typeof idOrCriteria === 'string' || typeof idOrCriteria === 'number') {
+      resource = '' + join(resource, String(idOrCriteria)) + (hasSlash ? '/' : '');
+    } else {
+      criteria = idOrCriteria;
+    }
 
-var _extend2 = _interopRequireDefault(_extend);
+    if ((typeof criteria === 'undefined' ? 'undefined' : _typeof(criteria)) === 'object' && criteria !== null) {
+      resource += '?' + buildQueryString(criteria, traditional);
+    } else if (criteria) {
+      resource += '' + (hasSlash ? '' : '/') + criteria + (hasSlash ? '/' : '');
+    }
 
-var _aureliaPath = require('aurelia-path');
-
-var _aureliaFetchClient = require('aurelia-fetch-client');
-
-var _aureliaDependencyInjection = require('aurelia-dependency-injection');
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-
-
-var Rest = exports.Rest = function () {
-  function Rest(httpClient, endpoint, useTraditionalUriTemplates) {
-    
-
-    this.defaults = {
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json'
-      }
-    };
-
-    this.client = httpClient;
-    this.endpoint = endpoint;
-    this.useTraditionalUriTemplates = !!useTraditionalUriTemplates;
+    return resource;
   }
 
-  Rest.prototype.request = function request(method, path, body, options) {
-    var requestOptions = (0, _extend2.default)(true, { headers: {} }, this.defaults, options || {}, { method: method, body: body });
-    var contentType = requestOptions.headers['Content-Type'] || requestOptions.headers['content-type'];
+  function configure(frameworkConfig, configOrConfigure) {
+    var config = frameworkConfig.container.get(Config);
 
-    if ((typeof body === 'undefined' ? 'undefined' : _typeof(body)) === 'object' && body !== null && contentType) {
-      requestOptions.body = /^application\/json/.test(contentType.toLowerCase()) ? JSON.stringify(body) : (0, _aureliaPath.buildQueryString)(body);
+    if (typeof configOrConfigure === 'function') {
+      configOrConfigure(config);
+
+      return;
     }
 
-    return this.client.fetch(path, requestOptions).then(function (response) {
-      if (response.status >= 200 && response.status < 400) {
-        return response.json().catch(function () {
-          return null;
-        });
-      }
-
-      throw response;
-    });
-  };
-
-  Rest.prototype.find = function find(resource, idOrCriteria, options) {
-    return this.request('GET', getRequestPath(resource, this.useTraditionalUriTemplates, idOrCriteria), undefined, options);
-  };
-
-  Rest.prototype.findOne = function findOne(resource, id, criteria, options) {
-    return this.request('GET', getRequestPath(resource, this.useTraditionalUriTemplates, id, criteria), undefined, options);
-  };
-
-  Rest.prototype.post = function post(resource, body, options) {
-    return this.request('POST', resource, body, options);
-  };
-
-  Rest.prototype.update = function update(resource, idOrCriteria, body, options) {
-    return this.request('PUT', getRequestPath(resource, this.useTraditionalUriTemplates, idOrCriteria), body, options);
-  };
-
-  Rest.prototype.updateOne = function updateOne(resource, id, criteria, body, options) {
-    return this.request('PUT', getRequestPath(resource, this.useTraditionalUriTemplates, id, criteria), body, options);
-  };
-
-  Rest.prototype.patch = function patch(resource, idOrCriteria, body, options) {
-    return this.request('PATCH', getRequestPath(resource, this.useTraditionalUriTemplates, idOrCriteria), body, options);
-  };
-
-  Rest.prototype.patchOne = function patchOne(resource, id, criteria, body, options) {
-    return this.request('PATCH', getRequestPath(resource, this.useTraditionalUriTemplates, id, criteria), body, options);
-  };
-
-  Rest.prototype.destroy = function destroy(resource, idOrCriteria, options) {
-    return this.request('DELETE', getRequestPath(resource, this.useTraditionalUriTemplates, idOrCriteria), undefined, options);
-  };
-
-  Rest.prototype.destroyOne = function destroyOne(resource, id, criteria, options) {
-    return this.request('DELETE', getRequestPath(resource, this.useTraditionalUriTemplates, id, criteria), undefined, options);
-  };
-
-  Rest.prototype.create = function create(resource, body, options) {
-    return this.post(resource, body, options);
-  };
-
-  return Rest;
-}();
-
-function getRequestPath(resource, traditional, idOrCriteria, criteria) {
-  var hasSlash = resource.slice(-1) === '/';
-
-  if (typeof idOrCriteria === 'string' || typeof idOrCriteria === 'number') {
-    resource = '' + (0, _aureliaPath.join)(resource, String(idOrCriteria)) + (hasSlash ? '/' : '');
-  } else {
-    criteria = idOrCriteria;
+    config.configure(configOrConfigure);
   }
 
-  if ((typeof criteria === 'undefined' ? 'undefined' : _typeof(criteria)) === 'object' && criteria !== null) {
-    resource += '?' + (0, _aureliaPath.buildQueryString)(criteria, traditional);
-  } else if (criteria) {
-    resource += '' + (hasSlash ? '' : '/') + criteria + (hasSlash ? '/' : '');
-  }
+  _export('configure', configure);
 
-  return resource;
-}
+  return {
+    setters: [function (_extend) {
+      extend = _extend.default;
+    }, function (_aureliaPath) {
+      buildQueryString = _aureliaPath.buildQueryString;
+      join = _aureliaPath.join;
+    }, function (_aureliaFetchClient) {
+      HttpClient = _aureliaFetchClient.HttpClient;
+    }, function (_aureliaDependencyInjection) {
+      Container = _aureliaDependencyInjection.Container;
+      resolver = _aureliaDependencyInjection.resolver;
+    }],
+    execute: function () {
+      _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) {
+        return typeof obj;
+      } : function (obj) {
+        return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj;
+      };
 
-var Config = exports.Config = function () {
-  function Config() {
-    
+      _export('Rest', Rest = function () {
+        function Rest(httpClient, endpoint, useTraditionalUriTemplates) {
+          
 
-    this.endpoints = {};
-  }
+          this.defaults = {
+            headers: {
+              'Accept': 'application/json',
+              'Content-Type': 'application/json'
+            }
+          };
 
-  Config.prototype.registerEndpoint = function registerEndpoint(name, configureMethod, defaults, restOptions) {
-    var _this = this;
+          this.client = httpClient;
+          this.endpoint = endpoint;
+          this.useTraditionalUriTemplates = !!useTraditionalUriTemplates;
+        }
 
-    var newClient = new _aureliaFetchClient.HttpClient();
-    var useTraditionalUriTemplates = void 0;
+        Rest.prototype.request = function request(method, path, body, options) {
+          var requestOptions = extend(true, { headers: {} }, this.defaults, options || {}, { method: method, body: body });
+          var contentType = requestOptions.headers['Content-Type'] || requestOptions.headers['content-type'];
 
-    if (restOptions !== undefined) {
-      useTraditionalUriTemplates = restOptions.useTraditionalUriTemplates;
+          if ((typeof body === 'undefined' ? 'undefined' : _typeof(body)) === 'object' && body !== null && contentType) {
+            requestOptions.body = /^application\/json/.test(contentType.toLowerCase()) ? JSON.stringify(body) : buildQueryString(body);
+          }
+
+          return this.client.fetch(path, requestOptions).then(function (response) {
+            if (response.status >= 200 && response.status < 400) {
+              return response.json().catch(function () {
+                return null;
+              });
+            }
+
+            throw response;
+          });
+        };
+
+        Rest.prototype.find = function find(resource, idOrCriteria, options) {
+          return this.request('GET', getRequestPath(resource, this.useTraditionalUriTemplates, idOrCriteria), undefined, options);
+        };
+
+        Rest.prototype.findOne = function findOne(resource, id, criteria, options) {
+          return this.request('GET', getRequestPath(resource, this.useTraditionalUriTemplates, id, criteria), undefined, options);
+        };
+
+        Rest.prototype.post = function post(resource, body, options) {
+          return this.request('POST', resource, body, options);
+        };
+
+        Rest.prototype.update = function update(resource, idOrCriteria, body, options) {
+          return this.request('PUT', getRequestPath(resource, this.useTraditionalUriTemplates, idOrCriteria), body, options);
+        };
+
+        Rest.prototype.updateOne = function updateOne(resource, id, criteria, body, options) {
+          return this.request('PUT', getRequestPath(resource, this.useTraditionalUriTemplates, id, criteria), body, options);
+        };
+
+        Rest.prototype.patch = function patch(resource, idOrCriteria, body, options) {
+          return this.request('PATCH', getRequestPath(resource, this.useTraditionalUriTemplates, idOrCriteria), body, options);
+        };
+
+        Rest.prototype.patchOne = function patchOne(resource, id, criteria, body, options) {
+          return this.request('PATCH', getRequestPath(resource, this.useTraditionalUriTemplates, id, criteria), body, options);
+        };
+
+        Rest.prototype.destroy = function destroy(resource, idOrCriteria, options) {
+          return this.request('DELETE', getRequestPath(resource, this.useTraditionalUriTemplates, idOrCriteria), undefined, options);
+        };
+
+        Rest.prototype.destroyOne = function destroyOne(resource, id, criteria, options) {
+          return this.request('DELETE', getRequestPath(resource, this.useTraditionalUriTemplates, id, criteria), undefined, options);
+        };
+
+        Rest.prototype.create = function create(resource, body, options) {
+          return this.post(resource, body, options);
+        };
+
+        return Rest;
+      }());
+
+      _export('Rest', Rest);
+
+      _export('Config', Config = function () {
+        function Config() {
+          
+
+          this.endpoints = {};
+        }
+
+        Config.prototype.registerEndpoint = function registerEndpoint(name, configureMethod, defaults, restOptions) {
+          var _this = this;
+
+          var newClient = new HttpClient();
+          var useTraditionalUriTemplates = void 0;
+
+          if (restOptions !== undefined) {
+            useTraditionalUriTemplates = restOptions.useTraditionalUriTemplates;
+          }
+          this.endpoints[name] = new Rest(newClient, name, useTraditionalUriTemplates);
+
+          if (defaults !== undefined) {
+            this.endpoints[name].defaults = defaults;
+          }
+
+          if (typeof configureMethod === 'function') {
+            newClient.configure(configureMethod);
+
+            return this;
+          }
+
+          if (typeof configureMethod !== 'string' && !this.defaultBaseUrl) {
+            return this;
+          }
+
+          if (this.defaultBaseUrl && typeof configureMethod !== 'string' && typeof configureMethod !== 'function') {
+            newClient.configure(function (configure) {
+              configure.withBaseUrl(_this.defaultBaseUrl);
+            });
+
+            return this;
+          }
+
+          newClient.configure(function (configure) {
+            configure.withBaseUrl(configureMethod);
+          });
+
+          return this;
+        };
+
+        Config.prototype.getEndpoint = function getEndpoint(name) {
+          if (!name) {
+            return this.defaultEndpoint || null;
+          }
+
+          return this.endpoints[name] || null;
+        };
+
+        Config.prototype.endpointExists = function endpointExists(name) {
+          return !!this.endpoints[name];
+        };
+
+        Config.prototype.setDefaultEndpoint = function setDefaultEndpoint(name) {
+          this.defaultEndpoint = this.getEndpoint(name);
+
+          return this;
+        };
+
+        Config.prototype.setDefaultBaseUrl = function setDefaultBaseUrl(baseUrl) {
+          this.defaultBaseUrl = baseUrl;
+
+          return this;
+        };
+
+        Config.prototype.configure = function configure(config) {
+          var _this2 = this;
+
+          if (config.defaultBaseUrl) {
+            this.defaultBaseUrl = config.defaultBaseUrl;
+          }
+
+          config.endpoints.forEach(function (endpoint) {
+            _this2.registerEndpoint(endpoint.name, endpoint.endpoint, endpoint.config);
+
+            if (endpoint.default) {
+              _this2.setDefaultEndpoint(endpoint.name);
+            }
+          });
+
+          if (config.defaultEndpoint) {
+            this.setDefaultEndpoint(config.defaultEndpoint);
+          }
+
+          return this;
+        };
+
+        return Config;
+      }());
+
+      _export('Config', Config);
+
+      _export('Endpoint', Endpoint = (_dec = resolver(), _dec(_class3 = function () {
+        function Endpoint(key) {
+          
+
+          this._key = key;
+        }
+
+        Endpoint.prototype.get = function get(container) {
+          return container.get(Config).getEndpoint(this._key);
+        };
+
+        Endpoint.of = function of(key) {
+          return new Endpoint(key);
+        };
+
+        return Endpoint;
+      }()) || _class3));
+
+      _export('Endpoint', Endpoint);
     }
-    this.endpoints[name] = new Rest(newClient, name, useTraditionalUriTemplates);
-
-    if (defaults !== undefined) {
-      this.endpoints[name].defaults = defaults;
-    }
-
-    if (typeof configureMethod === 'function') {
-      newClient.configure(configureMethod);
-
-      return this;
-    }
-
-    if (typeof configureMethod !== 'string' && !this.defaultBaseUrl) {
-      return this;
-    }
-
-    if (this.defaultBaseUrl && typeof configureMethod !== 'string' && typeof configureMethod !== 'function') {
-      newClient.configure(function (configure) {
-        configure.withBaseUrl(_this.defaultBaseUrl);
-      });
-
-      return this;
-    }
-
-    newClient.configure(function (configure) {
-      configure.withBaseUrl(configureMethod);
-    });
-
-    return this;
   };
-
-  Config.prototype.getEndpoint = function getEndpoint(name) {
-    if (!name) {
-      return this.defaultEndpoint || null;
-    }
-
-    return this.endpoints[name] || null;
-  };
-
-  Config.prototype.endpointExists = function endpointExists(name) {
-    return !!this.endpoints[name];
-  };
-
-  Config.prototype.setDefaultEndpoint = function setDefaultEndpoint(name) {
-    this.defaultEndpoint = this.getEndpoint(name);
-
-    return this;
-  };
-
-  Config.prototype.setDefaultBaseUrl = function setDefaultBaseUrl(baseUrl) {
-    this.defaultBaseUrl = baseUrl;
-
-    return this;
-  };
-
-  Config.prototype.configure = function configure(config) {
-    var _this2 = this;
-
-    if (config.defaultBaseUrl) {
-      this.defaultBaseUrl = config.defaultBaseUrl;
-    }
-
-    config.endpoints.forEach(function (endpoint) {
-      _this2.registerEndpoint(endpoint.name, endpoint.endpoint, endpoint.config);
-
-      if (endpoint.default) {
-        _this2.setDefaultEndpoint(endpoint.name);
-      }
-    });
-
-    if (config.defaultEndpoint) {
-      this.setDefaultEndpoint(config.defaultEndpoint);
-    }
-
-    return this;
-  };
-
-  return Config;
-}();
-
-function configure(frameworkConfig, configOrConfigure) {
-  var config = frameworkConfig.container.get(Config);
-
-  if (typeof configOrConfigure === 'function') {
-    configOrConfigure(config);
-
-    return;
-  }
-
-  config.configure(configOrConfigure);
-}
-
-var Endpoint = exports.Endpoint = (_dec = (0, _aureliaDependencyInjection.resolver)(), _dec(_class3 = function () {
-  function Endpoint(key) {
-    
-
-    this._key = key;
-  }
-
-  Endpoint.prototype.get = function get(container) {
-    return container.get(Config).getEndpoint(this._key);
-  };
-
-  Endpoint.of = function of(key) {
-    return new Endpoint(key);
-  };
-
-  return Endpoint;
-}()) || _class3);
+});
