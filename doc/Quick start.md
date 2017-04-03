@@ -68,6 +68,7 @@ import 'fetch';
 export class Users {
   heading = 'Github Users';
   users = [];
+  githubEndpoint = null;
 
   constructor(githubEndpoint) {
     this.githubEndpoint = githubEndpoint;
