@@ -38,7 +38,7 @@ Aurelia-api makes use of `aurelia-fetch-client` and `extend`. You might also nee
 "dependencies": [
   // ...
   "extend",
-  "aurelia-fetch-client"
+  "aurelia-fetch-client",
   "aurelia-api",
   // "fetch",
   // ...
