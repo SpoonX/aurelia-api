@@ -1,6 +1,6 @@
 # Installation
 
-## Aureli-Cli
+## Aurelia-Cli
 
 Run `npm i aurelia-api --save` from your project root.
 
@@ -10,7 +10,7 @@ Aurelia-api makes use of `aurelia-fetch-client` and `extend`. You might also nee
 "dependencies": [
   // ...
   "extend",
-  "aurelia-fetch-client"
+  "aurelia-fetch-client",
   "aurelia-api",
   // "fetch",
   // ...
