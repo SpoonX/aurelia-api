@@ -19,7 +19,7 @@ let criteriaWithArray = {sort: ['first', 'last']};
 let body = {message: 'some'};
 let options = {
   headers: {
-    'Content-Type': 'application/x-www-form-urlencoded',
+    'Content-Type' : 'application/x-www-form-urlencoded',
     'Authorization': 'Bearer aToken'
   }
 };
@@ -28,7 +28,12 @@ describe('Rest', function() {
   describe('.find()', function() {
     it('Should find results for multiple endpoints.', function(done) {
       let injectTest = container.get(InjectTest);
+
       injectTest.apiEndpoint.useTraditionalUriTemplates = false;
+
+      let responseOutput = {
+        response: null
+      };
 
       expect(injectTest.apiEndpoint instanceof Rest).toBe(true);
       expect(injectTest.jsonplaceholderEndpoint instanceof Rest).toBe(true);
@@ -94,6 +99,10 @@ describe('Rest', function() {
             expect(y.query.sort[0]).toBe(criteriaWithArray.sort[0]);
             expect(y.query.sort[1]).toBe(criteriaWithArray.sort[1]);
             expect(y.originalUrl).toBe(encodeURI(`/posts?sort[]=${criteriaWithArray.sort[0]}&sort[]=${criteriaWithArray.sort[1]}`));
+          }),
+        injectTest.apiEndpoint.find('posts', undefined, null, responseOutput)
+          .then(y => {
+            expect(responseOutput.response instanceof Response).toBe(true);
           })
       ]).then(x => {
         done();
@@ -101,6 +110,7 @@ describe('Rest', function() {
     });
     it('Should find with RFC6570 queries.', function(done) {
       let injectTest = container.get(InjectTest);
+
       injectTest.apiEndpoint.useTraditionalUriTemplates = true;
 
       Promise.all([
@@ -118,6 +128,10 @@ describe('Rest', function() {
   describe('.findOne()', function() {
     it('Should find with id, criteria and options.', function(done) {
       let injectTest = container.get(InjectTest);
+      let responseOutput = {
+        response: null
+      };
+
       injectTest.apiEndpoint.useTraditionalUriTemplates = false;
 
       Promise.all([
@@ -146,13 +160,18 @@ describe('Rest', function() {
             expect(y.query.sort[0]).toBe(criteriaWithArray.sort[0]);
             expect(y.query.sort[1]).toBe(criteriaWithArray.sort[1]);
             expect(y.originalUrl).toBe(encodeURI(`/posts/id/?sort[]=${criteriaWithArray.sort[0]}&sort[]=${criteriaWithArray.sort[1]}`));
-          })
+          }),
+        injectTest.apiEndpoint.findOne('posts/', 'id', criteriaWithArray, null, responseOutput)
+          .then(y => {
+            expect(responseOutput.response instanceof Response).toBe(true);
+        })
       ]).then(x => {
         done();
       });
     });
     it('Should findOne with RFC6570 queries.', function(done) {
       let injectTest = container.get(InjectTest);
+
       injectTest.apiEndpoint.useTraditionalUriTemplates = true;
 
       Promise.all([
@@ -191,6 +210,11 @@ describe('Rest', function() {
 
     it('Should update with body (as json), criteria and options.', function(done) {
       let injectTest = container.get(InjectTest);
+
+      let responseOutput = {
+        response: null
+      };
+
       injectTest.apiEndpoint.useTraditionalUriTemplates = false;
 
       Promise.all([
@@ -215,6 +239,10 @@ describe('Rest', function() {
             expect(y.query.sort[0]).toBe(criteriaWithArray.sort[0]);
             expect(y.query.sort[1]).toBe(criteriaWithArray.sort[1]);
             expect(y.originalUrl).toBe(encodeURI(`/posts/?sort[]=${criteriaWithArray.sort[0]}&sort[]=${criteriaWithArray.sort[1]}`));
+          }),
+        injectTest.apiEndpoint.update('posts/', criteriaWithArray, body, options, responseOutput)
+          .then(y => {
+            expect(responseOutput.response instanceof Response).toBe(true);
           })
       ]).then(x => {
         done();
@@ -223,6 +251,7 @@ describe('Rest', function() {
 
     it('Should update with RFC6570 queries.', function(done) {
       let injectTest = container.get(InjectTest);
+
       injectTest.apiEndpoint.useTraditionalUriTemplates = true;
 
       Promise.all([
@@ -240,6 +269,11 @@ describe('Rest', function() {
   describe('.updateOne()', function() {
     it('Should update with body (as json), criteria and options.', function(done) {
       let injectTest = container.get(InjectTest);
+
+      let responseOutput = {
+        response: null
+      };
+
       injectTest.apiEndpoint.useTraditionalUriTemplates = false;
 
       Promise.all([
@@ -261,6 +295,10 @@ describe('Rest', function() {
             expect(y.contentType).toMatch(options.headers['Content-Type']);
             expect(y.Authorization).toBe(options.headers['Authorization']);
           }),
+        injectTest.apiEndpoint.updateOne('posts/', 'id', criteria, body, options, responseOutput)
+          .then(y => {
+          expect(responseOutput.response instanceof Response).toBe(true);
+          }),
         injectTest.apiEndpoint.updateOne('posts/', 'id', criteriaWithArray, body)
           .then(y => {
             expect(y.method).toBe('PUT');
@@ -276,6 +314,7 @@ describe('Rest', function() {
 
     it('Should updateOne with RFC6570 queries.', function(done) {
       let injectTest = container.get(InjectTest);
+
       injectTest.apiEndpoint.useTraditionalUriTemplates = true;
 
       Promise.all([
@@ -294,6 +333,7 @@ describe('Rest', function() {
   describe('.patch()', function() {
     it('Should patch with body (as json).', function(done) {
       let injectTest = container.get(InjectTest);
+
       injectTest.apiEndpoint.useTraditionalUriTemplates = false;
 
       Promise.all([
@@ -321,6 +361,11 @@ describe('Rest', function() {
 
     it('Should patch with body (as json), criteria and options.', function(done) {
       let injectTest = container.get(InjectTest);
+
+      let responseOutput = {
+        response: null
+      };
+
       injectTest.apiEndpoint.useTraditionalUriTemplates = false;
 
       Promise.all([
@@ -342,6 +387,10 @@ describe('Rest', function() {
             expect(y.contentType).toMatch(options.headers['Content-Type']);
             expect(y.Authorization).toBe(options.headers['Authorization']);
           }),
+        injectTest.apiEndpoint.patch('post/', criteria, body, options, responseOutput)
+          .then(y => {
+            expect(responseOutput.response instanceof Response).toBe(true);
+          }),
         injectTest.apiEndpoint.patch('post/', criteriaWithArray, body)
           .then(y => {
             expect(y.method).toBe('PATCH');
@@ -357,6 +406,7 @@ describe('Rest', function() {
 
     it('Should patch with RFC6570 queries.', function(done) {
       let injectTest = container.get(InjectTest);
+
       injectTest.apiEndpoint.useTraditionalUriTemplates = true;
 
       Promise.all([
@@ -375,6 +425,10 @@ describe('Rest', function() {
   describe('.patchOne()', function() {
     it('Should patch with body (as json), id, criteria and options.', function(done) {
       let injectTest = container.get(InjectTest);
+      let responseOutput = {
+        response: null
+      };
+
       injectTest.apiEndpoint.useTraditionalUriTemplates = false;
 
       Promise.all([
@@ -396,6 +450,10 @@ describe('Rest', function() {
             expect(y.contentType).toMatch(options.headers['Content-Type']);
             expect(y.Authorization).toBe(options.headers['Authorization']);
           }),
+        injectTest.apiEndpoint.patchOne('post/', 'id', criteria, body, options, responseOutput)
+          .then(y => {
+            expect(responseOutput.response instanceof Response).toBe(true);
+          }),
         injectTest.apiEndpoint.patchOne('post/', 'id', criteriaWithArray, body)
           .then(y => {
             expect(y.method).toBe('PATCH');
@@ -411,6 +469,7 @@ describe('Rest', function() {
 
     it('Should patchOne with RFC6570 queries.', function(done) {
       let injectTest = container.get(InjectTest);
+
       injectTest.apiEndpoint.useTraditionalUriTemplates = true;
 
       Promise.all([
@@ -429,6 +488,10 @@ describe('Rest', function() {
   describe('.destroy()', function() {
     it('Should destroy with criteria and options.', function(done) {
       let injectTest = container.get(InjectTest);
+      let responseOutput = {
+        response: null
+      };
+
       injectTest.apiEndpoint.useTraditionalUriTemplates = false;
 
       Promise.all([
@@ -448,6 +511,10 @@ describe('Rest', function() {
             expect(y.query.comment).toBe(criteria.comment);
             expect(y.Authorization).toBe(options.headers['Authorization']);
           }),
+        injectTest.apiEndpoint.destroy('posts/', criteria, options, responseOutput)
+          .then(y => {
+            expect(responseOutput.response instanceof Response).toBe(true);
+          }),
         injectTest.apiEndpoint.destroy('posts/', criteriaWithArray)
           .then(y => {
             expect(y.method).toBe('DELETE');
@@ -463,6 +530,7 @@ describe('Rest', function() {
 
     it('Should destroy with RFC6570 queries.', function(done) {
       let injectTest = container.get(InjectTest);
+
       injectTest.apiEndpoint.useTraditionalUriTemplates = true;
 
       Promise.all([
@@ -481,6 +549,10 @@ describe('Rest', function() {
   describe('.destroyOne()', function() {
     it('Should destroy with id, criteria and options.', function(done) {
       let injectTest = container.get(InjectTest);
+      let responseOutput = {
+        response: null
+      };
+
       injectTest.apiEndpoint.useTraditionalUriTemplates = false;
 
       Promise.all([
@@ -500,6 +572,10 @@ describe('Rest', function() {
             expect(y.query.comment).toBe(criteria.comment);
             expect(y.Authorization).toBe(options.headers['Authorization']);
           }),
+        injectTest.apiEndpoint.destroyOne('posts/', 'id', criteria, options, responseOutput)
+          .then(y => {
+            expect(responseOutput.response instanceof Response).toBe(true);
+          }),
         injectTest.apiEndpoint.destroyOne('posts/', 'id', criteriaWithArray)
           .then(y => {
             expect(y.method).toBe('DELETE');
@@ -515,6 +591,7 @@ describe('Rest', function() {
 
     it('Should destroyOne with RFC6570 queries.', function(done) {
       let injectTest = container.get(InjectTest);
+
       injectTest.apiEndpoint.useTraditionalUriTemplates = true;
 
       Promise.all([
@@ -533,6 +610,9 @@ describe('Rest', function() {
   describe('.create()', function() {
     it('Should create body (as json).', function(done) {
       let injectTest = container.get(InjectTest);
+      let responseOutput = {
+        response: null
+      };
 
       Promise.all([
         injectTest.apiEndpoint.create('posts', body)
@@ -552,6 +632,9 @@ describe('Rest', function() {
 
     it('Should create body (as json) and options.', function(done) {
       let injectTest = container.get(InjectTest);
+      let responseOutput = {
+        response: null
+      };
 
       Promise.all([
         injectTest.apiEndpoint.create('posts', body, options)
@@ -567,6 +650,10 @@ describe('Rest', function() {
             expect(y.path).toBe('/posts/');
             expect(y.contentType).toMatch(options.headers['Content-Type']);
             expect(y.Authorization).toBe(options.headers['Authorization']);
+          }),
+        injectTest.apiEndpoint.create('posts/', body, options, responseOutput)
+          .then(y => {
+            expect(responseOutput.response instanceof Response).toBe(true);
           })
       ]).then(x => {
         done();
@@ -577,6 +664,9 @@ describe('Rest', function() {
   describe('.post()', function() {
     it('Should post body (as urlencoded).', function(done) {
       let injectTest = container.get(InjectTest);
+      let responseOutput = {
+        response: null
+      };
 
       Promise.all([
         injectTest.apiEndpoint.post('posts', body, options)
@@ -599,8 +689,12 @@ describe('Rest', function() {
 
     it('Should post body (as FormData) and options.', function(done) {
       let injectTest = container.get(InjectTest);
+      let responseOutput = {
+        response: null
+      };
 
       let data = new FormData();
+
       data.append('message', 'some');
 
       Promise.all([
