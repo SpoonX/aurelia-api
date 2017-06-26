@@ -244,7 +244,8 @@ function getRequestPath(resource: string, traditional: boolean, idOrCriteria?: s
   }
 
   if (typeof criteria === 'object' && criteria !== null) {
-    resource += `?${buildQueryString(criteria, traditional)}`;
+    let hasQuestionMark = resource.indexOf('?') === -1;
+    resource += `${hasQuestionMark ? '&' : '?'}${buildQueryString(criteria, traditional)}`;
   } else if (criteria) {
     resource += `${hasSlash ? '' : '/'}${criteria}${hasSlash ? '/' : ''}`;
   }
