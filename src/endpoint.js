@@ -33,11 +33,11 @@ export class Endpoint {
   /**
    * Get a new resolver for `key`.
    *
-   * @param {string} key  The endpoint name
+   * @param {string} [key]  The endpoint name
    *
    * @return {Endpoint}  Resolves to the Rest client for this endpoint
    */
-  static of(key: string): Endpoint {
+  static of(key?: string): Endpoint {
     return new Endpoint(key);
   }
 }
