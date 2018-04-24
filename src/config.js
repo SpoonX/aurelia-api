@@ -101,7 +101,7 @@ export class Config {
    *
    * @return {Rest|null}
    */
-  getEndpoint(name: string): Rest {
+  getEndpoint(name?: string): Rest {
     if (!name) {
       return this.defaultEndpoint || null;
     }
