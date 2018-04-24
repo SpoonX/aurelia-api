@@ -143,11 +143,11 @@ endpoint
   .find(resource, idOrCriteria, options, responseOutput)                // GET
   .findOne(resource, id, criteria, options, responseOutput)         // GET
   .post(resource, body, options, responseOutput) {                  // POST
-  .update(resource, criteria, body, options, responseOutput)        // PUT
+  .update(resource, idOrCriteria, body, options, responseOutput)        // PUT
   .updateOne(resource, id, criteria, body, options, responseOutput) // PUT
-  .patch(resource, criteria, body, options, responseOutput)         // PATCH
+  .patch(resource, idOrCriteria, body, options, responseOutput)         // PATCH
   .patchOne(resource, id, criteria, body, options, responseOutput)  // PATCH
-  .destroy(resource, criteria, options, responseOutput)             // DELETE
+  .destroy(resource, idOrCriteria, options, responseOutput)             // DELETE
   .destroyOne(resource, id, criteria, options, responseOutput)      // DELETE
   .create(resource, body, options, responseOutput)                  // POST
   .request(method, path, body, options, responseOutput)             // method
