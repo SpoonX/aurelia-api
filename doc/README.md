@@ -140,7 +140,7 @@ endpoint
   .client                                                           // the httpClient instance
   .endpoint                                                         // name of the endpoint
   .default                                                          // The fetch client defaults
-  .find(resource, criteria, options, responseOutput)                // GET
+  .find(resource, idOrCriteria, options, responseOutput)                // GET
   .findOne(resource, id, criteria, options, responseOutput)         // GET
   .post(resource, body, options, responseOutput) {                  // POST
   .update(resource, criteria, body, options, responseOutput)        // PUT
