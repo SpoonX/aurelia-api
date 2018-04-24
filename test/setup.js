@@ -1,2 +1,2 @@
 import 'aurelia-polyfills';
-import 'fetch';
+import 'whatwg-fetch';
