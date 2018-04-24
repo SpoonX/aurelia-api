@@ -8,12 +8,12 @@ System.config({
 
   map: {
     "aurelia-dependency-injection": "npm:aurelia-dependency-injection@1.0.0",
-    "aurelia-fetch-client": "npm:aurelia-fetch-client@1.0.0-rc.1.0.1",
+    "aurelia-fetch-client": "npm:aurelia-fetch-client@1.3.1",
     "aurelia-framework": "npm:aurelia-framework@1.0.1",
     "aurelia-path": "npm:aurelia-path@1.1.1",
     "aurelia-polyfills": "npm:aurelia-polyfills@1.0.0",
     "extend": "npm:extend@3.0.0",
-    "fetch": "github:github/fetch@1.0.0",
+    "whatwg-fetch": "npm:whatwg-fetch@2.0.4",
     "npm:aurelia-binding@1.0.1": {
       "aurelia-logging": "npm:aurelia-logging@1.0.0",
       "aurelia-metadata": "npm:aurelia-metadata@1.0.0",
