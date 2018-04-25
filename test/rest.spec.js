@@ -16,16 +16,26 @@ let options = {
     'Authorization': 'Bearer aToken'
   }
 };
+let jsonOptions = {
+  headers: {
+    'Content-Type': 'application/vnd.api+json',
+    'Accept': 'application/vnd.api+json'
+  }
+};
 
 config.registerEndpoint('api', baseUrls.api);
 config.registerEndpoint('jsonplaceholder', baseUrls.jsonplaceholder);
 config.registerEndpoint('form', baseUrls.api, null);
 config.registerEndpoint('urlencoded', baseUrls.api, options);
+config.registerEndpoint('fetchConfig', fetchConfig => {
+  fetchConfig
+    .withBaseUrl(baseUrls.api)
+    .withDefaults(jsonOptions);
+  });
 
 let criteria = {user: 'john', comment: 'last'};
 let criteriaWithArray = {sort: ['first', 'last']};
 let body = {message: 'some'};
-
 
 describe('Rest', function() {
   describe('.find()', function() {
@@ -731,6 +741,54 @@ describe('Rest', function() {
             expect(y.body.message).toBe('some');
           }),
         injectTest.urlencodedEndpoint.post('posts/', buildQueryString(body))
+          .then(y => {
+            expect(y.path).toBe('/posts/');
+            expect(y.body.message).toBe('some');
+          })
+      ]).then(x => {
+        done();
+      });
+    });
+
+    it('Should post object body (as json) with fetchConfig configuration.', function(done) {
+      let injectTest = container.get(InjectTest);
+      let responseOutput = {
+        response: null
+      };
+
+      Promise.all([
+        injectTest.fetchConfigEndpoint.post('posts', body)
+          .then(y => {
+            expect(y.method).toBe('POST');
+            expect(y.path).toBe('/posts');
+            expect(y.contentType).toBe(jsonOptions.headers['Content-Type']);
+            expect(y.body.message).toBe('some');
+          }),
+        injectTest.fetchConfigEndpoint.post('posts/', body)
+          .then(y => {
+            expect(y.path).toBe('/posts/');
+            expect(y.body.message).toBe('some');
+          })
+      ]).then(x => {
+        done();
+      });
+    });
+
+    it('Should post string body as string with fetchConfig configuration.', function(done) {
+      let injectTest = container.get(InjectTest);
+      let responseOutput = {
+        response: null
+      };
+
+      Promise.all([
+        injectTest.fetchConfigEndpoint.post('posts', JSON.stringify(body))
+          .then(y => {
+            expect(y.method).toBe('POST');
+            expect(y.path).toBe('/posts');
+            expect(y.contentType).toBe(jsonOptions.headers['Content-Type']);
+            expect(y.body.message).toBe('some');
+          }),
+        injectTest.fetchConfigEndpoint.post('posts/', JSON.stringify(body))
           .then(y => {
             expect(y.path).toBe('/posts/');
             expect(y.body.message).toBe('some');
