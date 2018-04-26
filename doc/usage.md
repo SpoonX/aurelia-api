@@ -37,3 +37,5 @@ export class MyClass {
   }
 }
 ```
+
+Note: Resolvers cannot be used with @autoinject. See [http://aurelia.io/docs/fundamentals/dependency-injection#resolvers]
