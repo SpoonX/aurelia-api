@@ -155,7 +155,7 @@ endpoint
 
 ## Note
 
-Some month ago, we've simplified installation and usage! This plugin should now be installed using `jspm i aurelia-api` or (for webpack) `npm i aurelia-api --save`. Make sure you update all references to `spoonx/aurelia-api` and remove the `spoonx/` prefix (don't forget your config.js, package.json, imports and bundles).
+Some months ago, we've simplified installation and usage! This plugin should now be installed using `jspm i aurelia-api` or (for webpack) `npm i aurelia-api --save`. Make sure you update all references to `spoonx/aurelia-api` and remove the `spoonx/` prefix (don't forget your config.js, package.json, imports and bundles).
 ----------
 
 **Aside:** Public SpoonX repositories are open to the community and actively maintained and used by the SpoonX company. They follow a strict deploy cycle with reviews and follow semantic versioning. This ensures code quality control and long term commitment.
