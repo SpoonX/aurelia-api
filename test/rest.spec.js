@@ -200,6 +200,73 @@ describe('Rest', function() {
     });
   });
 
+  describe('.find()', function() {
+    it('Should find with id and criteria using date objects.', function(done) {
+      let injectTest = container.get(InjectTest);
+      let dateCriteria = { date: new Date() };
+
+      injectTest.apiEndpoint.findOne('posts', 'id', dateCriteria)
+        .then(y => {
+          expect(y.method).toBe('GET');
+          expect(y.path).toBe('/posts/id');
+          expect(y.query.date).toBe(dateCriteria.date.toString());
+          expect(y.originalUrl).toBe('/posts/id?date='+encodeURIComponent(dateCriteria.date).toString())
+        }).then(done);
+    });
+
+    it('Should find with criteria using id and date objects.', function(done) {
+      let injectTest = container.get(InjectTest);
+      let dateCriteria = { id: 'id', date: new Date() };
+
+      injectTest.apiEndpoint.findOne('posts', dateCriteria)
+        .then(y => {
+          expect(y.method).toBe('GET');
+          expect(y.path).toBe('/posts');
+          expect(y.query.id).toBe('id');
+          expect(y.query.date).toBe(dateCriteria.date.toString());
+          expect(y.originalUrl).toBe('/posts?date='+encodeURIComponent(dateCriteria.date).toString()+'&id=id')
+        }).then(done);
+    });
+
+    it('Should find with criteria using number objects.', function(done) {
+      let injectTest = container.get(InjectTest);
+      let numCriteria = { num: Number(-1.01) };
+
+      injectTest.apiEndpoint.findOne('posts/', 'id', numCriteria)
+        .then(y => {
+          expect(y.method).toBe('GET');
+          expect(y.path).toBe('/posts/id/');
+          expect(y.query.num).toBe(numCriteria.num.toString());
+        }).then(done);
+    });
+  });
+
+  describe('.find()', function() {
+    it('Should find with criteria using date objects.', function(done) {
+      let injectTest = container.get(InjectTest);
+      let dateCriteria = { date: new Date() };
+
+      injectTest.apiEndpoint.findOne('posts', 'id', dateCriteria)
+        .then(y => {
+          expect(y.method).toBe('GET');
+          expect(y.path).toBe('/posts/id');
+          expect(y.query.date).toBe(dateCriteria.date.toString());
+        }).then(done);
+    });
+
+    it('Should find with criteria using number objects.', function(done) {
+      let injectTest = container.get(InjectTest);
+      let numCriteria = { num: Number(-1.01) };
+
+      injectTest.apiEndpoint.findOne('posts/', 'id', numCriteria)
+        .then(y => {
+          expect(y.method).toBe('GET');
+          expect(y.path).toBe('/posts/id/');
+          expect(y.query.num).toBe(numCriteria.num.toString());
+        }).then(done);
+    });
+  });
+
   describe('.update()', function() {
     it('Should update with body (as json).', function(done) {
       let injectTest = container.get(InjectTest);
