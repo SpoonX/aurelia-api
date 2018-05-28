@@ -37,7 +37,7 @@ export class Endpoint {
    *
    * @return {Endpoint}  Resolves to the Rest client for this endpoint
    */
-  static of(key?: string): Endpoint {
+  static of(key?: string): Rest {
     return new Endpoint(key);
   }
 }

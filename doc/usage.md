@@ -37,3 +37,15 @@ export class MyClass {
   }
 }
 ```
+
+To use Resolvers with @autoinject use @inject as parameter decorator
+```js
+import {inject, autoinject} from 'aurelia-framework';
+import {Endpoint, Rest} from 'aurelia-api';
+
+@autoinject()
+export class MyClass {
+  constructor(public @inject(Endpoint.of('api')) apiEndpoint: Rest) {
+  }
+}
+```
