@@ -29,8 +29,14 @@ aurelia.use
 
     // 3: With different endpoint defaults
     config.registerEndpoint('weather', 'https://weatherapi.io/', {headers: {x: 'foo'}});
+    // or
+    config.registerEndpoint('weather', configure => {
+      configure
+        .withBaseUrl('https://weatherapi.io/')
+        .withDefaults({headers: {x: 'foo'}});
+      }));
 
-    // 4: Without endpoint defaults
+    // 4: Without endpoint defaults. Use this for FormData
     config.registerEndpoint('weather', 'https://weatherapi.io/', null);
 
     // 5: Own configuration
@@ -91,7 +97,7 @@ This method allows you to specify different defaults to use for your endpoint, i
 
 ## 4: With no defaults
 
-This method allows you to remove the defaults to use for your endpoint.
+This method allows you to remove the defaults to use for your endpoint. This is needed for "multipart/form-data" requests as the content type will be set automatically if the transmitted body is of the type FormData.
 
 ## 5: Own configuration
 

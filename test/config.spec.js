@@ -4,13 +4,13 @@ import {Rest} from '../src/rest';
 
 describe('Config', function() {
   describe('.registerEndpoint()', function() {
-    it('Should properly register an endpoint when providing a config callback.', function() {
+    it('Should properly register an endpoint when providing a config callback transferring client defaults.', function() {
       let config   = new Config;
       let returned = config.registerEndpoint('github', function(configure) {
         configure.withBaseUrl(baseUrls.github);
         configure.withDefaults(userOptions);
       });
-      expect(config.endpoints.github.defaults).toEqual(defaultOptions);
+      expect(config.endpoints.github.defaults).toEqual(userOptions);
       expect(config.endpoints.github.client.defaults).toEqual(userOptions);
       expect(config.endpoints.github.client.baseUrl).toEqual(baseUrls.github);
       expect(returned).toBe(config);
