@@ -64,10 +64,11 @@ export class Rest {
    * @param {string}          path       Path to the resource
    * @param {{}}              [body]     The body to send if applicable
    * @param {{}}              [options]  Fetch request options overwrites
+   * @param {{ response: Response}}              [responseOutput]  reference output for Response object
    *
    * @return {Promise<*>|Promise<Error>} Server response as Object
    */
-  request(method: string, path: string, body?: {}, options?: {}): Promise<any|Error> {
+  request(method: string, path: string, body?: {}, options?: {}, responseOutput?: { response: Response}): Promise<any|Error> {
     let requestOptions = extend(true, {headers: {}}, this.defaults, options || {}, {method, body});
     let contentType    = requestOptions.headers['Content-Type'] || requestOptions.headers['content-type'];
 
@@ -79,6 +80,10 @@ export class Rest {
 
     return this.client.fetch(path, requestOptions).then((response: Response) => {
       if (response.status >= 200 && response.status < 400) {
+        if (responseOutput) {
+          responseOutput.response = response;
+        }
+
         return response.json().catch(() => null);
       }
 
@@ -92,11 +97,12 @@ export class Rest {
    * @param {string}                    resource  Resource to find in
    * @param {string|number|{}}          idOrCriteria  Object for where clause, string / number for id.
    * @param {{}}                        [options] Extra request options.
+   * @param {{ response: Response}}              [responseOutput]  reference output for Response object
    *
    * @return {Promise<*>|Promise<Error>} Server response as Object
    */
-  find(resource: string, idOrCriteria?: string|number|{}, options?: {}): Promise<any|Error> {
-    return this.request('GET', getRequestPath(resource, this.useTraditionalUriTemplates, idOrCriteria), undefined, options);
+  find(resource: string, idOrCriteria?: string|number|{}, options?: {}, responseOutput?: { response: Response}): Promise<any|Error> {
+    return this.request('GET', getRequestPath(resource, this.useTraditionalUriTemplates, idOrCriteria), undefined, options, responseOutput);
   }
 
   /**
@@ -106,11 +112,12 @@ export class Rest {
    * @param {string|number}    id          String / number for id to be added to the path.
    * @param {{}}               [criteria]  Object for where clause
    * @param {{}}               [options]   Extra request options.
+   * @param {{ response: Response}}              [responseOutput]  reference output for Response object
    *
    * @return {Promise<*>|Promise<Error>} Server response as Object
    */
-  findOne(resource: string, id: string|number, criteria?: {}, options?: {}): Promise<any|Error> {
-    return this.request('GET', getRequestPath(resource, this.useTraditionalUriTemplates, id, criteria), undefined, options);
+  findOne(resource: string, id: string|number, criteria?: {}, options?: {}, responseOutput?: { response: Response}): Promise<any|Error> {
+    return this.request('GET', getRequestPath(resource, this.useTraditionalUriTemplates, id, criteria), undefined, options, responseOutput);
   }
 
   /**
@@ -119,11 +126,12 @@ export class Rest {
    * @param {string}           resource  Resource to create
    * @param {{}}               [body]    The data to post (as Object)
    * @param {{}}               [options] Extra request options.
+   * @param {{ response: Response}}              [responseOutput]  reference output for Response object
    *
    * @return {Promise<*>|Promise<Error>} Server response as Object
    */
-  post(resource: string, body?: {}, options?: {}): Promise<any|Error> {
-    return this.request('POST', resource, body, options);
+  post(resource: string, body?: {}, options?: {}, responseOutput?: { response: Response}): Promise<any|Error> {
+    return this.request('POST', resource, body, options, responseOutput);
   }
 
   /**
@@ -133,11 +141,12 @@ export class Rest {
    * @param {string|number|{}} idOrCriteria  Object for where clause, string / number for id.
    * @param {{}}               [body]    New data for provided idOrCriteria.
    * @param {{}}               [options] Extra request options.
+   * @param {{ response: Response}}              [responseOutput]  reference output for Response object
    *
    * @return {Promise<*>|Promise<Error>} Server response as Object
    */
-  update(resource: string, idOrCriteria?: string|number|{}, body?: {}, options?: {}): Promise<any|Error> {
-    return this.request('PUT', getRequestPath(resource, this.useTraditionalUriTemplates, idOrCriteria), body, options);
+  update(resource: string, idOrCriteria?: string|number|{}, body?: {}, options?: {}, responseOutput?: { response: Response}): Promise<any|Error> {
+    return this.request('PUT', getRequestPath(resource, this.useTraditionalUriTemplates, idOrCriteria), body, options, responseOutput);
   }
 
   /**
@@ -148,11 +157,12 @@ export class Rest {
    * @param {{}}               [criteria] Object for where clause
    * @param {{}}               [body]     New data for provided criteria.
    * @param {{}}               [options]  Extra request options.
+   * @param {{ response: Response}}              [responseOutput]  reference output for Response object
    *
    * @return {Promise<*>|Promise<Error>} Server response as Object
    */
-  updateOne(resource: string, id: string|number, criteria?: {}, body?: {}, options?: {}): Promise<any|Error> {
-    return this.request('PUT', getRequestPath(resource, this.useTraditionalUriTemplates, id, criteria), body, options);
+  updateOne(resource: string, id: string|number, criteria?: {}, body?: {}, options?: {}, responseOutput?: { response: Response}): Promise<any|Error> {
+    return this.request('PUT', getRequestPath(resource, this.useTraditionalUriTemplates, id, criteria), body, options, responseOutput);
   }
 
   /**
@@ -162,11 +172,12 @@ export class Rest {
    * @param {string|number|{}} [idOrCriteria] Object for where clause, string / number for id.
    * @param {{}}               [body]     Data to patch for provided idOrCriteria.
    * @param {{}}               [options]  Extra request options.
+   * @param {{ response: Response}}              [responseOutput]  reference output for Response object
    *
    * @return {Promise<*>|Promise<Error>} Server response as Object
    */
-  patch(resource: string, idOrCriteria?: string|number|{}, body?: {}, options?: {}): Promise<any|Error> {
-    return this.request('PATCH', getRequestPath(resource, this.useTraditionalUriTemplates, idOrCriteria), body, options);
+  patch(resource: string, idOrCriteria?: string|number|{}, body?: {}, options?: {}, responseOutput?: { response: Response}): Promise<any|Error> {
+    return this.request('PATCH', getRequestPath(resource, this.useTraditionalUriTemplates, idOrCriteria), body, options, responseOutput);
   }
 
   /**
@@ -177,11 +188,12 @@ export class Rest {
    * @param {{}}               [criteria] Object for where clause
    * @param {{}}               [body]     Data to patch for provided criteria.
    * @param {{}}               [options]  Extra request options.
+   * @param {{ response: Response}}              [responseOutput]  reference output for Response object
    *
    * @return {Promise<*>|Promise<Error>} Server response as Object
    */
-  patchOne(resource: string, id: string|number, criteria?: {}, body?: {}, options?: {}): Promise<any|Error> {
-    return this.request('PATCH', getRequestPath(resource, this.useTraditionalUriTemplates, id, criteria), body, options);
+  patchOne(resource: string, id: string|number, criteria?: {}, body?: {}, options?: {}, responseOutput?: { response: Response}): Promise<any|Error> {
+    return this.request('PATCH', getRequestPath(resource, this.useTraditionalUriTemplates, id, criteria), body, options, responseOutput);
   }
 
   /**
@@ -190,11 +202,12 @@ export class Rest {
    * @param {string}           resource   The resource to delete
    * @param {string|number|{}} [idOrCriteria] Object for where clause, string / number for id.
    * @param {{}}               [options]  Extra request options.
+   * @param {{ response: Response}}              [responseOutput]  reference output for Response object
    *
    * @return {Promise<*>|Promise<Error>} Server response as Object
    */
-  destroy(resource: string, idOrCriteria?: string|number|{}, options?: {}): Promise<any|Error> {
-    return this.request('DELETE', getRequestPath(resource, this.useTraditionalUriTemplates, idOrCriteria), undefined, options);
+  destroy(resource: string, idOrCriteria?: string|number|{}, options?: {}, responseOutput?: { response: Response}): Promise<any|Error> {
+    return this.request('DELETE', getRequestPath(resource, this.useTraditionalUriTemplates, idOrCriteria), undefined, options, responseOutput);
   }
 
   /**
@@ -204,11 +217,12 @@ export class Rest {
    * @param {string|number}    id         String / number for id to be added to the path.
    * @param {{}}               [criteria] Object for where clause
    * @param {{}}               [options]  Extra request options.
+   * @param {{ response: Response}}              [responseOutput]  reference output for Response object
    *
    * @return {Promise<*>|Promise<Error>} Server response as Object
    */
-  destroyOne(resource: string, id: string|number, criteria?: {}, options?: {}): Promise<any|Error> {
-    return this.request('DELETE', getRequestPath(resource, this.useTraditionalUriTemplates, id, criteria), undefined, options);
+  destroyOne(resource: string, id: string|number, criteria?: {}, options?: {}, responseOutput?: { response: Response}): Promise<any|Error> {
+    return this.request('DELETE', getRequestPath(resource, this.useTraditionalUriTemplates, id, criteria), undefined, options, responseOutput);
   }
 
   /**
@@ -217,11 +231,12 @@ export class Rest {
    * @param {string}           resource  The resource to create
    * @param {{}}               [body]    The data to post (as Object)
    * @param {{}}               [options] Extra request options.
+   * @param {{ response: Response}}              [responseOutput]  reference output for Response object
    *
    * @return {Promise<*>} Server response as Object
    */
-  create(resource: string, body?: {}, options?: {}): Promise<any|Error> {
-    return this.post(resource, body, options);
+  create(resource: string, body?: {}, options?: {}, responseOutput?: { response: Response}): Promise<any|Error> {
+    return this.post(resource, body, options, responseOutput);
   }
 }
 
