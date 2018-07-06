@@ -37,20 +37,21 @@ All methods will:
 * leave the body unchanged, if the `Content-Type` is not set or when the body is not an object.
 * maintain trailing slashes of the resource parameter
 
-All methods return a Promise with the server response parsed to an object if possible.
+All methods return a Promise with the server response JSON parsed to an object if possible. To retrieve any type other that json responses, use the responseOutput option.
 
-### .request(method, path[, body][, options])
+### .request(method, path[, body][, options][,responseOutput])
 
 Perform a request to the server.
 
 #### Parameters
 
-| Parameter | Type   | Description                                 |
-| --------- | ------ | ------------------------------------------- |
-| method    | string | Request method. POST, GET, DELETE, PUT etc. |
-| path      | string | Path to make the request to.                |
-| body      | object | The body (when permitted by method).        |
-| options   | object | Additional options for the fetch            |
+| Parameter      | Type   | Description                                 |
+| -------------- | ------ | ------------------------------------------- |
+| method         | string | Request method. POST, GET, DELETE, PUT etc. |
+| path           | string | Path to make the request to.                |
+| body           | object | The body (when permitted by method).        |
+| options        | object | Additional options for the fetch            |
+| responseOutput | object | If provided, responseOutput.response contains a clone of the original response |
 
 #### Returns
 
@@ -76,10 +77,29 @@ export class MyViewModel {
 }
 ```
 
+Here's an example of an xml response.
+
+```javascript
+import {Rest} from 'aurelia-api';
+
+@inject(Rest)
+export class MyViewModel {
+  constructor (restClient) {
+    let requestOutput = {};
+    restClient.request('GET', 'api/users-xml', null, headers: {
+          'Accept': 'application/xml'
+        }, requestOutput)
+      .then(_=>requestOutput.response.text())
+      .then(console.log)
+      .catch(console.error);
+  }
+}
+```
+
 ----------
 
-### .find(resource, idOrCriteria[, options])
-### .findOne(resource, id, criteria[, options])
+### .find(resource, idOrCriteria[, options][,responseOutput])
+### .findOne(resource, id, criteria[, options][,responseOutput])
 
 Find one or multiple resources. (GET request)
 
@@ -91,6 +111,7 @@ Find one or multiple resources. (GET request)
 | id        | string/number  | A specific ID.                                 |
 | criteria  | object         | Object of supported filters.                   |
 | options   | object         | Additional options for the fetch               |
+| responseOutput | object    | If provided, responseOutput.response contains a clone of the original response |
 
 #### Returns
 
@@ -118,13 +139,13 @@ export class MyViewModel {
 
 ----------
 
-### .create(resource, body[, options])
+### .create(resource, body[, options][,responseOutput])
 
 A convenience method (naming) that does exactly the same as `.post()`.
 
 ----------
 
-### .post(resource, body[, options])
+### .post(resource, body[, options][,responseOutput])
 
 Send a POST request to supplied `resource`.
 
@@ -135,6 +156,7 @@ Send a POST request to supplied `resource`.
 | resource  | string | The name of the resource you wish to post to. |
 | body      | object | The body to post.                             |
 | options   | object | Additional options for the fetch              |
+| responseOutput | object | If provided, responseOutput.response contains a clone of the original response |
 
 #### Returns
 
@@ -163,8 +185,8 @@ export class MyViewModel {
 
 ----------
 
-### .update(resource, idOrCriteria, body[, options])
-### .updateOne(resource, id, criteria, body[, options])
+### .update(resource, idOrCriteria, body[, options][,responseOutput])
+### .updateOne(resource, id, criteria, body[, options][,responseOutput])
 
 Send a PUT request to supplied `resource`.
 
@@ -177,6 +199,7 @@ Send a PUT request to supplied `resource`.
 | criteria  | object         | Object of supported filters.                   |
 | body      | object         | The new values for the records.                |
 | options   | object         | Additional options for the fetch               |
+| responseOutput | object | If provided, responseOutput.response contains a clone of the original response |
 
 #### Returns
 
@@ -201,8 +224,8 @@ export class MyViewModel {
 
 ----------
 
-### .patch(resource, idOrCriteria, body[, options])
-### .patchOne(resource, id, criteria, body[, options])
+### .patch(resource, idOrCriteria, body[, options][,responseOutput])
+### .patchOne(resource, id, criteria, body[, options][,responseOutput])
 
 Send a PATCH request to supplied `resource`.
 
@@ -215,6 +238,7 @@ Send a PATCH request to supplied `resource`.
 | criteria  | object         | Object of supported filters.                   |
 | body      | object         | The new values for the records.                |
 | options   | object         | Additional options for the fetch               |
+| responseOutput | object | If provided, responseOutput.response contains a clone of the original response |
 
 #### Returns
 
@@ -239,8 +263,8 @@ export class MyViewModel {
 
 ----------
 
-### .destroy(resource, idOrCriteria[, options])
-### .destroyOne(resource, id, criteria[, options])
+### .destroy(resource, idOrCriteria[, options][,responseOutput])
+### .destroyOne(resource, id, criteria[, options][,responseOutput])
 
 Delete one or multiple resources. (DELETE request)
 
@@ -252,6 +276,7 @@ Delete one or multiple resources. (DELETE request)
 | id        | string/number  | A specific ID.                                 |
 | criteria  | object         | Object of supported filters.                   |
 | options   | object         | Additional options for the fetch               |
+| responseOutput | object | If provided, responseOutput.response contains a clone of the original response |
 
 #### Returns
 

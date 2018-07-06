@@ -60,11 +60,11 @@ export class Rest {
   /**
    * Make a request to the server.
    *
-   * @param {string}          method     The fetch method
-   * @param {string}          path       Path to the resource
-   * @param {{}}              [body]     The body to send if applicable
-   * @param {{}}              [options]  Fetch request options overwrites
-   * @param {{ response: Response}}              [responseOutput]  reference output for Response object
+   * @param {string}                method     The fetch method
+   * @param {string}                path       Path to the resource
+   * @param {{}}                    [body]     The body to send if applicable
+   * @param {{}}                    [options]  Fetch request options overwrites
+   * @param {{ response: Response}} [responseOutput]  reference output for Response object
    *
    * @return {Promise<*>|Promise<Error>} Server response as Object
    */
@@ -82,7 +82,7 @@ export class Rest {
     return this.client.fetch(path, requestOptions).then((response: Response) => {
       if (response.status >= 200 && response.status < 400) {
         if (responseOutput) {
-          responseOutput.response = response;
+          responseOutput.response = response.clone();
         }
 
         return response.json().catch(() => null);
@@ -98,7 +98,7 @@ export class Rest {
    * @param {string}                    resource  Resource to find in
    * @param {string|number|{}}          idOrCriteria  Object for where clause, string / number for id.
    * @param {{}}                        [options] Extra request options.
-   * @param {{ response: Response}}              [responseOutput]  reference output for Response object
+   * @param {{ response: Response}}     [responseOutput]  reference output for Response object
    *
    * @return {Promise<*>|Promise<Error>} Server response as Object
    */
@@ -124,10 +124,10 @@ export class Rest {
   /**
    * Create a new instance for resource.
    *
-   * @param {string}           resource  Resource to create
-   * @param {{}}               [body]    The data to post (as Object)
-   * @param {{}}               [options] Extra request options.
-   * @param {{ response: Response}}              [responseOutput]  reference output for Response object
+   * @param {string}                resource  Resource to create
+   * @param {{}}                    [body]    The data to post (as Object)
+   * @param {{}}                    [options] Extra request options.
+   * @param {{ response: Response}} [responseOutput]  reference output for Response object
    *
    * @return {Promise<*>|Promise<Error>} Server response as Object
    */
@@ -138,11 +138,11 @@ export class Rest {
   /**
    * Update a resource.
    *
-   * @param {string}           resource  Resource to update
-   * @param {string|number|{}} idOrCriteria  Object for where clause, string / number for id.
-   * @param {{}}               [body]    New data for provided idOrCriteria.
-   * @param {{}}               [options] Extra request options.
-   * @param {{ response: Response}}              [responseOutput]  reference output for Response object
+   * @param {string}                resource  Resource to update
+   * @param {string|number|{}}      idOrCriteria  Object for where clause, string / number for id.
+   * @param {{}}                    [body]    New data for provided idOrCriteria.
+   * @param {{}}                    [options] Extra request options.
+   * @param {{ response: Response}} [responseOutput]  reference output for Response object
    *
    * @return {Promise<*>|Promise<Error>} Server response as Object
    */
@@ -153,12 +153,12 @@ export class Rest {
   /**
    * Update a resource.
    *
-   * @param {string}           resource   Resource to update
-   * @param {string|number}    id         String / number for id to be added to the path.
-   * @param {{}}               [criteria] Object for where clause
-   * @param {{}}               [body]     New data for provided criteria.
-   * @param {{}}               [options]  Extra request options.
-   * @param {{ response: Response}}              [responseOutput]  reference output for Response object
+   * @param {string}                resource   Resource to update
+   * @param {string|number}         id         String / number for id to be added to the path.
+   * @param {{}}                    [criteria] Object for where clause
+   * @param {{}}                    [body]     New data for provided criteria.
+   * @param {{}}                    [options]  Extra request options.
+   * @param {{ response: Response}} [responseOutput]  reference output for Response object
    *
    * @return {Promise<*>|Promise<Error>} Server response as Object
    */
@@ -169,11 +169,11 @@ export class Rest {
   /**
    * Patch a resource.
   *
-   * @param {string}           resource   Resource to patch
-   * @param {string|number|{}} [idOrCriteria] Object for where clause, string / number for id.
-   * @param {{}}               [body]     Data to patch for provided idOrCriteria.
-   * @param {{}}               [options]  Extra request options.
-   * @param {{ response: Response}}              [responseOutput]  reference output for Response object
+   * @param {string}                resource   Resource to patch
+   * @param {string|number|{}}      [idOrCriteria] Object for where clause, string / number for id.
+   * @param {{}}                    [body]     Data to patch for provided idOrCriteria.
+   * @param {{}}                    [options]  Extra request options.
+   * @param {{ response: Response}} [responseOutput]  reference output for Response object
    *
    * @return {Promise<*>|Promise<Error>} Server response as Object
    */
@@ -184,12 +184,12 @@ export class Rest {
   /**
    * Patch a resource.
    *
-   * @param {string}           resource   Resource to patch
-   * @param {string|number}    id         String / number for id to be added to the path.
-   * @param {{}}               [criteria] Object for where clause
-   * @param {{}}               [body]     Data to patch for provided criteria.
-   * @param {{}}               [options]  Extra request options.
-   * @param {{ response: Response}}              [responseOutput]  reference output for Response object
+   * @param {string}                resource   Resource to patch
+   * @param {string|number}         id         String / number for id to be added to the path.
+   * @param {{}}                    [criteria] Object for where clause
+   * @param {{}}                    [body]     Data to patch for provided criteria.
+   * @param {{}}                    [options]  Extra request options.
+   * @param {{ response: Response}} [responseOutput]  reference output for Response object
    *
    * @return {Promise<*>|Promise<Error>} Server response as Object
    */
@@ -200,10 +200,10 @@ export class Rest {
   /**
    * Delete a resource.
    *
-   * @param {string}           resource   The resource to delete
-   * @param {string|number|{}} [idOrCriteria] Object for where clause, string / number for id.
-   * @param {{}}               [options]  Extra request options.
-   * @param {{ response: Response}}              [responseOutput]  reference output for Response object
+   * @param {string}                resource   The resource to delete
+   * @param {string|number|{}}      [idOrCriteria] Object for where clause, string / number for id.
+   * @param {{}}                    [options]  Extra request options.
+   * @param {{ response: Response}} [responseOutput]  reference output for Response object
    *
    * @return {Promise<*>|Promise<Error>} Server response as Object
    */
@@ -214,11 +214,11 @@ export class Rest {
   /**
    * Delete a resource.
    *
-   * @param {string}           resource   The resource to delete
-   * @param {string|number}    id         String / number for id to be added to the path.
-   * @param {{}}               [criteria] Object for where clause
-   * @param {{}}               [options]  Extra request options.
-   * @param {{ response: Response}}              [responseOutput]  reference output for Response object
+   * @param {string}                resource   The resource to delete
+   * @param {string|number}         id         String / number for id to be added to the path.
+   * @param {{}}                    [criteria] Object for where clause
+   * @param {{}}                    [options]  Extra request options.
+   * @param {{ response: Response}} [responseOutput]  reference output for Response object
    *
    * @return {Promise<*>|Promise<Error>} Server response as Object
    */
@@ -229,10 +229,10 @@ export class Rest {
   /**
    * Create a new instance for resource.
    *
-   * @param {string}           resource  The resource to create
-   * @param {{}}               [body]    The data to post (as Object)
-   * @param {{}}               [options] Extra request options.
-   * @param {{ response: Response}}              [responseOutput]  reference output for Response object
+   * @param {string}                resource  The resource to create
+   * @param {{}}                    [body]    The data to post (as Object)
+   * @param {{}}                    [options] Extra request options.
+   * @param {{ response: Response}} [responseOutput]  reference output for Response object
    *
    * @return {Promise<*>} Server response as Object
    */
