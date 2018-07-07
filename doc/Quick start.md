@@ -103,20 +103,20 @@ You probably don't only want to retrieve data but send some also. The Rest clien
 
 ````js
 endpoint
-  .client                                                           // the httpClient instance
-  .endpoint                                                         // name of the endpoint
-  .default                                                          // The fetch client defaults
-  .find(resource, criteria, options, responseOutput)                // GET
-  .findOne(resource, id, criteria, options, responseOutput)         // GET
-  .post(resource, body, options, responseOutput) {                  // POST
-  .update(resource, criteria, body, options, responseOutput)        // PUT
-  .updateOne(resource, id, criteria, body, options, responseOutput) // PUT
-  .patch(resource, criteria, body, options, responseOutput)         // PATCH
-  .patchOne(resource, id, criteria, body, options, responseOutput)  // PATCH
-  .destroy(resource, criteria, options, responseOutput)             // DELETE
-  .destroyOne(resource, id, criteria, options, responseOutput)      // DELETE
-  .create(resource, body, options, responseOutput)                  // POST
-  .request(method, path, body, options, responseOutput)             // method
+  .client                                           // the httpClient instance
+  .endpoint                                         // name of the endpoint
+  .default                                          // The fetch client defaults
+  .find(resource, criteria, options)                // GET
+  .findOne(resource, id, criteria, options)         // GET
+  .post(resource, body, options) {                  // POST
+  .update(resource, criteria, body, options)        // PUT
+  .updateOne(resource, id, criteria, body, options) // PUT
+  .patch(resource, criteria, body, options)         // PATCH
+  .patchOne(resource, id, criteria, body, options)  // PATCH
+  .destroy(resource, criteria, options)             // DELETE
+  .destroyOne(resource, id, criteria, options)      // DELETE
+  .create(resource, body, options)                  // POST
+  .request(method, path, body, options)             // method
 ```
 
 The [Rest api](api_rest.md) has more information about those. Here is just another quick example:
