@@ -133,24 +133,24 @@ All methods will:
 * leave the body unchanged, if the `Content-Type` is not set or when the body is not an object.
 * maintain trailing slashes of the resource parameter
 
-All methods return on success a Promise with the server response parsed to an object if possible. On error, they reject with the server response. If possible and parseError is set true, they reject with the JSON parsed server response.
+All methods return on success a Promise with the server response parsed to an object if possible. On error, they reject with the server response. If possible and parseError is set true, they reject with the JSON parsed server response. For anything else but JSON response, pass one a responseOutput object and the original response will be added to responseOutput.response.
 
 ```js
 endpoint
-  .client                                                           // the httpClient instance
-  .endpoint                                                         // name of the endpoint
-  .default                                                          // The fetch client defaults
-  .find(resource, idOrCriteria, options, responseOutput)                // GET
-  .findOne(resource, id, criteria, options, responseOutput)         // GET
-  .post(resource, body, options, responseOutput) {                  // POST
-  .update(resource, idOrCriteria, body, options, responseOutput)        // PUT
-  .updateOne(resource, id, criteria, body, options, responseOutput) // PUT
-  .patch(resource, idOrCriteria, body, options, responseOutput)         // PATCH
-  .patchOne(resource, id, criteria, body, options, responseOutput)  // PATCH
-  .destroy(resource, idOrCriteria, options, responseOutput)             // DELETE
-  .destroyOne(resource, id, criteria, options, responseOutput)      // DELETE
-  .create(resource, body, options, responseOutput)                  // POST
-  .request(method, path, body, options, responseOutput)             // method
+  .client                                           // the httpClient instance
+  .endpoint                                         // name of the endpoint
+  .default                                          // The fetch client defaults
+  .find(resource, idOrCriteria, options)            // GET
+  .findOne(resource, id, criteria, options)         // GET
+  .post(resource, body, options)                    // POST
+  .update(resource, idOrCriteria, body, options)    // PUT
+  .updateOne(resource, id, criteria, body, options) // PUT
+  .patch(resource, idOrCriteria, body, options)     // PATCH
+  .patchOne(resource, id, criteria, body, options)  // PATCH
+  .destroy(resource, idOrCriteria, options)         // DELETE
+  .destroyOne(resource, id, criteria, options)      // DELETE
+  .create(resource, body, options)                  // POST
+  .request(method, path, body, options)             // method
 ```
 
 ## Note

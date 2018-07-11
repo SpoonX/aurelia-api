@@ -8,22 +8,32 @@ let container = new Container();
 let config    = container.get(Config);
 let baseUrls  = {
   jsonplaceholder: 'http://jsonplaceholder.typicode.com/',
-  api            : 'http://127.0.0.1:1927/'
+  api            : 'http://127.0.0.1:1927/',
+  xml            : 'http://127.0.0.1:1927/xml',
 };
 let options = {
   headers: {
     'Content-Type' : 'application/x-www-form-urlencoded',
+    'Accept'       : 'Application/json',
     'Authorization': 'Bearer aToken'
   }
 };
 let jsonOptions = {
   headers: {
     'Content-Type': 'application/vnd.api+json',
-    'Accept': 'application/vnd.api+json'
+    'Accept'      : 'application/vnd.api+json'
   }
 };
 
+var xmlResponse= `
+    <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+    <verzeichnis>
+        <titel>Wikipedia Städteverzeichnis</titel>
+    </verzeichnis>
+  `;
+
 config.registerEndpoint('api', baseUrls.api);
+config.registerEndpoint('xml', baseUrls.xml, {headers: {'Content-Type': 'application/xml', 'Accept': 'application/xml'}});
 config.registerEndpoint('jsonplaceholder', baseUrls.jsonplaceholder);
 config.registerEndpoint('form', baseUrls.api, null);
 config.registerEndpoint('urlencoded', baseUrls.api, options);
@@ -203,7 +213,7 @@ describe('Rest', function() {
   describe('.find()', function() {
     it('Should find with id and criteria using date objects.', function(done) {
       let injectTest = container.get(InjectTest);
-      let dateCriteria = { date: new Date() };
+      let dateCriteria = {date: new Date()};
 
       injectTest.apiEndpoint.findOne('posts', 'id', dateCriteria)
         .then(y => {
@@ -216,7 +226,7 @@ describe('Rest', function() {
 
     it('Should find with criteria using id and date objects.', function(done) {
       let injectTest = container.get(InjectTest);
-      let dateCriteria = { id: 'id', date: new Date() };
+      let dateCriteria = {id: 'id', date: new Date()};
 
       injectTest.apiEndpoint.findOne('posts', dateCriteria)
         .then(y => {
@@ -230,7 +240,7 @@ describe('Rest', function() {
 
     it('Should find with criteria using number objects.', function(done) {
       let injectTest = container.get(InjectTest);
-      let numCriteria = { num: Number(-1.01) };
+      let numCriteria = {num: Number(-1.01)};
 
       injectTest.apiEndpoint.findOne('posts/', 'id', numCriteria)
         .then(y => {
@@ -244,7 +254,7 @@ describe('Rest', function() {
   describe('.find()', function() {
     it('Should find with criteria using date objects.', function(done) {
       let injectTest = container.get(InjectTest);
-      let dateCriteria = { date: new Date() };
+      let dateCriteria = {date: new Date()};
 
       injectTest.apiEndpoint.findOne('posts', 'id', dateCriteria)
         .then(y => {
@@ -256,7 +266,7 @@ describe('Rest', function() {
 
     it('Should find with criteria using number objects.', function(done) {
       let injectTest = container.get(InjectTest);
-      let numCriteria = { num: Number(-1.01) };
+      let numCriteria = {num: Number(-1.01)};
 
       injectTest.apiEndpoint.findOne('posts/', 'id', numCriteria)
         .then(y => {
@@ -264,6 +274,33 @@ describe('Rest', function() {
           expect(y.path).toBe('/posts/id/');
           expect(y.query.num).toBe(numCriteria.num.toString());
         }).then(done);
+    });
+  });
+
+  describe('.find()', function() {
+    it('Should retrieve xml (using responseOutput)', function(done) {
+      let injectTest = container.get(InjectTest);
+      let responseOutput = {
+        response: null
+      };
+
+      injectTest.apiEndpoint.find('xml', null, null, responseOutput)
+        .then(_ => responseOutput.response.text())
+        .then(xmlText => {
+          expect(xmlText).toBe(xmlResponse);
+         })
+        .then(() => done());
+    });
+
+    it('Should retrieve xml (using accept header)', function(done) {
+      let injectTest = container.get(InjectTest);
+  
+      injectTest.apiEndpoint.find('xml', null, {headers: {'Accept': 'application/xml'}})
+        .then(response => response.text())
+        .then(xmlText => {
+          expect(xmlText).toBe(xmlResponse);
+         })
+        .then(() => done());
     });
   });
 
@@ -742,36 +779,10 @@ describe('Rest', function() {
   });
 
   describe('.post()', function() {
-    it('Should post body (as urlencoded) with custom header (x-www-form-urlencoded).', function(done) {
-      let injectTest = container.get(InjectTest);
-      let responseOutput = {
-        response: null
-      };
 
-      Promise.all([
-        injectTest.apiEndpoint.post('posts', body, options)
-          .then(y => {
-            expect(JSON.stringify(y.body)).toBe(JSON.stringify(body));
-            expect(y.method).toBe('POST');
-            expect(y.path).toBe('/posts');
-            expect(y.contentType).toMatch(options.headers['Content-Type']);
-            expect(y.Authorization).toBe(options.headers['Authorization']);
-          }),
-        injectTest.apiEndpoint.post('posts/', body, options)
-          .then(y => {
-            expect(JSON.stringify(y.body)).toBe(JSON.stringify(body));
-            expect(y.path).toBe('/posts/');
-          })
-      ]).then(x => {
-        done();
-      });
-    });
 
     it('Should post object body (as urlencoded) with registered default header (x-www-form-urlencoded).', function(done) {
       let injectTest = container.get(InjectTest);
-      let responseOutput = {
-        response: null
-      };
 
       Promise.all([
         injectTest.urlencodedEndpoint.post('posts', body)
@@ -794,9 +805,6 @@ describe('Rest', function() {
 
     it('Should post string body as string with registered default header (x-www-form-urlencoded).', function(done) {
       let injectTest = container.get(InjectTest);
-      let responseOutput = {
-        response: null
-      };
 
       Promise.all([
         injectTest.urlencodedEndpoint.post('posts', buildQueryString(body))
@@ -819,9 +827,6 @@ describe('Rest', function() {
 
     it('Should post object body (as json) with fetchConfig configuration.', function(done) {
       let injectTest = container.get(InjectTest);
-      let responseOutput = {
-        response: null
-      };
 
       Promise.all([
         injectTest.fetchConfigEndpoint.post('posts', body)
@@ -843,9 +848,6 @@ describe('Rest', function() {
 
     it('Should post string body as string with fetchConfig configuration.', function(done) {
       let injectTest = container.get(InjectTest);
-      let responseOutput = {
-        response: null
-      };
 
       Promise.all([
         injectTest.fetchConfigEndpoint.post('posts', JSON.stringify(body))
@@ -867,16 +869,12 @@ describe('Rest', function() {
 
     it('Should post body (as FormData) and options.', function(done) {
       let injectTest = container.get(InjectTest);
-      let responseOutput = {
-        response: null
-      };
-
       let data = new FormData();
 
       data.append('message', 'some');
 
       Promise.all([
-        injectTest.formEndpoint.post('uploads', data, {headers: {'Authorization': 'Bearer aToken'}})
+        injectTest.formEndpoint.post('uploads', data, {headers: {'Authorization': 'Bearer aToken', 'Accept': 'application/json'}})
           .then(y => {
             expect(y.method).toBe('POST');
             expect(y.path).toBe('/uploads');
@@ -884,7 +882,7 @@ describe('Rest', function() {
             expect(y.Authorization).toBe('Bearer aToken');
             expect(y.body.message).toBe('some');
           }),
-        injectTest.formEndpoint.post('uploads/', data, {headers: {'Authorization': 'Bearer aToken'}})
+        injectTest.formEndpoint.post('uploads/', data, {headers: {'Authorization': 'Bearer aToken', 'Accept': 'application/json'}})
           .then(y => {
             expect(y.path).toBe('/uploads/');
             expect(y.contentType).toMatch('multipart/form-data');

@@ -60,21 +60,22 @@ export class Rest {
   /**
    * Make a request to the server.
    *
-   * @param {string}          method     The fetch method
-   * @param {string}          path       Path to the resource
-   * @param {{}}              [body]     The body to send if applicable
-   * @param {{}}              [options]  Fetch request options overwrites
-   * @param {{ response: Response}}              [responseOutput]  reference output for Response object
+   * @param {string}                method     The fetch method
+   * @param {string}                path       Path to the resource
+   * @param {{}}                    [body]     The body to send if applicable
+   * @param {{}}                    [options]  Fetch request options overwrites
    *
    * @return {Promise<*>|Promise<Error>} Server response as Object
    */
   request(method: string, path: string, body?: {}, options?: {}, responseOutput?: { response: Response}): Promise<any|Error> {
     let requestOptions = extend(true, {headers: {}}, this.defaults, options || {}, {method, body});
     let contentType    = requestOptions.headers['Content-Type'] || requestOptions.headers['content-type'];
+    let accept         = requestOptions.headers['Accept'] || requestOptions.headers['accept'];
+    const appJson = /^application\/(.+\+)?json/;
 
     // if body is object, stringify to json or urlencoded depending on content-type
     if (typeof body === 'object' && body !== null && contentType) {
-      requestOptions.body = (/^application\/(.+\+)?json/).test(contentType.toLowerCase())
+      requestOptions.body = appJson.test(contentType.toLowerCase())
                           ? JSON.stringify(body)
                           : buildQueryString(body);
     }
@@ -82,10 +83,13 @@ export class Rest {
     return this.client.fetch(path, requestOptions).then((response: Response) => {
       if (response.status >= 200 && response.status < 400) {
         if (responseOutput) {
-          responseOutput.response = response;
+          console.warn(`The responseOutput option is deprecated. The original response returned, if the header 'Accept' isn't the default 'application/json'.`);
+          responseOutput.response = response.clone();
         }
 
-        return response.json().catch(() => null);
+        return accept && appJson.test(accept.toLowerCase())
+              ? response.json().catch(() => null)
+              : response;
       }
 
       throw response;
@@ -98,7 +102,6 @@ export class Rest {
    * @param {string}                    resource  Resource to find in
    * @param {string|number|{}}          idOrCriteria  Object for where clause, string / number for id.
    * @param {{}}                        [options] Extra request options.
-   * @param {{ response: Response}}              [responseOutput]  reference output for Response object
    *
    * @return {Promise<*>|Promise<Error>} Server response as Object
    */
@@ -113,7 +116,6 @@ export class Rest {
    * @param {string|number}    id          String / number for id to be added to the path.
    * @param {{}}               [criteria]  Object for where clause
    * @param {{}}               [options]   Extra request options.
-   * @param {{ response: Response}}              [responseOutput]  reference output for Response object
    *
    * @return {Promise<*>|Promise<Error>} Server response as Object
    */
@@ -124,10 +126,9 @@ export class Rest {
   /**
    * Create a new instance for resource.
    *
-   * @param {string}           resource  Resource to create
-   * @param {{}}               [body]    The data to post (as Object)
-   * @param {{}}               [options] Extra request options.
-   * @param {{ response: Response}}              [responseOutput]  reference output for Response object
+   * @param {string}                resource  Resource to create
+   * @param {{}}                    [body]    The data to post (as Object)
+   * @param {{}}                    [options] Extra request options.
    *
    * @return {Promise<*>|Promise<Error>} Server response as Object
    */
@@ -138,11 +139,10 @@ export class Rest {
   /**
    * Update a resource.
    *
-   * @param {string}           resource  Resource to update
-   * @param {string|number|{}} idOrCriteria  Object for where clause, string / number for id.
-   * @param {{}}               [body]    New data for provided idOrCriteria.
-   * @param {{}}               [options] Extra request options.
-   * @param {{ response: Response}}              [responseOutput]  reference output for Response object
+   * @param {string}                resource  Resource to update
+   * @param {string|number|{}}      idOrCriteria  Object for where clause, string / number for id.
+   * @param {{}}                    [body]    New data for provided idOrCriteria.
+   * @param {{}}                    [options] Extra request options.
    *
    * @return {Promise<*>|Promise<Error>} Server response as Object
    */
@@ -153,12 +153,11 @@ export class Rest {
   /**
    * Update a resource.
    *
-   * @param {string}           resource   Resource to update
-   * @param {string|number}    id         String / number for id to be added to the path.
-   * @param {{}}               [criteria] Object for where clause
-   * @param {{}}               [body]     New data for provided criteria.
-   * @param {{}}               [options]  Extra request options.
-   * @param {{ response: Response}}              [responseOutput]  reference output for Response object
+   * @param {string}                resource   Resource to update
+   * @param {string|number}         id         String / number for id to be added to the path.
+   * @param {{}}                    [criteria] Object for where clause
+   * @param {{}}                    [body]     New data for provided criteria.
+   * @param {{}}                    [options]  Extra request options.
    *
    * @return {Promise<*>|Promise<Error>} Server response as Object
    */
@@ -169,11 +168,10 @@ export class Rest {
   /**
    * Patch a resource.
   *
-   * @param {string}           resource   Resource to patch
-   * @param {string|number|{}} [idOrCriteria] Object for where clause, string / number for id.
-   * @param {{}}               [body]     Data to patch for provided idOrCriteria.
-   * @param {{}}               [options]  Extra request options.
-   * @param {{ response: Response}}              [responseOutput]  reference output for Response object
+   * @param {string}                resource   Resource to patch
+   * @param {string|number|{}}      [idOrCriteria] Object for where clause, string / number for id.
+   * @param {{}}                    [body]     Data to patch for provided idOrCriteria.
+   * @param {{}}                    [options]  Extra request options.
    *
    * @return {Promise<*>|Promise<Error>} Server response as Object
    */
@@ -184,12 +182,11 @@ export class Rest {
   /**
    * Patch a resource.
    *
-   * @param {string}           resource   Resource to patch
-   * @param {string|number}    id         String / number for id to be added to the path.
-   * @param {{}}               [criteria] Object for where clause
-   * @param {{}}               [body]     Data to patch for provided criteria.
-   * @param {{}}               [options]  Extra request options.
-   * @param {{ response: Response}}              [responseOutput]  reference output for Response object
+   * @param {string}                resource   Resource to patch
+   * @param {string|number}         id         String / number for id to be added to the path.
+   * @param {{}}                    [criteria] Object for where clause
+   * @param {{}}                    [body]     Data to patch for provided criteria.
+   * @param {{}}                    [options]  Extra request options.
    *
    * @return {Promise<*>|Promise<Error>} Server response as Object
    */
@@ -200,10 +197,9 @@ export class Rest {
   /**
    * Delete a resource.
    *
-   * @param {string}           resource   The resource to delete
-   * @param {string|number|{}} [idOrCriteria] Object for where clause, string / number for id.
-   * @param {{}}               [options]  Extra request options.
-   * @param {{ response: Response}}              [responseOutput]  reference output for Response object
+   * @param {string}                resource   The resource to delete
+   * @param {string|number|{}}      [idOrCriteria] Object for where clause, string / number for id.
+   * @param {{}}                    [options]  Extra request options.
    *
    * @return {Promise<*>|Promise<Error>} Server response as Object
    */
@@ -214,11 +210,10 @@ export class Rest {
   /**
    * Delete a resource.
    *
-   * @param {string}           resource   The resource to delete
-   * @param {string|number}    id         String / number for id to be added to the path.
-   * @param {{}}               [criteria] Object for where clause
-   * @param {{}}               [options]  Extra request options.
-   * @param {{ response: Response}}              [responseOutput]  reference output for Response object
+   * @param {string}                resource   The resource to delete
+   * @param {string|number}         id         String / number for id to be added to the path.
+   * @param {{}}                    [criteria] Object for where clause
+   * @param {{}}                    [options]  Extra request options.
    *
    * @return {Promise<*>|Promise<Error>} Server response as Object
    */
@@ -229,10 +224,9 @@ export class Rest {
   /**
    * Create a new instance for resource.
    *
-   * @param {string}           resource  The resource to create
-   * @param {{}}               [body]    The data to post (as Object)
-   * @param {{}}               [options] Extra request options.
-   * @param {{ response: Response}}              [responseOutput]  reference output for Response object
+   * @param {string}                resource  The resource to create
+   * @param {{}}                    [body]    The data to post (as Object)
+   * @param {{}}                    [options] Extra request options.
    *
    * @return {Promise<*>} Server response as Object
    */
