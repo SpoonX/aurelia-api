@@ -41,7 +41,11 @@ aurelia.use
 
     // 5: Own configuration
     config.registerEndpoint('twitter', configure => {
-      configure.withBaseUrl('https://api.twitter.io/');
+      configure
+        .withBaseUrl('https://api.twitter.io/')
+        .withDefaults(null); // use endpoint defaults
+        //.withDefaults({headers: {x: 'foo'}}); // uses own defaults
+        //.withDefaults(); // no defaults. same as omitting withDefaults()
     });
 
     // 6: Set default
