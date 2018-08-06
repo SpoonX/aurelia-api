@@ -6,11 +6,11 @@ import {Config} from './config';
  *
  * @export
  * @param {{ container: Container}} frameworkConfig
- * @param {({defaultEndpoint: string, defaultBaseUrl: string, endpoints: Array<{name: string, endpoint: string, config: RequestInit, default: boolean}>} | function(config: Config): void)} configOrConfigure
+ * @param {({defaultEndpoint: string, defaultBaseUrl: string, endpoints: Array<{name: string, endpoint: string, config: RequestInit, default: boolean, interceptors: {}}>} | function(config: Config): void)} configOrConfigure
  */
 export function configure(
   frameworkConfig: {container: Container},
-  configOrConfigure: {defaultEndpoint: string, defaultBaseUrl: string, endpoints: Array<{name: string, endpoint: string, config: RequestInit, default: boolean}>} | ((config: Config) => void)
+  configOrConfigure: {defaultEndpoint: string, defaultBaseUrl: string, endpoints: Array<{name: string, endpoint: string, config: RequestInit, default: boolean, interceptors: {}}>} | ((config: Config) => void)
 ) {
   let config = frameworkConfig.container.get(Config);
 

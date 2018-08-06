@@ -47,13 +47,15 @@ export class Config {
    * @param {Function|string} [configureMethod] Endpoint url or configure method for client.configure().
    * @param {{}}              [defaults]        New defaults for the HttpClient
    * @param {RestOptions}     [restOptions]     Options to pass when constructing the Rest instance.
+   * @param {Function{}}      [interceptors]    New interceptors for the HttpClient
    *
    * @see http://aurelia.io/docs.html#/aurelia/fetch-client/latest/doc/api/class/HttpClientConfiguration
    * @return {Config} this Fluent interface
    * @chainable
    */
-  registerEndpoint(name: string, configureMethod?: string|Function, defaults?: {}, restOptions?: RestOptions): Config {
+  registerEndpoint(name: string, configureMethod?: string|Function, defaults?: {}, restOptions?: RestOptions, interceptors?: {}): Config {
     let newClient = new HttpClient();
+
     let useTraditionalUriTemplates;
 
     if (restOptions !== undefined) {
@@ -81,6 +83,26 @@ export class Config {
     if (this.defaultBaseUrl && typeof configureMethod !== 'string' && typeof configureMethod !== 'function') {
       newClient.configure(configure => {
         configure.withBaseUrl(this.defaultBaseUrl);
+      });
+
+      return this;
+    }
+
+    if (this.defaultBaseUrl && interceptors !== undefined) {
+      newClient.configure(configure => {
+        configure
+          .withBaseUrl(this.defaultBaseUrl)
+          .withInterceptor(interceptors);
+      });
+
+      return this;
+    }
+
+    if (!this.defaultBaseUrl && interceptors !== undefined) {
+      newClient.configure(configure => {
+        configure
+          .withBaseUrl(configureMethod)
+          .withInterceptor(interceptors);
       });
 
       return this;
@@ -156,13 +178,13 @@ export class Config {
    * @return {Config} this Fluent interface
    * @chainable
    */
-  configure(config: {defaultEndpoint: string, defaultBaseUrl: string, endpoints: Array<{name: string, endpoint: string, config: {}, default: boolean}>}): Config {
+  configure(config: {defaultEndpoint: string, defaultBaseUrl: string, endpoints: Array<{name: string, endpoint: string, config: {}, default: boolean, interceptors: {}}>}): Config {
     if (config.defaultBaseUrl) {
       this.defaultBaseUrl = config.defaultBaseUrl;
     }
 
     config.endpoints.forEach(endpoint => {
-      this.registerEndpoint(endpoint.name, endpoint.endpoint, endpoint.config);
+      this.registerEndpoint(endpoint.name, endpoint.endpoint, endpoint.config, endpoint.default, endpoint.interceptors);
 
       if (endpoint.default) {
         this.setDefaultEndpoint(endpoint.name);

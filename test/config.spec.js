@@ -42,6 +42,16 @@ describe('Config', function() {
       expect(config.endpoints.api.client.baseUrl).toEqual(baseUrls.api);
       expect(returned).toBe(config);
     });
+
+    it('Should apply interceptors', function() {
+      let config = new Config;
+      let returned = config.registerEndpoint('api', baseUrls.api, userOptions, false, interceptorsOptions);
+
+      expect(config.endpoints.api.defaults).toEqual(userOptions);
+      expect(config.endpoints.api.client.baseUrl).toEqual(baseUrls.api);
+      expect(config.endpoints.api.client.interceptors).toEqual([interceptorsOptions]);
+      expect(returned).toBe(config);
+    });
   });
 
   describe('.getEndpoint()', function() {
@@ -137,6 +147,15 @@ let defaultOptions = {
     'Accept': 'application/json',
     'Content-Type': 'application/json'
   }};
+
+let interceptorsOptions = {
+  request(request) {
+    return request;
+  },
+  requestError(requestError) {
+    return requestError;
+  }
+};
 
 let userOptions = {
   'headers': {
