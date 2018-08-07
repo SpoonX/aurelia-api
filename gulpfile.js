@@ -11,6 +11,9 @@ var app = require('./node_modules/spoonx-tools/build-plugin/tasks/server').app;
 var multer  = require('multer')
 var storage = multer.memoryStorage()
 var upload  = multer({storage: storage})
+var bodyParser = require('body-parser');
+
+app.use(bodyParser.json({ type: 'application/vnd.api+json' }))
 
 app.post('/uploads', upload.single(), function(req, res) {
   res.send({

@@ -19,16 +19,20 @@ export let Rest = class Rest {
     this.useTraditionalUriTemplates = !!useTraditionalUriTemplates;
   }
 
-  request(method, path, body, options) {
+  request(method, path, body, options, responseOutput) {
     let requestOptions = extend(true, { headers: {} }, this.defaults, options || {}, { method, body });
     let contentType = requestOptions.headers['Content-Type'] || requestOptions.headers['content-type'];
 
     if (typeof body === 'object' && body !== null && contentType) {
-      requestOptions.body = /^application\/json/.test(contentType.toLowerCase()) ? JSON.stringify(body) : buildQueryString(body);
+      requestOptions.body = /^application\/(.+\+)?json/.test(contentType.toLowerCase()) ? JSON.stringify(body) : buildQueryString(body);
     }
 
     return this.client.fetch(path, requestOptions).then(response => {
       if (response.status >= 200 && response.status < 400) {
+        if (responseOutput) {
+          responseOutput.response = response;
+        }
+
         return response.json().catch(() => null);
       }
 
@@ -36,44 +40,44 @@ export let Rest = class Rest {
     });
   }
 
-  find(resource, idOrCriteria, options) {
-    return this.request('GET', getRequestPath(resource, this.useTraditionalUriTemplates, idOrCriteria), undefined, options);
+  find(resource, idOrCriteria, options, responseOutput) {
+    return this.request('GET', getRequestPath(resource, this.useTraditionalUriTemplates, idOrCriteria), undefined, options, responseOutput);
   }
 
-  findOne(resource, id, criteria, options) {
-    return this.request('GET', getRequestPath(resource, this.useTraditionalUriTemplates, id, criteria), undefined, options);
+  findOne(resource, id, criteria, options, responseOutput) {
+    return this.request('GET', getRequestPath(resource, this.useTraditionalUriTemplates, id, criteria), undefined, options, responseOutput);
   }
 
-  post(resource, body, options) {
-    return this.request('POST', resource, body, options);
+  post(resource, body, options, responseOutput) {
+    return this.request('POST', resource, body, options, responseOutput);
   }
 
-  update(resource, idOrCriteria, body, options) {
-    return this.request('PUT', getRequestPath(resource, this.useTraditionalUriTemplates, idOrCriteria), body, options);
+  update(resource, idOrCriteria, body, options, responseOutput) {
+    return this.request('PUT', getRequestPath(resource, this.useTraditionalUriTemplates, idOrCriteria), body, options, responseOutput);
   }
 
-  updateOne(resource, id, criteria, body, options) {
-    return this.request('PUT', getRequestPath(resource, this.useTraditionalUriTemplates, id, criteria), body, options);
+  updateOne(resource, id, criteria, body, options, responseOutput) {
+    return this.request('PUT', getRequestPath(resource, this.useTraditionalUriTemplates, id, criteria), body, options, responseOutput);
   }
 
-  patch(resource, idOrCriteria, body, options) {
-    return this.request('PATCH', getRequestPath(resource, this.useTraditionalUriTemplates, idOrCriteria), body, options);
+  patch(resource, idOrCriteria, body, options, responseOutput) {
+    return this.request('PATCH', getRequestPath(resource, this.useTraditionalUriTemplates, idOrCriteria), body, options, responseOutput);
   }
 
-  patchOne(resource, id, criteria, body, options) {
-    return this.request('PATCH', getRequestPath(resource, this.useTraditionalUriTemplates, id, criteria), body, options);
+  patchOne(resource, id, criteria, body, options, responseOutput) {
+    return this.request('PATCH', getRequestPath(resource, this.useTraditionalUriTemplates, id, criteria), body, options, responseOutput);
   }
 
-  destroy(resource, idOrCriteria, options) {
-    return this.request('DELETE', getRequestPath(resource, this.useTraditionalUriTemplates, idOrCriteria), undefined, options);
+  destroy(resource, idOrCriteria, options, responseOutput) {
+    return this.request('DELETE', getRequestPath(resource, this.useTraditionalUriTemplates, idOrCriteria), undefined, options, responseOutput);
   }
 
-  destroyOne(resource, id, criteria, options) {
-    return this.request('DELETE', getRequestPath(resource, this.useTraditionalUriTemplates, id, criteria), undefined, options);
+  destroyOne(resource, id, criteria, options, responseOutput) {
+    return this.request('DELETE', getRequestPath(resource, this.useTraditionalUriTemplates, id, criteria), undefined, options, responseOutput);
   }
 
-  create(resource, body, options) {
-    return this.post(resource, body, options);
+  create(resource, body, options, responseOutput) {
+    return this.post(resource, body, options, responseOutput);
   }
 };
 
@@ -81,15 +85,15 @@ function getRequestPath(resource, traditional, idOrCriteria, criteria) {
   let hasSlash = resource.slice(-1) === '/';
 
   if (typeof idOrCriteria === 'string' || typeof idOrCriteria === 'number') {
-    resource = `${ join(resource, String(idOrCriteria)) }${ hasSlash ? '/' : '' }`;
+    resource = `${join(resource, String(idOrCriteria))}${hasSlash ? '/' : ''}`;
   } else {
     criteria = idOrCriteria;
   }
 
   if (typeof criteria === 'object' && criteria !== null) {
-    resource += `?${ buildQueryString(criteria, traditional) }`;
+    resource += `?${buildQueryString(criteria, traditional)}`;
   } else if (criteria) {
-    resource += `${ hasSlash ? '' : '/' }${ criteria }${ hasSlash ? '/' : '' }`;
+    resource += `${hasSlash ? '' : '/'}${criteria}${hasSlash ? '/' : ''}`;
   }
 
   return resource;
@@ -115,6 +119,10 @@ export let Config = class Config {
 
     if (typeof configureMethod === 'function') {
       newClient.configure(configureMethod);
+
+      if (typeof newClient.defaults === 'object' && newClient.defaults !== null) {
+        this.endpoints[name].defaults = newClient.defaults;
+      }
 
       return this;
     }

@@ -72,6 +72,11 @@ export class Config {
     if (typeof configureMethod === 'function') {
       newClient.configure(configureMethod);
 
+      // transfer user defaults from http-client to endpoint
+      if (typeof newClient.defaults === 'object' && newClient.defaults !== null) {
+        this.endpoints[name].defaults = newClient.defaults;
+      }
+
       return this;
     }
 

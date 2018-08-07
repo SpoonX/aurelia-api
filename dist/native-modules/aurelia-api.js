@@ -39,16 +39,20 @@ var Rest = exports.Rest = function () {
     this.useTraditionalUriTemplates = !!useTraditionalUriTemplates;
   }
 
-  Rest.prototype.request = function request(method, path, body, options) {
+  Rest.prototype.request = function request(method, path, body, options, responseOutput) {
     var requestOptions = (0, _extend2.default)(true, { headers: {} }, this.defaults, options || {}, { method: method, body: body });
     var contentType = requestOptions.headers['Content-Type'] || requestOptions.headers['content-type'];
 
     if ((typeof body === 'undefined' ? 'undefined' : _typeof(body)) === 'object' && body !== null && contentType) {
-      requestOptions.body = /^application\/json/.test(contentType.toLowerCase()) ? JSON.stringify(body) : (0, _aureliaPath.buildQueryString)(body);
+      requestOptions.body = /^application\/(.+\+)?json/.test(contentType.toLowerCase()) ? JSON.stringify(body) : (0, _aureliaPath.buildQueryString)(body);
     }
 
     return this.client.fetch(path, requestOptions).then(function (response) {
       if (response.status >= 200 && response.status < 400) {
+        if (responseOutput) {
+          responseOutput.response = response;
+        }
+
         return response.json().catch(function () {
           return null;
         });
@@ -58,44 +62,44 @@ var Rest = exports.Rest = function () {
     });
   };
 
-  Rest.prototype.find = function find(resource, idOrCriteria, options) {
-    return this.request('GET', getRequestPath(resource, this.useTraditionalUriTemplates, idOrCriteria), undefined, options);
+  Rest.prototype.find = function find(resource, idOrCriteria, options, responseOutput) {
+    return this.request('GET', getRequestPath(resource, this.useTraditionalUriTemplates, idOrCriteria), undefined, options, responseOutput);
   };
 
-  Rest.prototype.findOne = function findOne(resource, id, criteria, options) {
-    return this.request('GET', getRequestPath(resource, this.useTraditionalUriTemplates, id, criteria), undefined, options);
+  Rest.prototype.findOne = function findOne(resource, id, criteria, options, responseOutput) {
+    return this.request('GET', getRequestPath(resource, this.useTraditionalUriTemplates, id, criteria), undefined, options, responseOutput);
   };
 
-  Rest.prototype.post = function post(resource, body, options) {
-    return this.request('POST', resource, body, options);
+  Rest.prototype.post = function post(resource, body, options, responseOutput) {
+    return this.request('POST', resource, body, options, responseOutput);
   };
 
-  Rest.prototype.update = function update(resource, idOrCriteria, body, options) {
-    return this.request('PUT', getRequestPath(resource, this.useTraditionalUriTemplates, idOrCriteria), body, options);
+  Rest.prototype.update = function update(resource, idOrCriteria, body, options, responseOutput) {
+    return this.request('PUT', getRequestPath(resource, this.useTraditionalUriTemplates, idOrCriteria), body, options, responseOutput);
   };
 
-  Rest.prototype.updateOne = function updateOne(resource, id, criteria, body, options) {
-    return this.request('PUT', getRequestPath(resource, this.useTraditionalUriTemplates, id, criteria), body, options);
+  Rest.prototype.updateOne = function updateOne(resource, id, criteria, body, options, responseOutput) {
+    return this.request('PUT', getRequestPath(resource, this.useTraditionalUriTemplates, id, criteria), body, options, responseOutput);
   };
 
-  Rest.prototype.patch = function patch(resource, idOrCriteria, body, options) {
-    return this.request('PATCH', getRequestPath(resource, this.useTraditionalUriTemplates, idOrCriteria), body, options);
+  Rest.prototype.patch = function patch(resource, idOrCriteria, body, options, responseOutput) {
+    return this.request('PATCH', getRequestPath(resource, this.useTraditionalUriTemplates, idOrCriteria), body, options, responseOutput);
   };
 
-  Rest.prototype.patchOne = function patchOne(resource, id, criteria, body, options) {
-    return this.request('PATCH', getRequestPath(resource, this.useTraditionalUriTemplates, id, criteria), body, options);
+  Rest.prototype.patchOne = function patchOne(resource, id, criteria, body, options, responseOutput) {
+    return this.request('PATCH', getRequestPath(resource, this.useTraditionalUriTemplates, id, criteria), body, options, responseOutput);
   };
 
-  Rest.prototype.destroy = function destroy(resource, idOrCriteria, options) {
-    return this.request('DELETE', getRequestPath(resource, this.useTraditionalUriTemplates, idOrCriteria), undefined, options);
+  Rest.prototype.destroy = function destroy(resource, idOrCriteria, options, responseOutput) {
+    return this.request('DELETE', getRequestPath(resource, this.useTraditionalUriTemplates, idOrCriteria), undefined, options, responseOutput);
   };
 
-  Rest.prototype.destroyOne = function destroyOne(resource, id, criteria, options) {
-    return this.request('DELETE', getRequestPath(resource, this.useTraditionalUriTemplates, id, criteria), undefined, options);
+  Rest.prototype.destroyOne = function destroyOne(resource, id, criteria, options, responseOutput) {
+    return this.request('DELETE', getRequestPath(resource, this.useTraditionalUriTemplates, id, criteria), undefined, options, responseOutput);
   };
 
-  Rest.prototype.create = function create(resource, body, options) {
-    return this.post(resource, body, options);
+  Rest.prototype.create = function create(resource, body, options, responseOutput) {
+    return this.post(resource, body, options, responseOutput);
   };
 
   return Rest;
@@ -143,6 +147,10 @@ var Config = exports.Config = function () {
 
     if (typeof configureMethod === 'function') {
       newClient.configure(configureMethod);
+
+      if (_typeof(newClient.defaults) === 'object' && newClient.defaults !== null) {
+        this.endpoints[name].defaults = newClient.defaults;
+      }
 
       return this;
     }

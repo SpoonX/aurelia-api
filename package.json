@@ -1,6 +1,6 @@
 {
   "name": "aurelia-api",
-  "version": "3.1.1",
+  "version": "3.2.0",
   "description": "A simple api wrapper around aurelia-fetch-client",
   "keywords": [
     "aurelia",
@@ -32,7 +32,6 @@
   },
   "jspm": {
     "registry": "npm",
-    "jspmPackage": true,
     "main": "aurelia-api",
     "format": "amd",
     "directories": {
@@ -45,16 +44,17 @@
       "aurelia-path": "^1.1.1",
       "extend": "^3.0.0"
     },
+    "devDependencies": {
+      "aurelia-polyfills": "^1.0.0",
+      "fetch": "github:github/fetch@^1.0.0"
+    },
+    "jspmPackage": true,
     "peerDependencies": {
       "aurelia-dependency-injection": "^1.0.0",
       "aurelia-fetch-client": "^1.0.0",
       "aurelia-framework": "^1.0.0",
       "aurelia-path": "^1.1.1",
       "extend": "^3.0.0"
-    },
-    "devDependencies": {
-      "aurelia-polyfills": "^1.0.0",
-      "fetch": "github:github/fetch@^1.0.0"
     }
   },
   "dependencies": {

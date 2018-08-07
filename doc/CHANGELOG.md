@@ -1,3 +1,18 @@
+<a name="3.2.0"></a>
+# [3.2.0](https://github.com/SpoonX/aurelia-api/compare/v3.1.1...v3.2.0) (2018-05-28)
+
+
+### Bug Fixes
+
+* **config:** transfer defaults from the endpoint client configuration function to the endpoint defaults ([30dbbc5](https://github.com/SpoonX/aurelia-api/commit/30dbbc5))
+
+
+### Features
+
+* **rest:** add responseOutput to expose response object from fetch call ([8989df4](https://github.com/SpoonX/aurelia-api/commit/8989df4))
+
+
+
 <a name="3.1.1"></a>
 ## [3.1.1](https://github.com/SpoonX/aurelia-api/compare/v3.1.0...v3.1.1) (2016-12-22)
 
