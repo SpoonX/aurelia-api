@@ -77,6 +77,8 @@ aurelia.use
       {name: 'weather', endpoint: 'https://weatherapi.io/', config: {headers: {x: 'foo'}}},
       // 4: Without endpoint defaults
       {name: 'weather', endpoint: 'https://weatherapi.io/', config: null};
+      // 9: With interceptors
+      {name: 'weather', endpoint: 'https://weatherapi.io/', interceptors: { request(request) { return request; } }};
     ],
     // 6: Set default endppoint. alternatively, add default: true above
     defaultEndpoint: 'api',
@@ -120,3 +122,7 @@ All methods return `this`, allowing you to chain the calls.
 ## 8: Set default base URL
 
 All endpoints registered after this call will use this default base URL, rather than the current host URL. 
+
+## 9: Set interceptors
+
+Configure interceptors from `aurelia-fetch-client`. [Aurelia fetch client documentation](https://aurelia.io/docs/plugins/http-services#aurelia-fetch-client).
