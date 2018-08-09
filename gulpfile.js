@@ -15,6 +15,18 @@ var bodyParser = require('body-parser');
 
 app.use(bodyParser.json({ type: 'application/vnd.api+json' }))
 
+var xmlResponse= `
+    <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+    <verzeichnis>
+        <titel>Wikipedia Städteverzeichnis</titel>
+    </verzeichnis>
+  `;
+
+app.get('/xml', function(req, res) {
+  res.type('application/xml');
+  res.send(xmlResponse);
+});
+
 app.post('/uploads', upload.single(), function(req, res) {
   res.send({
     path         : req.path,
