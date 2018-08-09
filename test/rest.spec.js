@@ -20,7 +20,7 @@ let options = {
 let jsonOptions = {
   headers: {
     'Content-Type': 'application/vnd.api+json',
-    'Accept': 'application/vnd.api+json'
+    'Accept'      : 'application/vnd.api+json'
   }
 };
 
@@ -212,7 +212,7 @@ describe('Rest', function() {
   describe('.find()', function() {
     it('Should find with id and criteria using date objects.', function(done) {
       let injectTest = container.get(InjectTest);
-      let dateCriteria = { date: new Date() };
+      let dateCriteria = {date: new Date()};
 
       injectTest.apiEndpoint.findOne('posts', 'id', dateCriteria)
         .then(y => {
@@ -225,7 +225,7 @@ describe('Rest', function() {
 
     it('Should find with criteria using id and date objects.', function(done) {
       let injectTest = container.get(InjectTest);
-      let dateCriteria = { id: 'id', date: new Date() };
+      let dateCriteria = {id: 'id', date: new Date()};
 
       injectTest.apiEndpoint.findOne('posts', dateCriteria)
         .then(y => {
@@ -239,7 +239,7 @@ describe('Rest', function() {
 
     it('Should find with criteria using number objects.', function(done) {
       let injectTest = container.get(InjectTest);
-      let numCriteria = { num: Number(-1.01) };
+      let numCriteria = {num: Number(-1.01)};
 
       injectTest.apiEndpoint.findOne('posts/', 'id', numCriteria)
         .then(y => {
@@ -253,7 +253,7 @@ describe('Rest', function() {
   describe('.find()', function() {
     it('Should find with criteria using date objects.', function(done) {
       let injectTest = container.get(InjectTest);
-      let dateCriteria = { date: new Date() };
+      let dateCriteria = {date: new Date()};
 
       injectTest.apiEndpoint.findOne('posts', 'id', dateCriteria)
         .then(y => {
@@ -265,7 +265,7 @@ describe('Rest', function() {
 
     it('Should find with criteria using number objects.', function(done) {
       let injectTest = container.get(InjectTest);
-      let numCriteria = { num: Number(-1.01) };
+      let numCriteria = {num: Number(-1.01)};
 
       injectTest.apiEndpoint.findOne('posts/', 'id', numCriteria)
         .then(y => {
@@ -276,8 +276,8 @@ describe('Rest', function() {
     });
   });
 
-  fdescribe('.find()', function() {
-    fit('Should post body and retrieve xml', function(done) {
+  describe('.find()', function() {
+    it('Should post body and retrieve xml', function(done) {
       let injectTest = container.get(InjectTest);
       let responseOutput = {
         response: null
@@ -772,7 +772,6 @@ describe('Rest', function() {
   });
 
   describe('.post()', function() {
-
 
     it('Should post object body (as urlencoded) with registered default header (x-www-form-urlencoded).', function(done) {
       let injectTest = container.get(InjectTest);
