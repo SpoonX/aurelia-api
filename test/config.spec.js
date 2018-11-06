@@ -42,6 +42,29 @@ describe('Config', function() {
       expect(config.endpoints.api.client.baseUrl).toEqual(baseUrls.api);
       expect(returned).toBe(config);
     });
+
+    it('Should properly register an endpoint with standard defaults when config functions are applied.', function() {
+      let config   = new Config;
+      let returned = config.registerEndpoint('api', function(configure) {
+        configure.withBaseUrl(baseUrls.api);
+      });
+
+      expect(config.endpoints.api.defaults).toEqual(defaultOptions);
+      expect(config.endpoints.api.client.baseUrl).toEqual(baseUrls.api);
+      expect(returned).toBe(config);
+    });
+
+    it('Should properly register an endpoint with null defaults when defaults specified as "null".', function() {
+      let config   = new Config;
+      let returned = config.registerEndpoint('api', function(configure) {
+        configure.withBaseUrl(baseUrls.api);
+        configure.withDefaults(null);
+      });
+
+      expect(config.endpoints.api.defaults).toEqual(null);
+      expect(config.endpoints.api.client.baseUrl).toEqual(baseUrls.api);
+      expect(returned).toBe(config);
+    });
   });
 
   describe('.getEndpoint()', function() {

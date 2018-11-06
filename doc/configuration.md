@@ -43,7 +43,6 @@ aurelia.use
     config.registerEndpoint('twitter', configure => {
       configure
         .withBaseUrl('https://api.twitter.io/')
-        .withDefaults(null); // use endpoint defaults
         //.withDefaults({headers: {x: 'foo'}}); // uses own defaults
         //.withDefaults(); // no defaults. same as omitting withDefaults()
     });
@@ -56,7 +55,7 @@ aurelia.use
       .registerEndpoint('auth', 'https://auth.myapi.org/')
       .setDefaultEndpoint('auth');
   });
-  
+
   // 8: Set Default BaseUrl
     config.setDefaultBaseUrl('https://myapi.org/');
 ```
@@ -119,4 +118,4 @@ All methods return `this`, allowing you to chain the calls.
 
 ## 8: Set default base URL
 
-All endpoints registered after this call will use this default base URL, rather than the current host URL. 
+All endpoints registered after this call will use this default base URL, rather than the current host URL.
