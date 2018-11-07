@@ -1,5 +1,5 @@
 import {buildQueryString,join} from 'aurelia-path';
-import {HttpClient} from 'aurelia-fetch-client';
+import {HttpClient,HttpClientConfiguration} from 'aurelia-fetch-client';
 import {Container,resolver} from 'aurelia-dependency-injection';
 
 /**

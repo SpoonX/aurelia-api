@@ -42,7 +42,7 @@ var Rest = exports.Rest = function () {
   }
 
   Rest.prototype.request = function request(method, path, body, options, responseOutput) {
-    var requestOptions = (0, _extend2.default)(true, { headers: {} }, this.defaults, options || {}, { method: method, body: body });
+    var requestOptions = (0, _extend2.default)(true, { headers: {} }, this.defaults || {}, options || {}, { method: method, body: body });
     var contentType = requestOptions.headers['Content-Type'] || requestOptions.headers['content-type'];
 
     if ((typeof body === 'undefined' ? 'undefined' : _typeof(body)) === 'object' && body !== null && contentType) {
@@ -148,11 +148,11 @@ var Config = exports.Config = function () {
     }
 
     if (typeof configureMethod === 'function') {
-      newClient.configure(configureMethod);
+      newClient.configure(function (newClientConfig) {
+        return configureMethod(newClientConfig.withDefaults(_this.endpoints[name].defaults));
+      });
 
-      if (_typeof(newClient.defaults) === 'object' && newClient.defaults !== null) {
-        this.endpoints[name].defaults = newClient.defaults;
-      }
+      this.endpoints[name].defaults = newClient.defaults;
 
       return this;
     }

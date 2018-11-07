@@ -2,7 +2,7 @@ var _dec, _class3;
 
 import extend from 'extend';
 import { buildQueryString, join } from 'aurelia-path';
-import { HttpClient } from 'aurelia-fetch-client';
+import { HttpClient, HttpClientConfiguration } from 'aurelia-fetch-client';
 import { Container, resolver } from 'aurelia-dependency-injection';
 
 export let Rest = class Rest {
@@ -20,7 +20,7 @@ export let Rest = class Rest {
   }
 
   request(method, path, body, options, responseOutput) {
-    let requestOptions = extend(true, { headers: {} }, this.defaults, options || {}, { method, body });
+    let requestOptions = extend(true, { headers: {} }, this.defaults || {}, options || {}, { method, body });
     let contentType = requestOptions.headers['Content-Type'] || requestOptions.headers['content-type'];
 
     if (typeof body === 'object' && body !== null && contentType) {
@@ -118,11 +118,11 @@ export let Config = class Config {
     }
 
     if (typeof configureMethod === 'function') {
-      newClient.configure(configureMethod);
+      newClient.configure(newClientConfig => {
+        return configureMethod(newClientConfig.withDefaults(this.endpoints[name].defaults));
+      });
 
-      if (typeof newClient.defaults === 'object' && newClient.defaults !== null) {
-        this.endpoints[name].defaults = newClient.defaults;
-      }
+      this.endpoints[name].defaults = newClient.defaults;
 
       return this;
     }

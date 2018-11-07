@@ -1,6 +1,6 @@
 import extend from 'extend';
 import {buildQueryString,join} from 'aurelia-path';
-import {HttpClient} from 'aurelia-fetch-client';
+import {HttpClient,HttpClientConfiguration} from 'aurelia-fetch-client';
 import {Container,resolver} from 'aurelia-dependency-injection';
 
 
@@ -71,7 +71,7 @@ export class Rest {
    * @return {Promise<*>|Promise<Error>} Server response as Object
    */
   request(method: string, path: string, body?: {}, options?: {}, responseOutput?: { response: Response}): Promise<any|Error> {
-    let requestOptions = extend(true, {headers: {}}, this.defaults, options || {}, {method, body});
+    let requestOptions = extend(true, {headers: {}}, this.defaults || {}, options || {}, {method, body});
     let contentType    = requestOptions.headers['Content-Type'] || requestOptions.headers['content-type'];
 
     // if body is object, stringify to json or urlencoded depending on content-type
@@ -337,12 +337,16 @@ export class Config {
 
     // Manual configure of client.
     if (typeof configureMethod === 'function') {
-      newClient.configure(configureMethod);
+      newClient.configure(
+          (newClientConfig: HttpClientConfiguration) => {
+            return configureMethod(
+                newClientConfig.withDefaults(this.endpoints[name].defaults)
+            );
+          }
+      );
 
       // transfer user defaults from http-client to endpoint
-      if (typeof newClient.defaults === 'object' && newClient.defaults !== null) {
-        this.endpoints[name].defaults = newClient.defaults;
-      }
+      this.endpoints[name].defaults = newClient.defaults;
 
       return this;
     }

@@ -3,7 +3,7 @@
 System.register(['extend', 'aurelia-path', 'aurelia-fetch-client', 'aurelia-dependency-injection'], function (_export, _context) {
   "use strict";
 
-  var extend, buildQueryString, join, HttpClient, Container, resolver, _dec, _class3, _typeof, Rest, Config, Endpoint;
+  var extend, buildQueryString, join, HttpClient, HttpClientConfiguration, Container, resolver, _dec, _class3, _typeof, Rest, Config, Endpoint;
 
   
 
@@ -47,6 +47,7 @@ System.register(['extend', 'aurelia-path', 'aurelia-fetch-client', 'aurelia-depe
       join = _aureliaPath.join;
     }, function (_aureliaFetchClient) {
       HttpClient = _aureliaFetchClient.HttpClient;
+      HttpClientConfiguration = _aureliaFetchClient.HttpClientConfiguration;
     }, function (_aureliaDependencyInjection) {
       Container = _aureliaDependencyInjection.Container;
       resolver = _aureliaDependencyInjection.resolver;
@@ -75,7 +76,7 @@ System.register(['extend', 'aurelia-path', 'aurelia-fetch-client', 'aurelia-depe
         }
 
         Rest.prototype.request = function request(method, path, body, options, responseOutput) {
-          var requestOptions = extend(true, { headers: {} }, this.defaults, options || {}, { method: method, body: body });
+          var requestOptions = extend(true, { headers: {} }, this.defaults || {}, options || {}, { method: method, body: body });
           var contentType = requestOptions.headers['Content-Type'] || requestOptions.headers['content-type'];
 
           if ((typeof body === 'undefined' ? 'undefined' : _typeof(body)) === 'object' && body !== null && contentType) {
@@ -165,11 +166,11 @@ System.register(['extend', 'aurelia-path', 'aurelia-fetch-client', 'aurelia-depe
           }
 
           if (typeof configureMethod === 'function') {
-            newClient.configure(configureMethod);
+            newClient.configure(function (newClientConfig) {
+              return configureMethod(newClientConfig.withDefaults(_this.endpoints[name].defaults));
+            });
 
-            if (_typeof(newClient.defaults) === 'object' && newClient.defaults !== null) {
-              this.endpoints[name].defaults = newClient.defaults;
-            }
+            this.endpoints[name].defaults = newClient.defaults;
 
             return this;
           }
