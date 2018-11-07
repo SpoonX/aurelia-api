@@ -69,7 +69,7 @@ export class Rest {
    * @return {Promise<*>|Promise<Error>} Server response as Object
    */
   request(method: string, path: string, body?: {}, options?: {}, responseOutput?: { response: Response}): Promise<any|Error> {
-    let requestOptions = extend(true, {headers: {}}, this.defaults, options || {}, {method, body});
+    let requestOptions = extend(true, {headers: {}}, this.defaults || {}, options || {}, {method, body});
     let contentType    = requestOptions.headers['Content-Type'] || requestOptions.headers['content-type'];
 
     // if body is object, stringify to json or urlencoded depending on content-type
